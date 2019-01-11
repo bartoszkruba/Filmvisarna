@@ -1,12 +1,10 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <div v-for="m in movies">
       <h2>{{m.Title}}</h2>
       <p>{{m.Description}}</p>
     </div>
-    <button @click="getMovies" class="btn btn-warning" >Get Movies</button>
-  </div>
+  
 </template>
 
 <script>
