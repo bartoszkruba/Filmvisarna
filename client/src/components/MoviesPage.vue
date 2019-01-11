@@ -8,7 +8,7 @@
 import api from "@/services/Api.js";
 
 export default {
-  name: "FilmPage",
+  name: "MoviesPage",
   data() {
     return {
       msg: "Welcome to Your Vue.js App",
