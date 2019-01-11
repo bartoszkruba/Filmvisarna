@@ -1,6 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <button @click="getMovies">Get Movies</button>
     <h2>Essential Links</h2>
     <ul>
       <li>
@@ -84,11 +85,19 @@
 </template>
 
 <script>
+import api from "@/services/Api.js";
+
 export default {
   name: 'HelloWorld',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
+    }
+  },
+  methods: {
+    async getMovies(){
+      const response = await api.getMovies();
+      this.msg = response.data.movies[1];
     }
   }
 }
