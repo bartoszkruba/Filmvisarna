@@ -7,3 +7,11 @@ module.exports.getMovies = (req, res, next) => {
         })
     });
 };
+
+// controller for adding new movies to the DB
+module.exports.postAddMovie = (req, res, next ) => {
+    console.log(req.body);
+    res.send({
+        message: 'Movie added'
+    });
+}

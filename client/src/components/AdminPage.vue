@@ -6,6 +6,13 @@
     <hr>
     <h2>Add Movie</h2>
     <form class="container mb-5">
+      <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+          <div class="alert alert-danger m-auto" role="alert" v-if="message">{{message}}</div>
+        </div>
+        <div class="col-sm-1"></div>
+      </div>
       <div class="form-group p-3">
         <div class="row mb-3">
           <div class="col-sm-1"></div>
@@ -216,6 +223,7 @@ export default {
   name: "HelloWorld",
   data() {
     return {
+      message: "",
       title: null,
       productionYear: null,
       length: null,
@@ -275,42 +283,71 @@ export default {
     removeTrailer(id) {
       this.trailers.splice(this.trailers.indexOf(id), 1);
     },
-    addMovie() {
-      const movie = {
-        title: this.title,
-        productionCountries: this.productionCountries,
-        productionYear: this.productionYear,
-        length: this.length,
-        genre: this.genre,
-        distributor: this.distributor,
-        language: this.language,
-        subtitles: this.subtitles,
-        director: this.director,
-        actors: this.actors,
-        description: this.description,
-        images: this.images,
-        youtubeTrailers: this.trailers
-      };
+    async addMovie() {
+      if (
+        this.title &&
+        this.title.trim() !== "" &&
+        this.productionCountries.length > 0 &&
+        this.productionYear > 1900 &&
+        this.productionYear <= 2019 &&
+        this.length &&
+        this.genre &&
+        this.genre.trim() !== "" &&
+        this.distributor &&
+        this.distributor.trim() !== "" &&
+        this.language &&
+        this.language.trim() !== "" &&
+        this.subtitles &&
+        this.subtitles.trim() !== "" &&
+        this.director &&
+        this.director.trim() !== "" &&
+        this.description &&
+        this.description.trim() !== "" &&
+        this.actors.length > 0 &&
+        this.images.length > 0 &&
+        this.trailers.length > 0
+      ) {
+        const movie = {
+          title: this.title,
+          productionCountries: this.productionCountries,
+          productionYear: this.productionYear,
+          length: this.length,
+          genre: this.genre,
+          distributor: this.distributor,
+          language: this.language,
+          subtitles: this.subtitles,
+          director: this.director,
+          actors: this.actors,
+          description: this.description,
+          images: this.images,
+          youtubeTrailers: this.trailers
+        };
 
-      this.title = null;
-      this.productionYear = null;
-      this.length = null;
-      this.genre = null;
-      this.distributor = null;
-      this.language = null;
-      this.subtitles = null;
-      this.director = null;
-      this.description = null;
-      this.actors = [];
-      this.productionCountries = [];
-      this.images = [];
-      this.trailers = [];
-      this.actor = null;
-      this.country = null;
-      this.imageLink = null;
-      this.youtubeID = null;
+        const response = await api.addMovie({ movie });
+        console.log(response.data);
 
-      console.log(movie);
+        this.title = null;
+        this.productionYear = null;
+        this.length = null;
+        this.genre = null;
+        this.distributor = null;
+        this.language = null;
+        this.subtitles = null;
+        this.director = null;
+        this.description = null;
+        this.actors = [];
+        this.productionCountries = [];
+        this.images = [];
+        this.trailers = [];
+        this.actor = null;
+        this.country = null;
+        this.imageLink = null;
+        this.youtubeID = null;
+      } else {
+          console.log('dupa');
+        this.message = "All fields needs to be filled.";
+        window.scrollTo(0, 0);
+      }
     }
   }
 };
