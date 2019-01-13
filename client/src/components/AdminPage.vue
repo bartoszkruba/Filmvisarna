@@ -247,8 +247,12 @@ export default {
   },
   methods: {
     addActor() {
-      if (this.actor && this.actor.trim() !== "") {
-        this.actors.push(this.actor);
+      if (
+        this.actor &&
+        this.actor.trim() !== "" &&
+        this.actors.indexOf(this.actor.trim()) === -1
+      ) {
+        this.actors.push(this.actor.trim());
         this.actor = null;
       }
     },
@@ -256,8 +260,12 @@ export default {
       this.actors.splice(this.actors.indexOf(actor), 1);
     },
     addCountry() {
-      if (this.country && this.country.trim() !== "") {
-        this.productionCountries.push(this.country);
+      if (
+        this.country &&
+        this.country.trim() !== "" &&
+        this.productionCountries.indexOf(this.country.trim()) === -1
+      ) {
+        this.productionCountries.push(this.country.trim());
         this.country = null;
       }
     },
@@ -268,8 +276,12 @@ export default {
       );
     },
     addImage() {
-      if (this.imageLink && this.imageLink.trim() !== "") {
-        this.images.push(this.imageLink);
+      if (
+        this.imageLink &&
+        this.imageLink.trim() !== "" &&
+        this.images.indexOf(this.imageLink.trim()) === -1
+      ) {
+        this.images.push(this.imageLink.trim());
         this.imageLink = null;
       }
     },
@@ -277,8 +289,12 @@ export default {
       this.images.splice(this.images.indexOf(image), 1);
     },
     addTrailer() {
-      if (this.youtubeID && this.youtubeID.trim !== "") {
-        this.trailers.push(this.youtubeID);
+      if (
+        this.youtubeID &&
+        this.youtubeID.trim() !== "" &&
+        this.trailers.indexOf(this.youtubeID.trim()) === -1
+      ) {
+        this.trailers.push(this.youtubeID.trim());
         this.youtubeID = null;
       }
     },
