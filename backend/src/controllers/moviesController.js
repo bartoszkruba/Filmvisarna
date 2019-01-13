@@ -7,3 +7,18 @@ module.exports.getMovies = (req, res, next) => {
         })
     });
 };
+
+// controller for adding new movies to the DB
+module.exports.postAddMovie = async (req, res, next ) => {
+    try{
+        await new Movie(req.body.movie).save();
+        res.send({
+            message: 'Movie added'
+        });
+    }catch(error){
+        console.log(error);
+        res.status(400).send({
+            error: 'Could not add movie to the database'
+        })
+    }
+}
