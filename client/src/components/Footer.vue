@@ -18,11 +18,11 @@
         <hr>
       </section>
     </section>
-    <section class="footer-section-2">
-      <section class="copyright footer-section">
+    <section class="footer-section-2 ">
+      <section class="copyright footer-section" style="order: 2">
         <p>Filmvisarna ©2019</p>
       </section>
-      <section class="footer-section">
+      <section class="footer-section" style="order: 1">
         <p><font-awesome-icon :icon="['fab', 'facebook']"/>
         <font-awesome-icon :icon="['fab', 'instagram']"/>
         <font-awesome-icon :icon="['fab', 'twitter']"/></p>
