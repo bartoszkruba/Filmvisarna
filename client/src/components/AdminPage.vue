@@ -9,7 +9,8 @@
       <div class="row">
         <div class="col-sm-1"></div>
         <div class="col-sm-10">
-          <div class="alert alert-danger m-auto" role="alert" v-if="message">{{message}}</div>
+          <div class="alert alert-success m-auto" role="alert" v-if="message">{{message}}</div>
+          <div class="alert alert-danger m-auto" role="alert" v-if="error">{{error}}</div>
         </div>
         <div class="col-sm-1"></div>
       </div>
@@ -223,7 +224,8 @@ export default {
   name: "HelloWorld",
   data() {
     return {
-      message: "",
+      error: null,
+      message: null,
       title: null,
       productionYear: null,
       length: null,
@@ -310,8 +312,8 @@ export default {
         const movie = {
           title: this.title,
           productionCountries: this.productionCountries,
-          productionYear: this.productionYear,
-          length: this.length,
+          productionYear: parseInt(this.productionYear),
+          length: parseInt(this.length),
           genre: this.genre,
           distributor: this.distributor,
           language: this.language,
@@ -322,30 +324,36 @@ export default {
           images: this.images,
           youtubeTrailers: this.trailers
         };
-
-        const response = await api.addMovie({ movie });
-        console.log(response.data);
-
-        this.title = null;
-        this.productionYear = null;
-        this.length = null;
-        this.genre = null;
-        this.distributor = null;
-        this.language = null;
-        this.subtitles = null;
-        this.director = null;
-        this.description = null;
-        this.actors = [];
-        this.productionCountries = [];
-        this.images = [];
-        this.trailers = [];
-        this.actor = null;
-        this.country = null;
-        this.imageLink = null;
-        this.youtubeID = null;
+        try {
+          const response = await api.addMovie({ movie });
+          this.message = response.data.message;
+          this.error = null;
+          window.scrollTo(0, 0);
+          this.title = null;
+          this.productionYear = null;
+          this.length = null;
+          this.genre = null;
+          this.distributor = null;
+          this.language = null;
+          this.subtitles = null;
+          this.director = null;
+          this.description = null;
+          this.actors = [];
+          this.productionCountries = [];
+          this.images = [];
+          this.trailers = [];
+          this.actor = null;
+          this.country = null;
+          this.imageLink = null;
+          this.youtubeID = null;
+        } catch (error) {
+          this.error = error.response.data.message;
+          this.message = null;
+          window.scrollTo(0, 0);
+        }
       } else {
-          console.log('dupa');
-        this.message = "All fields needs to be filled.";
+        this.error = "All fields needs to be filled.";
+        this.message = null;
         window.scrollTo(0, 0);
       }
     }
