@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
 const movieSchema = schema({
-    Title: {
+    title: {
         type: String
     },
-    Description: {
+    description: {
         type: String
     }
 });

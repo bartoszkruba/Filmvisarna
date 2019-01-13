@@ -103,6 +103,22 @@
           <div class="col-sm-1"></div>
         </div>
 
+        <div class="row mb-3">
+          <div class="col-sm-1"></div>
+          <div class="col-sm-5">
+            <label for="AgeLimit">Age Limit:</label>
+            <input
+              type="number"
+              class="form-control"
+              id="AgeLimit"
+              placeholder="Age Limit"
+              v-model="ageLimit"
+            >
+          </div>
+          <div class="col-sm-5"></div>
+          <div class="col-sm-1"></div>
+        </div>
+
         <div class="row">
           <div class="col-sm-1"></div>
           <div class="col-sm-5">
@@ -118,7 +134,7 @@
                 type="text"
                 class="form-control"
                 id="Actor"
-                placeholder="Actor"
+                placeholder="Add Actor"
                 v-model="actor"
               >
               <div class="input-group-prepend">
@@ -139,7 +155,7 @@
                 type="text"
                 class="form-control"
                 id="ProductionCountry"
-                placeholder="Country"
+                placeholder="Add Country"
                 v-model="country"
               >
               <div class="input-group-prepend">
@@ -165,7 +181,7 @@
                 type="text"
                 class="form-control"
                 id="ImageLink"
-                placeholder="Link"
+                placeholder="Add Link"
                 v-model="imageLink"
               >
               <div class="input-group-prepend">
@@ -186,7 +202,7 @@
                 type="text"
                 class="form-control"
                 id="YoutubeID"
-                placeholder="Youtube ID"
+                placeholder="Add Youtube ID"
                 v-model="youtubeID"
               >
               <div class="input-group-prepend">
@@ -202,6 +218,64 @@
           <div class="col-sm-10">
             <label for="Description">Description:</label>
             <textarea class="form-control" rows="5" id="Description" v-model="description"></textarea>
+          </div>
+          <div class="col-sm-1"></div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-sm-1"></div>
+          <div class="col-sm-10">
+            <label for="Reviews">Reviews:</label>
+            <div class="list-group" v-for="review in reviews">
+              <a class="list-group-item list-group-item-action flex-column align-items-start">
+                <button
+                  class="btn btn-sm btn-danger review-button float-right"
+                  @click="removeReview(review)"
+                >X</button>
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">{{review.source}}</h5>
+                </div>
+                <p class="mb-1 d-flex w-100 justify-content-between">"{{review.quote}}"</p>
+                <small
+                  class="d-flex w-100 justify-content-between"
+                >{{review.stars}}/{{review.max}} Stars</small>
+              </a>
+            </div>
+          </div>
+          <div class="col-sm-1"></div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-sm-1"></div>
+          <div class="col-sm-5">
+            <label for="Source">Source:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="source"
+              placeholder="Source"
+              v-model="source"
+            >
+          </div>
+          <div class="col-sm-5">
+            <label for="Stars">Stars:</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id>Given/Max</span>
+              </div>
+              <input type="number" class="form-control" v-model="stars">
+              <input type="number" class="form-control" v-model="max">
+            </div>
+          </div>
+          <div class="col-sm-1"></div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-sm-1"></div>
+          <div class="col-sm-10">
+            <label for="Quote">Quote:</label>
+            <textarea class="form-control" rows="5" id="Quote" v-model="quote"></textarea>
+            <button class="btn btn-primary mt-2" @click="addReview">Add Review</button>
           </div>
           <div class="col-sm-1"></div>
         </div>
@@ -234,6 +308,7 @@ export default {
       language: null,
       subtitles: null,
       director: null,
+      ageLimit: null,
       description: null,
       actors: [],
       productionCountries: [],
@@ -242,7 +317,13 @@ export default {
       actor: null,
       country: null,
       imageLink: null,
-      youtubeID: null
+      youtubeID: null,
+      reviews: [
+      ],
+      source: null,
+      quote: null,
+      stars: null,
+      max: null
     };
   },
   methods: {
@@ -301,13 +382,35 @@ export default {
     removeTrailer(id) {
       this.trailers.splice(this.trailers.indexOf(id), 1);
     },
+    addReview() {
+      if (
+        this.source &&
+        this.source.trim() !== "" &&
+        this.quote &&
+        this.quote.trim() !== "" &&
+        this.stars &&
+        this.max &&
+        parseInt(this.stars) <= parseInt(this.max)
+      ) {
+        const review = {
+          source: this.source,
+          quote: this.quote,
+          stars: parseInt(this.stars),
+          max: parseInt(this.max)
+        };
+        this.reviews.push(review);
+        this.source = null;
+        this.quote = null;
+        this.stars = null;
+        this.max = null;
+      }
+    },
+    removeReview(review) {
+      this.reviews.splice(this.reviews.indexOf(review), 1);
+    },
     async addMovie() {
       if (
         this.title &&
-        this.title.trim() !== "" &&
-        this.productionCountries.length > 0 &&
-        this.productionYear > 1900 &&
-        this.productionYear <= 2019 &&
         this.length &&
         this.genre &&
         this.genre.trim() !== "" &&
@@ -315,15 +418,13 @@ export default {
         this.distributor.trim() !== "" &&
         this.language &&
         this.language.trim() !== "" &&
+        this.ageLimit &&
         this.subtitles &&
         this.subtitles.trim() !== "" &&
         this.director &&
         this.director.trim() !== "" &&
         this.description &&
-        this.description.trim() !== "" &&
-        this.actors.length > 0 &&
-        this.images.length > 0 &&
-        this.trailers.length > 0
+        this.description.trim() !== ""
       ) {
         const movie = {
           title: this.title,
@@ -335,10 +436,12 @@ export default {
           language: this.language,
           subtitles: this.subtitles,
           director: this.director,
+          ageLimit: parseInt(this.ageLimit),
           actors: this.actors,
           description: this.description,
           images: this.images,
-          youtubeTrailers: this.trailers
+          youtubeTrailers: this.trailers,
+          reviews: this.reviews
         };
         try {
           const response = await api.addMovie({ movie });
@@ -354,6 +457,7 @@ export default {
           this.subtitles = null;
           this.director = null;
           this.description = null;
+          this.ageLimit = null;
           this.actors = [];
           this.productionCountries = [];
           this.images = [];
@@ -362,6 +466,7 @@ export default {
           this.country = null;
           this.imageLink = null;
           this.youtubeID = null;
+          this.reviews = [];
         } catch (error) {
           this.error = error.response.data.message;
           this.message = null;
@@ -376,7 +481,6 @@ export default {
   }
 };
 </script>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 </style>
