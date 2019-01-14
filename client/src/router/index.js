@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import AdminPage from '@/components/AdminPage'
 import KontaktSida from '@/components/KontaktSida'
-import LoggaIn from '@components/LoggaIn'
+import LoggaIn from '@/components/LoggaIn'
 
 Vue.use(Router)
 
