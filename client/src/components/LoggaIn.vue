@@ -182,12 +182,13 @@ export default {
         password: this.form.password
       };
       console.log(user);
+      if(this.validatePassword(this.form.password,this.form.repeatPassword)){
       try {
         const response = await api.registerUser({ user });
         this.showErrorMessage = false;
-        this.message = response
+        this.message = response.data.message;
         this.showSuccessMessage = true;
-        console.log(response);
+        console.log(response.data.message);
         this.form.username = '';
         this.form.email = '';
         this.form.password = '';
@@ -199,6 +200,14 @@ export default {
         this.showErrorMessage = true;
         console.log(error.response.data.error);
       }
+    }else{
+      this.message = 'Lösenorden matchar inte varandra';
+      this.showErrorMessage = true;
+    }
+    },
+
+    validatePassword(password,repeatPassword){
+      return password === repeatPassword ? true : false;
     }
   }
 };
