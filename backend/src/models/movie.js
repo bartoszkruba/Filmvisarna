@@ -9,7 +9,7 @@ const movieSchema = schema({
         type: String
     },
     ProductionCountries: {
-        type: String
+        type: Array
     },
     ProductionYear: {
         type: String
@@ -39,7 +39,13 @@ const movieSchema = schema({
         type: String
     },
     Image: {
-        type: String
+        type: Array
+    },
+    YoutubeTrailers: {
+        type: Array
+    },
+    Reviews: {
+        type: Array
     }
 });
 
