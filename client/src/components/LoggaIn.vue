@@ -48,8 +48,8 @@
     </b-form>
     <b-form class="form-section sign-in">
       <h3>Logga In</h3>
-      <label for>Användarnamn</label>
-      <b-input class="mb-2 mr-sm-2 mb-sm-0" id="inlineFormInputName2" placeholder="Användarnamn"/>
+      <label for>E-Mail</label>
+      <b-input class="mb-2 mr-sm-2 mb-sm-0" id="inlineFormInputName2" placeholder="E-Mail"/>
       <label for class="mt-3">Lösenord</label>
       <b-input class="mb-2 mr-sm-2 mb-sm-0" id="inlineFormInputName2" placeholder="Lösenord"/>
       <b-form-checkbox class="mb-2 mr-sm-2 mb-sm-0 mt-2">Kom ihåg mig</b-form-checkbox>
