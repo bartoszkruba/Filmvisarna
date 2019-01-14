@@ -298,6 +298,7 @@ export default {
   name: "HelloWorld",
   data() {
     return {
+      movies: null,
       error: null,
       message: null,
       title: null,
@@ -318,15 +319,20 @@ export default {
       country: null,
       imageLink: null,
       youtubeID: null,
-      reviews: [
-      ],
+      reviews: [],
       source: null,
       quote: null,
       stars: null,
       max: null
     };
   },
+  created(){
+    this.getMovies();
+  },
   methods: {
+    async getMovies(){
+      this.movies = await api.getMovies();
+    },
     addActor() {
       if (
         this.actor &&
