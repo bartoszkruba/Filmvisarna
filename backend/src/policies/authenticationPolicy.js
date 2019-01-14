@@ -2,7 +2,8 @@ const Joi = require('joi');
 const User = require('../models/user');
 
 module.exports.postRegister = async (req, res, next) => {
-    const users = await User.find({ email: req.body.email });
+    const user = await User.find({ email: req.body.user.email });
+    console.log("Chuj " + user.length);
     const schema = {
         name: Joi.string().regex(
             new RegExp('[A-Z][a-zA-Z][^#&<>\"~;$^%{}?]{1,20}$')
@@ -15,7 +16,7 @@ module.exports.postRegister = async (req, res, next) => {
 
     const { error, value } = Joi.validate(req.body.user, schema, { convert: false });
 
-    if (users.length > 0) {
+    if (user.length > 0) {
         res.status(400).send({
             error: 'Email already exist in database'
         });

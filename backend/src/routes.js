@@ -22,4 +22,3 @@ Router.get('/movies', moviesController.getMovies);
 Router.post('/register', authenticationPolicy.postRegister, authenticationController.postRegister);
 
 module.exports = Router;
-

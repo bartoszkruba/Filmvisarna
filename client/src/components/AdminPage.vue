@@ -318,8 +318,7 @@ export default {
       country: null,
       imageLink: null,
       youtubeID: null,
-      reviews: [
-      ],
+      reviews: [],
       source: null,
       quote: null,
       stars: null,
