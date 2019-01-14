@@ -14,7 +14,7 @@
         <option value="sven" class="">7</option>
       </select>
       <button @click="getMovies">getMovies</button>
-        
+    <p>bablablalba</p>
 </div>
 
 </template> 
