@@ -18,14 +18,16 @@
         <hr>
       </section>
     </section>
-    <section class="footer-section-2 ">
-      <section class="copyright footer-section" style="order: 2">
+    <section class="footer-section-2">
+      <section class="copyright footer-section my-order-2">
         <p>Filmvisarna ©2019</p>
       </section>
-      <section class="footer-section" style="order: 1">
-        <p><font-awesome-icon :icon="['fab', 'facebook']"/>
-        <font-awesome-icon :icon="['fab', 'instagram']"/>
-        <font-awesome-icon :icon="['fab', 'twitter']"/></p>
+      <section class="footer-section my-order-1">
+        <p>
+          <font-awesome-icon :icon="['fab', 'facebook']"/>
+          <font-awesome-icon :icon="['fab', 'instagram']"/>
+          <font-awesome-icon :icon="['fab', 'twitter']"/>
+        </p>
       </section>
     </section>
   </footer>
@@ -52,6 +54,7 @@ hr {
   background-color: #cc0020;
   color: white;
   padding: 1%;
+  box-shadow: 0px 2px 10px black
 }
 .footer-info {
   display: flex;
@@ -76,7 +79,15 @@ hr {
   }
 
   .footer-section-2 {
-  flex-direction: column;
-}
+    flex-direction: column;
+  }
+  
+  .my-order-1 {
+    order: 1;
+  }
+
+  .my-order-2 {
+    order: 2;
+  }
 }
 </style>
