@@ -10,5 +10,11 @@ export default{
 	},
 	addMovie(movie){
 		return api.post('addMovie', movie);
+	},
+	// Example:
+	// registerUser({name: "John Doe", email: "john.doe@test.com", password:"password1234"})
+	// should return "user registered" or "email already exist in database"
+	registerUser: (user) => {
+		return api.post('register', user);
 	}
 } 
