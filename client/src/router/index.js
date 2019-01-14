@@ -4,7 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import AdminPage from '@/components/AdminPage'
 import KontaktSida from '@/components/KontaktSida'
 import MoviesPage from '@/components/MoviesPage'
-
+import Startsida from '@/components/Startsida'
 
 Vue.use(Router)
 
@@ -29,6 +29,11 @@ export default new Router({
       path: '/moviesPage',
       name: 'MoviesPage',
       component: MoviesPage
+    },
+    {
+      path:'/Startsida',
+      name: 'Startsida',
+      component: Startsida
     }
 
   ]
