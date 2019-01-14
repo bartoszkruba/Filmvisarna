@@ -11,4 +11,4 @@ export default{
 	addMovie(movie){
 		return api.post('addMovie', movie);
 	}
-} 
+}
