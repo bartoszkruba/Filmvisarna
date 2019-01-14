@@ -19,11 +19,11 @@
       <img src="../assets/Insidious.jpg" alt="">
        
        <div class="flex-col ">
-      <h2>{{m.Title}}</h2>
+      <h2>{{m.title}}</h2>
       <div class="flexbox placing">
-      <p>Längd: {{m.Length}}</p>
-      <p>Genre: {{m.Genre}}</p>
-      <p>Ålder: {{m.Age}}</p>
+      <p>Längd: {{m.length}}</p>
+      <p>Genre: {{m.genre}}</p>
+      <p>Ålder: {{m.ageLimit}}</p>
       </div>
        </div>
      </div>
