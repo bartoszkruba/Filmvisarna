@@ -29,7 +29,7 @@
 
           <b-navbar-nav right>
             <b-nav-item>
-              <router-link class="router-link" to="/loggIn" exact-active-class="menu-item-active">Logga In</router-link>
+              <router-link class="router-link" to="/LoggaIn" exact-active-class="menu-item-active">Logga In</router-link>
             </b-nav-item>
           </b-navbar-nav>
         </b-navbar-nav>
