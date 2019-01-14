@@ -11,7 +11,7 @@ module.exports.postRegister = async (req, res, next) => {
             bookedTickets: []
         }).save()
         res.send({
-            message: 'User Registered'
+            message: 'Användare registrerad'
         });
     }catch(error){
         res.status(400).send({
