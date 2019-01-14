@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <Header />
+    <main>
+
     <router-view/>
+    </main>
     <Footer />
   </div>
 </template>
@@ -29,7 +32,7 @@ export default {
     display: flex;
     flex-direction: column;
   }
-  .main{
+  main{
     flex: 1;
   }
 

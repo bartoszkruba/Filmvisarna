@@ -1,8 +1,10 @@
 <template>
+
   <div class="main">
       <h2>what the fuck</h2>
     </div>
   
+
 </template>
 
 <script>
