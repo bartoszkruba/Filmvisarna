@@ -1,8 +1,6 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-      <h2>{{m.Title}}</h2>
-      <p>{{m.Description}}</p>
+  <div class="main">
+      <h2>what the fuck</h2>
     </div>
   
 </template>
@@ -11,19 +9,7 @@
 import api from "@/services/Api.js";
 
 export default {
-  name: "HelloWorld",
-  data() {
-    return {
-      msg: "Welcome to Your Vue.js App",
-      movies: null
-    };
-  },
-  methods: {
-    async getMovies() {
-      const response = await api.getMovies();
-      this.movies = response.data.movies;
-    }
-  }
+  name: "HelloWorld"
 };
 </script>
 
