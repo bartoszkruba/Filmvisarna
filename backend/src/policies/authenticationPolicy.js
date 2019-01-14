@@ -48,6 +48,7 @@ module.exports.postRegister = async (req, res, next) => {
                 })
                 break;
         }
+    }else{
+        next();
     }
-    next();
 }
