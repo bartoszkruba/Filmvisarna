@@ -34,6 +34,8 @@
         required
         placeholder="Repetera Lösenord"
       />
+      <b-alert v-model="this.showErrorMessage" variant="danger" class="mt-3">{{this.message}}</b-alert>
+      <b-alert v-model="this.showSuccessMessage" variant="success" class="mt-3">{{this.message}}</b-alert>
       <b-form-checkbox
         class="mb-2 mr-sm-2 mb-sm-0 mt-2"
         v-model="form.terms"
@@ -160,6 +162,9 @@ export default {
   data() {
     return {
       modalShow: false,
+      showErrorMessage: false,
+      showSuccessMessage: false,
+      message: '',
       form: {
         username: "",
         email: "",
@@ -179,8 +184,19 @@ export default {
       console.log(user);
       try {
         const response = await api.registerUser({ user });
+        this.showErrorMessage = false;
+        this.message = response
+        this.showSuccessMessage = true;
         console.log(response);
+        this.form.username = '';
+        this.form.email = '';
+        this.form.password = '';
+        this.form.repeatPassword = '';
+        this.form.terms = false;
       } catch (error) {
+        this.message = error.response.data.error;
+        this.showSuccessMessage = false;
+        this.showErrorMessage = true;
         console.log(error.response.data.error);
       }
     }
