@@ -4,7 +4,7 @@
 
     <br>
     <hr>
-    <h2>Add Movie</h2>
+    <h2 class="text-center">Add Movie</h2>
     <form class="container mb-5">
       <div class="row">
         <div class="col-sm-1"></div>
@@ -138,7 +138,7 @@
                 v-model="actor"
               >
               <div class="input-group-prepend">
-                <button class="btn btn-outline-primary" @click="addActor">Add</button>
+                <button class="btn btn-outline-danger" @click="addActor">Add</button>
               </div>
             </div>
           </div>
@@ -159,7 +159,7 @@
                 v-model="country"
               >
               <div class="input-group-prepend">
-                <button class="btn btn-outline-primary" @click="addCountry">Add</button>
+                <button class="btn btn-outline-danger" @click="addCountry">Add</button>
               </div>
             </div>
           </div>
@@ -185,7 +185,7 @@
                 v-model="imageLink"
               >
               <div class="input-group-prepend">
-                <button class="btn btn-outline-primary" @click="addImage">Add</button>
+                <button class="btn btn-outline-danger" @click="addImage">Add</button>
               </div>
             </div>
           </div>
@@ -206,7 +206,7 @@
                 v-model="youtubeID"
               >
               <div class="input-group-prepend">
-                <button class="btn btn-outline-primary" @click="addTrailer">Add</button>
+                <button class="btn btn-outline-danger" @click="addTrailer">Add</button>
               </div>
             </div>
           </div>
@@ -275,7 +275,7 @@
           <div class="col-sm-10">
             <label for="Quote">Quote:</label>
             <textarea class="form-control" rows="5" id="Quote" v-model="quote"></textarea>
-            <button class="btn btn-primary mt-2" @click="addReview">Add Review</button>
+            <button class="btn btn-danger mt-2" @click="addReview">Add Review</button>
           </div>
           <div class="col-sm-1"></div>
         </div>
@@ -283,7 +283,7 @@
       <div class="row">
         <div class="col-sm-1"></div>
         <div class="col-sm-10">
-          <button type="submit" class="btn btn-primary btn-lg btn-block" @click="addMovie">Add Movie</button>
+          <button type="submit" class="btn btn-danger btn-lg btn-block" @click="addMovie">Add Movie</button>
         </div>
         <div class="col-sm-1"></div>
       </div>
