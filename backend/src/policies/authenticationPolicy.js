@@ -29,7 +29,7 @@ module.exports.postRegister = async (req, res, next) => {
                 break;
             case 'name':
                 res.status(400).send({
-                    error: 'Du måste ange ett giltigt namn'
+                    error: 'Du måste ange ett giltigt namn. Namnet måste börjas med stor bokstav'
                 })
                 break;
             case 'password':
