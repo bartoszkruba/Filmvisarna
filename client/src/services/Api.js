@@ -7,5 +7,8 @@ const api = axios.create({
 export default{
 	getMovies: () => {
 		return api.get('movies')
-	} 
+	},
+	addMovie(movie){
+		return api.post('addMovie', movie);
+	}
 } 
