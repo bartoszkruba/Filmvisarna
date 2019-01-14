@@ -6,41 +6,77 @@ const schema = mongoose.Schema;
 // Creating schema for movie
 const movieSchema = schema({
     title: {
-        type: String
+        type: String,
+        required: true
     },
-    ProductionCountries: {
-        type: String
+    productionCountries: {
+        type: Array,
+        required: true
     },
-    ProductionYear: {
-        type: String
+    productionYear: {
+        type: Number,
+        required: true
     },
-    Length: {
-        type: String
+    length: {
+        type: Number,
+        required: true
     },
-    Genre: {
-        type: String
+    genre: {
+        type: String,
+        required: true
     },
-    Language: {
-        type: String
+    language: {
+        type: String,
+        required: true
     },
-    Subtitle: {
-        type: String
+    subtitles: {
+        type: String,
+        required: true
     },
-    Director: {
-        type: String
+    director: {
+        type: String,
+        required: true
     },
-    Actors: {
-        type: Array
+    actors: {
+        type: Array,
+        required: true
     },
-    Description: {
-        type: String
+    description: {
+        type: String,
+        required: true
     },
-    Age: {
-        type: String
+    ageLimit: {
+        type: Number,
+        required: true
     },
-    Image: {
-        type: String
-    }
+    images: {
+        type: Array,
+        required: true
+    },
+    youtubeTrailers: {
+        type: Array,
+        required: true
+    },
+    reviews: [
+        {
+            source: {
+                type: String,
+                required: true
+            },
+            quote: {
+                type: String,
+                required: true
+            },
+            stars: {
+                type: Number,
+                required: true
+            },
+            max:{
+                type: Number,
+                required: true
+            }
+        }
+    ]
 });
 
 // Exporting mongoose model with name Movie and movie Schema
