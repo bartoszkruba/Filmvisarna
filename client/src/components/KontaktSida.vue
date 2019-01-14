@@ -1,6 +1,14 @@
 <template> 
   <div class="main"> 
     <h1>Kontakt</h1> 
+
+    <div class="kontakta">
+      <h3>Sveriges största biograf</h3>
+      <p>Filmvisarna AB är en av Sveriges ledande leverantörer av kultur och nöje med 
+        ca 12 miljoner biobesök per år. Vi ingår i Odeon Cinemas Group som ägs av världens 
+        största biografkedja AMC Theatres.</p>
+
+    </div>
     
     <div class="kontakta">
       <h3>Biografer:</h3>
@@ -13,7 +21,8 @@
 
     <div class="kontakta">
       <h3>Kontakta oss via e-post</h3>
-      <p>På e-postadressen <strong> kundservice@grupplosa.se</strong> kontaktar du oss om frågor eller åsikter som gäller biobesöket, webbplatsen osv. </p>
+      <p>På e-postadressen <strong> kundservice@grupplosa.se</strong> 
+      kontaktar du oss om frågor eller åsikter som gäller biobesöket, webbplatsen osv. </p>
     </div>
     <div class="kontakta">
       <h3>För reservation av rullstolsplats</h3>
