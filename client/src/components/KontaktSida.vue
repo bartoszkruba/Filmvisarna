@@ -49,15 +49,9 @@ export default {
   name: "KontaktSida", 
   data() { 
     return { 
-      msg: "Welcome to Your Vue.js App", 
-      movies: null 
     }; 
   }, 
   methods: { 
-    async getMovies() { 
-      const response = await api.getMovies(); 
-      this.movies = response.data.movies; 
-    } 
   } 
 }; 
 </script> 
