@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
+import AdminPage from '@/components/AdminPage'
+import KontaktSida from '@/components/KontaktSida'
 
 Vue.use(Router)
 
@@ -10,6 +12,17 @@ export default new Router({
       path: '/',
       name: 'HelloWorld',
       component: HelloWorld
+    },
+    {
+      path: '/adminpage',
+      name: 'AdminPage',
+      component: AdminPage
+    },
+    {
+      path: '/kontaktSida',
+      name: 'KontaktSida',
+      component: KontaktSida
     }
+
   ]
 })
