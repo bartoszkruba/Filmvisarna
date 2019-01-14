@@ -5,7 +5,11 @@ const Router = express.Router();
 const moviesController = require('./controllers/moviesController');
 const moviesPolicy = require('./policies/moviesPolicy');
 
-Router.post('/addMovie',moviesPolicy.postAddMoviePolicy, moviesController.postAddMovie);
+const authenticationController = require('./controllers/authenticationController');
+const authenticationPolicy = require('./policies/authenticationPolicy');
+
+
+Router.post('/addMovie', moviesPolicy.postAddMoviePolicy, moviesController.postAddMovie);
 
 Router.get('/', (req, res, next) => {
     res.send({
@@ -14,6 +18,8 @@ Router.get('/', (req, res, next) => {
 });
 
 Router.get('/movies', moviesController.getMovies);
+
+Router.post('/register', authenticationPolicy.postRegister, authenticationController.postRegister);
 
 module.exports = Router;
 

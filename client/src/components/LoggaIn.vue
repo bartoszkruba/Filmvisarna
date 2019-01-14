@@ -15,7 +15,10 @@
 
 <script>
 export default {
-  name: "LoggaIn"
+  name: "LoggaIn",
+  data(){
+    
+  }
 };
 </script>
 
