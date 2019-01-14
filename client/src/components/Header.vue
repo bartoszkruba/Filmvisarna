@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import {loggedIn} from './LoggaIn'
 export default {
   name: "Header",
   data() {

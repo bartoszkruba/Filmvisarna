@@ -5,7 +5,6 @@
       <label for>Namn</label>
       <b-input
         class="mb-2 mr-sm-2 mb-sm-0"
-        id="inlineFormInputName2"
         v-model="form.username"
         required
         placeholder="Namn"
@@ -13,7 +12,6 @@
       <label for class="mt-3">E-Mail</label>
       <b-input
         class="mb-2 mr-sm-2 mb-sm-0"
-        id="inlineFormInputName2"
         v-model="form.email"
         required
         placeholder="Ex. example@example.com"
@@ -21,7 +19,6 @@
       <label for class="mt-3">Lösenord</label>
       <b-input
         class="mb-2 mr-sm-2 mb-sm-0"
-        id="inlineFormInputName2"
         v-model="form.password"
         required
         placeholder="Lösenord"
@@ -29,31 +26,54 @@
       <label for class="mt-3">Repetera Lösenord</label>
       <b-input
         class="mb-2 mr-sm-2 mb-sm-0"
-        id="inlineFormInputName2"
         v-model="form.repeatPassword"
         required
         placeholder="Repetera Lösenord"
       />
-      <b-alert v-model="this.showErrorMessage" variant="danger" class="mt-3">{{this.message}}</b-alert>
-      <b-alert v-model="this.showSuccessMessage" variant="success" class="mt-3">{{this.message}}</b-alert>
+      <b-alert 
+      v-model="this.showErrorMessage" 
+      variant="danger" 
+      class="mt-3">{{this.message}}
+      </b-alert>
+      <b-alert 
+      v-model="this.showSuccessMessage" 
+      variant="success" 
+      class="mt-3">{{this.message}}
+      </b-alert>
       <b-form-checkbox
         class="mb-2 mr-sm-2 mb-sm-0 mt-2"
         v-model="form.terms"
         required
-      >Jag har läst och förstår
-        <b-link @click="modalShow = !modalShow">villkoren</b-link>
-        <br>för att bli medlem på filmvisarna
+      >Jag har läst och förstår <b-link @click="modalShow = !modalShow">villkoren</b-link><br>för att bli medlem på filmvisarna
       </b-form-checkbox>
-      <b-button variant="primary" type="submit" class="mt-3">Registrera</b-button>
+      <b-button 
+      variant="primary" 
+      type="submit" 
+      class="mt-3">Registrera
+      </b-button>
     </b-form>
-    <b-form class="form-section sign-in">
+    
+    <b-form class="form-section sign-in" @submit="submitSignIn">
       <h3>Logga In</h3>
       <label for>E-Mail</label>
-      <b-input class="mb-2 mr-sm-2 mb-sm-0" id="inlineFormInputName2" placeholder="E-Mail"/>
+      <b-input 
+      class="mb-2 mr-sm-2 mb-sm-0" 
+      v-model="signInForm.email"
+      required placeholder="E-Mail"
+      />
       <label for class="mt-3">Lösenord</label>
-      <b-input class="mb-2 mr-sm-2 mb-sm-0" id="inlineFormInputName2" placeholder="Lösenord"/>
-      <b-form-checkbox class="mb-2 mr-sm-2 mb-sm-0 mt-2">Kom ihåg mig</b-form-checkbox>
-      <b-button variant="primary" class="mt-3">Logga In</b-button>
+      <b-input 
+      class="mb-2 mr-sm-2 mb-sm-0"  
+      type="password" 
+      v-model="signInForm.password"
+      required placeholder="Lösenord"
+      />
+      <b-alert 
+      v-model="this.showErrorMessageSignIn" 
+      variant="danger" 
+      class="mt-3">{{this.messageSignIn}}
+      </b-alert>
+      <b-button variant="primary" type="submit" class="mt-3">Logga In</b-button>
     </b-form>
     <b-modal v-model="modalShow" title="Medlemsvillkor" ok-only>
       <b>1.</b> Allmänt om medlemskapet
@@ -157,6 +177,7 @@
 
 <script>
 import api from "@/services/Api.js";
+export let loggedIn = false;
 export default {
   name: "LoggaIn",
   data() {
@@ -164,13 +185,19 @@ export default {
       modalShow: false,
       showErrorMessage: false,
       showSuccessMessage: false,
+      showErrorMessageSignIn: false,
       message: '',
+      messageSignIn: '',
       form: {
         username: "",
         email: "",
         password: "",
         repeatPassword: "",
         terms: false
+      },
+      signInForm: {
+        email: "",
+        password: ""
       }
     };
   },
@@ -205,9 +232,25 @@ export default {
       this.showErrorMessage = true;
     }
     },
-
     validatePassword(password,repeatPassword){
       return password === repeatPassword ? true : false;
+    },
+
+    async submitSignIn(){
+      const user = {
+        email: this.signInForm.email,
+        password: this.signInForm.password
+      }
+      const response = await api.loginUser({user})
+      console.log(response.data.validated)
+      if(response.data.validated){
+        alert("User Logged In");
+        this.showErrorMessageSignIn = false;
+        this.$router.push('/MinSida');
+      }else{
+        this.messageSignIn = "Email adressen och lösenordet matchade inte varandra eller finns inte registrerad, vänligen försök igen";
+        this.showErrorMessageSignIn = true; 
+      }
     }
   }
 };
