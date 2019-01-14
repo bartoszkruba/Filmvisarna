@@ -2,13 +2,13 @@
   <section class="form">
     <b-form class="form-section register" @submit="submitRegistration">
       <h3>Registrera</h3>
-      <label for>Användarnamn</label>
+      <label for>Namn</label>
       <b-input
         class="mb-2 mr-sm-2 mb-sm-0"
         id="inlineFormInputName2"
         v-model="form.username"
         required
-        placeholder="Användarnamn"
+        placeholder="Namn"
       />
       <label for class="mt-3">E-Mail</label>
       <b-input

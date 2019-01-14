@@ -18,33 +18,33 @@ module.exports.postRegister = async (req, res, next) => {
 
     if (user.length > 0) {
         res.status(400).send({
-            error: 'Email already exist in database'
+            error: 'Emailen finns redan i våran databas'
         });
     } else if (error) {
         switch (error.details[0].context.key) {
             case 'email':
                 res.status(400).send({
-                    error: 'You must provide a valid email adress'
+                    error: 'Du måste ange en giltig email adress'
                 })
                 break;
             case 'name':
                 res.status(400).send({
-                    error: 'You must provide a valid name'
+                    error: 'Du måste ange ett giltigt namn'
                 })
                 break;
             case 'password':
                 res.status(400).send({
-                    error: `The password provided failed to match the following rules:
+                    error: `Lösenordet som du angivet matchade inte följande regler:
                     
-                    1. It must contain ONLY the following characters: lower case, upper case, numerics
+                    1. Det får endast innehålla följande karaktärer:liten bokstav, stor bokstav och siffror
                     
-                    2. It must be at least 8 characters in length and not greater than 32 characters in length
+                    2. Det måste vara minst 8 karaktärer långt men inte längre än 32
                     `
                 })
                 break;
             default:
                 res.status(400).send({
-                    error: 'Invalid registration information'
+                    error: 'Ogiltig registrerings information'
                 })
                 break;
         }
