@@ -5,7 +5,7 @@ const schema = mongoose.Schema;
 
 // Creating schema for movie
 const movieSchema = schema({
-    Title: {
+    title: {
         type: String
     },
     ProductionCountries: {

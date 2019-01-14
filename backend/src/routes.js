@@ -5,6 +5,9 @@ const Router = express.Router();
 
 // Importing moviesController
 const moviesController = require('./controllers/moviesController');
+const moviesPolicy = require('./policies/moviesPolicy');
+
+Router.post('/addMovie',moviesPolicy.postAddMoviePolicy, moviesController.postAddMovie);
 
 // Creating routes for different URLs
 
