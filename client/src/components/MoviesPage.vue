@@ -1,25 +1,35 @@
 <template>
+ <section class="hello">
 
+<section>
+  <b-navbar type="dark" variant="danger" toggleable>
+    <b-navbar-toggle target="nav_dropdown_collapse"></b-navbar-toggle>
+    <b-collapse is-nav id="nav_dropdown_collapse">
+      <b-navbar-nav>
+        <b-nav-item href="#">Home</b-nav-item>
+        <b-nav-item href="#">Link</b-nav-item>
+      </b-navbar-nav>
+    </b-collapse>
+  </b-navbar>
+</section>
 
-
-  <div class="hello">
-    <h1>{{ msg }}</h1>
+ 
     <div v-for="m in movies">
+      <div class="flexbox main-placing">
+      <img src="../assets/Insidious.jpg" alt="">
+       
+       <div class="flex-col ">
       <h2>{{m.Title}}</h2>
-      <p>{{m.ProductionCountries}}</p>
-      <p>{{m.ProductionYear}}</p>
-      <p>{{m.Length}}</p>
-      <p>{{m.Genre}}</p>
-      <p>{{m.Language}}</p>
-      <p>{{m.Subtitle}}</p>
-      <p>{{m.Director}}</p>
-      <p v-for="actor in m.Actors">{{actor}}</p>
-      <p>{{m.Description}}</p>
-      <p>{{m.Age}}</p>
-      <p> <img src="../assets/Insidious.jpg" alt=""></p>
+      <div class="flexbox placing">
+      <p>Längd: {{m.Length}}</p>
+      <p>Genre: {{m.Genre}}</p>
+      <p>Ålder: {{m.Age}}</p>
+      </div>
+       </div>
+     </div>
     </div>
-    <button @click="getMovies" class="btn btn-warning" >Get Movies</button>
-  </div>
+ 
+  </section>
 </template>
 
 <script>
@@ -33,6 +43,9 @@ export default {
       movies: null
     };
   },
+  created(){
+    this.getMovies();
+  },
   methods: {
     async getMovies() {
       const response = await api.getMovies();
@@ -44,5 +57,21 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.flexbox{
+  display: flex;
+}
+.flex-col{
+  display: flex;
+  flex-direction: column;
+}
+.main-placing{
+  margin: 1rem;
+}
+.placing{
+  margin: 1rem;
+}
+p{
+  padding: 1rem;
+}
 </style>
 

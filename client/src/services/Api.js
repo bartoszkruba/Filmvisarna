@@ -8,6 +8,7 @@ export default{
 
 	addMovie(movie){
 		return api.post('addMovie', movie);
+	},
 
 	}, 
 	// Gets movies with matching query from DB
@@ -15,4 +16,6 @@ export default{
 	getMovies: (query) => {
 		return api.post('movies', {query: query});
 	}
-}
+
+} 
+
