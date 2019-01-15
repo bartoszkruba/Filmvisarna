@@ -20,7 +20,7 @@ module.exports = {
     notifyOnErrors: false,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
 
-    
+
     /**
      * Source Maps
      */
@@ -33,9 +33,18 @@ module.exports = {
     // https://vue-loader.vuejs.org/en/options.html#cachebusting
     cacheBusting: true,
 
-    cssSourceMap: true
+    cssSourceMap: true,
+    proxyTable: {
+      // proxy all requests starting with /api to jsonplaceholder
+      '/api': {
+        target: 'http://localhost:8081',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
+    }
   },
-
   build: {
     // Template for index.html
     index: path.resolve(__dirname, '../dist/index.html'),

@@ -6,6 +6,8 @@
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "backend": "nodemon ../backend/src/app.js",
+    "both": " npm run dev & npm run backend",
     "start": "npm run dev",
     "build": "node build/build.js"
   },

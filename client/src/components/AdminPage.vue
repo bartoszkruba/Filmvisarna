@@ -1,7 +1,6 @@
 <template>
   <div>
     <h1 class="text-center">Admin Page</h1>
-
     <br>
     <hr>
     <h2 class="text-center">Add Movie</h2>
@@ -288,6 +287,122 @@
         <div class="col-sm-1"></div>
       </div>
     </form>
+
+    <br>
+    <hr>
+    <h2 class="text-center">Add Movie Session</h2>
+
+    <form class="container mb-5">
+      <div class="form-group p-3">
+        <div class="row mb-3">
+          <div class="col-sm-1"></div>
+          <div class="col-sm-5">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="MovieTheatreSelector">Movie Theatre</label>
+              </div>
+              <select class="custom-select" id="MovieTheatreSelector" v-model="movieSession.movieTheatreName">
+                <option selected v-for="theatre in movieTheatres">{{theatre.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-5">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="MovieSelector">Movie</label>
+              </div>
+              <select class="custom-select" id="MovieSelector" v-model="movieSession.movieTitle">
+                <option selected v-for="movie in movies">{{movie.title}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-1"></div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-sm-1"></div>
+          <div class="col-sm-5">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="Year">Year</label>
+              </div>
+              <input v-model="movieSession.date.year" type="number" class="form-control" id="Year" min="2019" max="2050">
+            </div>
+          </div>
+          <div class="col-sm-5">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="MonthSelector">Month</label>
+              </div>
+              <select class="custom-select" id="MonthSelector" v-model="movieSession.date.month">
+                <option selected>1</option>
+                <option>02</option>
+                <option>03</option>
+                <option>04</option>
+                <option>05</option>
+                <option>06</option>
+                <option>07</option>
+                <option>08</option>
+                <option>09</option>
+                <option>10</option>
+                <option>11</option>
+                <option>12</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-1"></div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-sm-1"></div>
+          <div class="col-sm-5">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="Day">Day</label>
+              </div>
+              <input v-model="movieSession.date.day" type="number" class="form-control" id="Day" min="1" max="31">
+            </div>
+          </div>
+          <div class="col-sm-5">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="Time">Time</label>
+              </div>
+              <input
+                v-model="movieSession.date.hour"
+                type="number"
+                class="form-control"
+                id="Hour"
+                placeholder="Hour"
+                min="0"
+                max="23"
+              >
+              <input
+                v-model="movieSession.date.minute"
+                type="number"
+                class="form-control"
+                id="Minute"
+                placeholder="Minute"
+                min="0"
+                max="59"
+              >
+            </div>
+          </div>
+          <div class="col-sm-1"></div>
+        </div>
+        <div class="row">
+          <div class="col-sm-1"></div>
+          <div class="col-sm-10">
+            <button
+              type="submit"
+              class="btn btn-danger btn-lg btn-block"
+              @click="addMovieSession"
+            >Add Movie Session</button>
+          </div>
+          <div class="col-sm-1"></div>
+        </div>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -298,7 +413,6 @@ export default {
   name: "HelloWorld",
   data() {
     return {
-      movies: null,
       error: null,
       message: null,
       title: null,
@@ -323,15 +437,37 @@ export default {
       source: null,
       quote: null,
       stars: null,
-      max: null
+      max: null,
+
+      movies: null,
+      movieTheatres: null,
+
+      movieSession: {
+        freePlaces: null,
+        date: {
+          year: null,
+          month: null,
+          day: null,
+          hour: null,
+          minute: null
+        },
+        movieTitle: null,
+        movieTheatreName: null
+      }
     };
   },
-  created(){
+  created() {
     this.getMovies();
+    this.getMovieTheatres();
   },
   methods: {
-    async getMovies(){
-      this.movies = await api.getMovies();
+    async getMovies() {
+      const response = await api.getMovies();
+      this.movies = response.data.movies;
+    },
+    async getMovieTheatres() {
+      const response = await api.getTheatres();
+      this.movieTheatres = response.data.movie_theaters;
     },
     addActor() {
       if (
@@ -484,6 +620,22 @@ export default {
         this.message = null;
         window.scrollTo(0, 0);
       }
+    },
+    async addMovieSession() {
+      this.movieSession.movieID = this.movies.filter((m)=>{
+        return m.title === this.movieSession.movieTitle;
+      })[0]._id;
+      this.movieSession.movieTheatreID = this.movieTheatres.filter((t)=>{
+        return t.name === this.movieSession.movieTheatreName;
+      })[0]._id;
+      this.movieSession.date.year = parseInt(this.movieSession.date.year);
+      this.movieSession.date.month = parseInt(this.movieSession.date.month);
+      this.movieSession.date.day = parseInt(this.movieSession.date.day);
+      this.movieSession.date.time = this.movieSession.date.hour.padStart(2, '0') + ":" + this.movieSession.date.minute.padStart(2, '0');
+      delete this.movieSession.date.hour;
+      delete this.movieSession.date.minute;
+      const response = await api.addMovieSession(this.movieSession);
+      console.log(response);
     }
   }
 };

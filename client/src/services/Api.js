@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const URL = window.location.protocol + "//" + window.location.host;
+
 const api = axios.create({
-	baseURL: 'http://localhost:8081/'
+	baseURL: `${URL}/api`
 });
 
 export default {
@@ -14,6 +16,19 @@ export default {
 	getMovies: (query) => {
 		return api.post('movies', { query: query });
 	},
+
+	getTheatres: (query) => {
+		return api.post('movieTheatres', {query: query});
+	},
+
+	getMovieSessions: (query) => {
+		return api.post('movieSessions', {query: query});
+	},
+
+	addMovieSession: (movieSession) => {
+		return api.post('addMovieSession', {movieSession: movieSession});
+	}
+}
 	// Example:
 	// registerUser({name: "John Doe", email: "john.doe@test.com", password:"password1234"})
 	// should return "user registered" or "email already exist in database"
