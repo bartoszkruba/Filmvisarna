@@ -93,7 +93,7 @@ p {
 h2 {
   margin-left: 1rem;
   margin-bottom: 0;
-  margin-top: 10rem;
+  margin-top: 15rem;
   color: black;
   font-weight: bold;
   font-size: 3rem;
@@ -105,17 +105,19 @@ hr {
   border-color: black;
 }
 .posterpic {
-  width: 100%;
+  width: 50vmin;
+  height: 70vmin;
 }
 .images {
-  width: 50%;
+  
   box-shadow: 2px 2px 5px black;
+  display: block;
 }
 @media screen and (max-width: 600px) {
   h2 {
     font-size: 1rem;
     margin-top: 0;
-   
+    text-align: center;
   }
   p {
     font-size: 0.5rem;
@@ -123,12 +125,16 @@ hr {
     
   }
   .ptaggar{
-    margin-left: 5rem;
+   justify-content: center;
+   
   }
   .flex-mobil{
     flex-direction: column;
   }
-
+  .posterpic{
+    width: 90vmin;
+    height: 100vmin;
+  }
 }
 </style>
 
