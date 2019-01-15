@@ -34,10 +34,12 @@
             <article>
               <span class="moviedescription" v-html="aMovie.description"></span>
             </article>
+            <br>
+            <b-btn variant="danger" href="#">Boka platser</b-btn>
           </section>
         </section>
 
-        <b-btn variant="danger" href="#">Boka platser</b-btn>
+
 
 
         <hr class="my-4">
@@ -150,49 +152,40 @@ export default {
 }
 
 .trailer-video{
-  display: flex;
-  justify-content: space-around;
+  text-align: center;
   flex: 1;
-  margin-bottom: 35%;
 }
 
 .videoplayer{
-  height: 200%;
-  width: 100%;
+  height: 60vmin;
+  width: 90vmin;
 }
 
-.combined-view{
-  display: flex;
-}
-.combined-view > section{
-  flex: 1;
-}
 
 .movieheader{
   display: flex;
   flex-direction: column;
-  padding-bottom: 5%;
 }
 
 .movieheader_pic{
+  padding: 0 2%;
   flex: 1;
   text-align: center;
 }
 
 .movieheader_text{
   flex: 5;
-  padding: 3% 2%;
 }
 
 .moviedescription{
   font-style: italic;
-  font-size: 150%;
+  font-size: 100%;
   color: rgb(85, 85, 85);
 }
 
 .movietitle{
   color: rgb(55, 55, 55);
-  font-size: 300%;
+  font-size: 200%;
   font-weight: bold;
 }
 
@@ -201,8 +194,8 @@ li{
 }
 
 .movieposter{
-  width: auto;
-  height: 50vh;
+  width: 85vmin;
+  height: auto;
 }
 
 .star{
@@ -225,6 +218,12 @@ li{
 }
 
 @media screen and (min-width: 768px) {
+  .moviedescription{
+    font-size: 150%;
+  }
+  .movietitle{
+    font-size: 300%;
+  }
   .trailer-view{
     flex-direction: row;
   }
@@ -232,14 +231,15 @@ li{
     flex-direction: row;
   }
   .movieposter{
-    width: 100%;
+    width: 30vmin;
+    height: auto;
   }
   .trailer-video{
     margin-bottom: 0;
   }
-
   .videoplayer{
-    height: 100%;
+    height: 20vmax;
+    width: 30vmax;
   }
 }
 
