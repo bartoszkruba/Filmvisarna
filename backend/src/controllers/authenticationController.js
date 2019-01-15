@@ -29,6 +29,7 @@ module.exports.postValidate = async (req, res, next) => {
             user: users[0].name,
             id: users[0].id,
             bookedTickets: users[0].bookedTickets,
+            admin: users[0].admin,
         })
     }else{
         res.send({

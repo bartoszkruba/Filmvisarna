@@ -1,9 +1,6 @@
 <template>
   <div>
-    <h1 class="text-center">Admin Page</h1>
-
-    <br>
-    <hr>
+    <b-jumbotron class="jumbotron"><h1>Admin Sida</h1></b-jumbotron>
     <h2 class="text-center">Add Movie</h2>
     <form class="container mb-5">
       <div class="row">
@@ -326,11 +323,16 @@ export default {
       max: null
     };
   },
-  created(){
+  created() {
     this.getMovies();
   },
+  mounted: function() {
+    if (!this.$store.state.loggedInUser.name && !this.$store.state.loggedInUser.admin) {
+      this.$router.push("/LoggaIn");
+    }
+  },
   methods: {
-    async getMovies(){
+    async getMovies() {
       this.movies = await api.getMovies();
     },
     addActor() {
@@ -490,4 +492,10 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .jumbotron {
+    background:linear-gradient(180deg,transparent,rgba(0,0,0,.16)),linear-gradient(#860717,#860717);
+    border-radius: 0;
+    color: white;
+    text-align: center;
+  }
 </style>
