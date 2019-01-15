@@ -15,6 +15,10 @@ export default {
   data(){
     return{
       fields: {
+        orderId: {
+          label: 'Bokningsnummer',
+          sortable: false
+        },
         movie: {
           label: 'Film',
           sortable: false
