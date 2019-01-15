@@ -17,20 +17,24 @@
         <p>Ordinarie</p>
         <div class="antal">
            <button v-on:click="minus" type="button" class="btn btn-dark">-</button>
-           <h5 class="hej"> {{antal}}st/{{pris}}kr </h5>
+           <h5 class="hej"> {{antal}}st / {{pris}}kr per st </h5>
            <button v-on:click="plus" type="button" class="btn btn-dark">+</button>
         </div>
         <p>Pensionär</p>
          <div class="antal">
            <button v-on:click="minusPensionar" type="button" class="btn btn-dark">-</button>
-           <h5 class="hej"> {{antalPensionar}}st/{{prisPensionar}}kr </h5>
+           <h5 class="hej"> {{antalPensionar}}st / {{prisPensionar}}kr per st </h5>
            <button v-on:click="plusPensionar" type="button" class="btn btn-dark">+</button>
         </div>
         <p>Barn</p>
         <div class="antal">
            <button v-on:click="minusBarn" type="button" class="btn btn-dark">-</button>
-           <h5 class="hej"> {{antalBarn}}st/{{prisBarn}}kr </h5>
+           <h5 class="hej"> {{antalBarn}}st / {{prisBarn}}kr per st </h5>
            <button v-on:click="plusBarn" type="button" class="btn btn-dark">+</button>
+        </div>
+        <div class="kostnad" v-if="visaTotal">
+            <h3>Kostnad</h3>
+            <p class="totalt" >totalt: {{totalt}}kr</p>
         </div>
         <div>
            <button type="button" class="slutför btn btn-danger">Slutför bokning</button>
@@ -43,11 +47,12 @@
  
 <script> 
 let pris = 85;
-let antal=1;
-let antalPensionar=1;
+let antal=0;
+let antalPensionar=0;
 let prisPensionar= 75;
-let antalBarn=1;
+let antalBarn=0;
 let prisBarn= 65;
+let totalt=0;
 import api from "@/services/Api.js"; 
 
  
@@ -61,14 +66,22 @@ export default {
         antalBarn: null,
         prisBarn: null,
         pris: null,
-        movie: null
-    }; 
+        movie: null,
+        totalt: null,
+
+        visaTotal: false
+    };
+    
   }, 
    created(){
       this.getMovies();
-      this.plus();
-      this.plusPensionar();
-      this.plusBarn();
+      this.pris=85;
+      this.prisPensionar= 75;
+      this.prisBarn= 65;
+      this.antalPensionar=0;
+      this.antalBarn=0;
+      this.antal=0;
+      this.totalt=0;
 
         },
   methods: {
@@ -77,41 +90,55 @@ export default {
           this.movie = response.data.movies[0];
       },
       plus(){
-          this.pris+= 85;
           this.antal+=1;
+          this.totalt+=85;
+          this.visaTotal = true;
       },
       minus(){
-          if (this.pris>85){
-          this.pris-= 85;
+          
+          if (this.antal>0){
+          this.totalt-=85
           this.antal-=1;}
           else {
               alert('Du kan inte välja mindre än ett biljett ')
           }
+          if (this.antalBarn<1 && this.antalPensionar==0 && this.antal==0){
+              this.visaTotal=false;
+          }
       },
       plusPensionar(){
-          this.prisPensionar+= 75;
+          this.totalt+=75;
           this.antalPensionar+=1;
+          this.visaTotal = true;
+
       },
       minusPensionar(){
-          if (this.prisPensionar>75){
-          this.prisPensionar-= 75;
+          if (this.antalPensionar>0){
+          this.totalt-=75
           this.antalPensionar-=1;
           }
           else {
               alert('Du kan inte välja mindre än ett biljett ')
           }
+          if (this.antalBarn==0 && this.antalPensionar<1 && this.antal==0){
+              this.visaTotal=false;
+          }
       },
       plusBarn(){
-          this.prisBarn+= 65;
+          this.totalt+=65
           this.antalBarn+=1;
+          this.visaTotal = true;
       },
       minusBarn(){
-          if (this.prisBarn>65){
-          this.prisBarn-= 65;
+          if (this.antalBarn>0){
           this.antalBarn-=1;
+          this.totalt-=65
           }
           else {
               alert('Du kan inte välja mindre än ett biljett ')
+          }
+          if (this.antalBarn<1 && this.antalPensionar==0 && this.antal==0){
+              this.visaTotal=false;
           }
       }
   } 
@@ -123,6 +150,16 @@ export default {
 main{
     background-color: black;
 }
+
+.kostnad{
+    display: flex;
+    width: 40vw;
+    justify-content: space-between;
+    margin-top: 10vh;
+    padding-top: 2vh;
+    color: white;
+    border-top: .0625rem solid rgba(255, 255, 255, 0.411);
+}
 .antal-bilijetter{
     display: flex;
     justify-content: center;
@@ -131,15 +168,19 @@ main{
 .bokning{
     margin: 3vh;
 }
-h4, h5, p, h1{
+h4, h5,p, h1{
     color: white;
     margin-top: 2vh;
+}
+.totalt{
+    margin-top: 0.5vh;
+    color: white;
 }
 h1{
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 33vh;
+    margin-top: 40vh;
 }
 
 .papillon{
@@ -150,7 +191,7 @@ h1{
     width: 100%;
     height: 100%;
     background: linear-gradient(180deg,rgba(14,15,15,0) 50%,#0e0f0f);
-    height: 45.3vh;
+    height: 52.6vh;
 }
 img{
     height: 45vh;
@@ -174,9 +215,9 @@ img{
 .hej{
     margin: 0 2vw;
 }
-@media screen and (max-height: 600px) {
+@media screen and (max-width: 600px) {
     .papillon{
-    height: 32vh;
+    height: 53.8vh;
 }
     
 }
