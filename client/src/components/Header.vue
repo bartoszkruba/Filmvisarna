@@ -22,7 +22,7 @@
           <b-navbar-nav right>
             <b-nav-item class="router-link" to="/LoggaIn"  exact-active-class="menu-item-active">Logga In</b-nav-item>
             <b-nav-item class="router-link" to="/MinSida"  exact-active-class="menu-item-active">Min Sida</b-nav-item>
-            <b-nav-item class="router-link" to="/" exact-active-class="menu-item-active">Logga Ut</b-nav-item>
+            <b-nav-item class="router-link" exact-active-class="menu-item-active">Logga Ut</b-nav-item>
           </b-navbar-nav>
         </b-navbar-nav>
       </b-collapse>
