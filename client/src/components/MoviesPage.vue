@@ -1,7 +1,6 @@
 <template>
- <section class="hello">
-
-<section>
+  <section class="hello">
+    <!--<section>
   <b-navbar type="dark" variant="danger" toggleable>
     <b-navbar-toggle target="nav_dropdown_collapse"></b-navbar-toggle>
     <b-collapse is-nav id="nav_dropdown_collapse">
@@ -11,24 +10,41 @@
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
-</section>
-
- 
+    </section>-->
     <div v-for="m in movies">
       <div class="flexbox main-placing">
-      <img src="../assets/Insidious.jpg" alt="">
-       
-       <div class="flex-col ">
-      <h2>{{m.title}}</h2>
-      <div class="flexbox placing">
-      <p>Längd: {{m.length}}</p>
-      <p>Genre: {{m.genre}}</p>
-      <p>Ålder: {{m.ageLimit}}</p>
+        <div class="flex-mobil">
+          <figure class="images">
+            <router-link
+              class="router-link"
+              :to="'/Movie?'+m._id"
+              exact-active-class="menu-item-active"
+            >
+              <img :src="require('../assets/'+m.images[0])" class="posterpic">
+            </router-link>
+          </figure>
+
+          <div class="flex-col">
+            <router-link
+              class="router-link"
+              :to="'/Movie?'+m._id"
+              exact-active-class="menu-item-active"
+            >
+              <h2>{{m.title}}</h2>
+            </router-link>
+
+            <div class="flexbox ptaggar">
+              <p>Längd: {{m.length}} minuter</p>
+              <p>|</p>
+              <p>Genre: {{m.genre}}</p>
+              <p>|</p>
+              <p>Ålder: {{m.ageLimit}} år</p>
+            </div>
+          </div>
+        </div>
       </div>
-       </div>
-     </div>
+      <hr>
     </div>
- 
   </section>
 </template>
 
@@ -43,7 +59,7 @@ export default {
       movies: null
     };
   },
-  created(){
+  created() {
     this.getMovies();
   },
   methods: {
@@ -57,21 +73,62 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.flexbox{
+.flexbox {
   display: flex;
 }
-.flex-col{
+.flex-col {
   display: flex;
   flex-direction: column;
 }
-.main-placing{
+.flex-mobil {
+  display: flex;
+}
+.main-placing {
   margin: 1rem;
 }
-.placing{
-  margin: 1rem;
+p {
+  padding: 0.5rem;
+  padding-left: 1rem;
 }
-p{
-  padding: 1rem;
+h2 {
+  margin-left: 1rem;
+  margin-bottom: 0;
+  margin-top: 10rem;
+  color: black;
+  font-weight: bold;
+  font-size: 3rem;
+}
+a:hover {
+  text-decoration: none;
+}
+hr {
+  border-color: black;
+}
+.posterpic {
+  width: 100%;
+}
+.images {
+  width: 50%;
+  box-shadow: 2px 2px 5px black;
+}
+@media screen and (max-width: 600px) {
+  h2 {
+    font-size: 1rem;
+    margin-top: 0;
+   
+  }
+  p {
+    font-size: 0.5rem;
+    padding: 0.1rem;
+    
+  }
+  .ptaggar{
+    margin-left: 5rem;
+  }
+  .flex-mobil{
+    flex-direction: column;
+  }
+
 }
 </style>
 
