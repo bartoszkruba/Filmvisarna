@@ -3,21 +3,13 @@
     <b-navbar toggleable="md" type="dark" class="navbar">
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
-      <b-navbar-brand>
-        <router-link class="router-link" style="color:white;" to="/" exact>Filmvisarna</router-link>
-      </b-navbar-brand>
+      <b-navbar-brand class="router-link" style="color:white;" to="/">Filmvisarna</b-navbar-brand>
 
       <b-collapse is-nav id="nav_collapse">
         <b-navbar-nav>
-          <b-nav-item>
-            <router-link class="router-link" to="/"  exact-active-class="menu-item-active">Hem</router-link>
-          </b-nav-item>
-          <b-nav-item>
-            <router-link class="router-link" to="/moviesPage" exact-active-class="menu-item-active">Filmer</router-link>
-          </b-nav-item>
-          <b-nav-item>
-            <router-link class="router-link" to="/kontaktSida" exact-active-class="menu-item-active">Kontakta Oss</router-link>
-          </b-nav-item>
+          <b-nav-item class="router-link" to="/" exact-active-class="menu-item-active" exact>Hem</b-nav-item>
+          <b-nav-item class="router-link" to="/moviesPage" exact-active-class="menu-item-active">Filmer</b-nav-item>
+          <b-nav-item class="router-link" to="/kontaktSida" exact-active-class="menu-item-active">Kontakta Oss </b-nav-item>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
@@ -28,9 +20,9 @@
           </b-nav-form>
 
           <b-navbar-nav right>
-            <b-nav-item>
-              <router-link class="router-link" to="/loggIn" exact-active-class="menu-item-active">Logga In</router-link>
-            </b-nav-item>
+            <b-nav-item class="router-link" to="/LoggaIn" v-show="this.$store.state.showLoggaInButton" exact-active-class="menu-item-active">Logga In</b-nav-item>
+            <b-nav-item class="router-link" to="/MinSida" v-show="this.$store.state.showMinaSidorButton" exact-active-class="menu-item-active">Min Sida</b-nav-item>
+            <b-nav-item class="router-link" to="/" exact-active-class="menu-item-active" v-show="this.$store.state.showMinaSidorButton">Logga Ut</b-nav-item>
           </b-navbar-nav>
         </b-navbar-nav>
       </b-collapse>
@@ -44,7 +36,12 @@ export default {
   data() {
     return {};
   },
-  methods: {}
+  methods: {
+      signOut(){
+      this.$store.commit('showMinaSidor');
+      this.$router.push('/LoggaIn');
+    }
+  }
 };
 </script>
 
