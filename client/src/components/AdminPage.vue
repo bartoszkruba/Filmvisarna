@@ -288,6 +288,8 @@
         <div class="col-sm-1"></div>
       </div>
     </form>
+    
+    {{movieTheatres}}
   </div>
 </template>
 
@@ -299,6 +301,7 @@ export default {
   data() {
     return {
       movies: null,
+      movieTheatres: null,
       error: null,
       message: null,
       title: null,
@@ -328,10 +331,16 @@ export default {
   },
   created(){
     this.getMovies();
+    this.getMovieTheatres();
   },
   methods: {
     async getMovies(){
-      let response = await api.getMovies();
+      const response = await api.getMovies();
+      this.movies = response.data.movies;
+    },
+    async getMovieTheatres(){
+      const response = await api.getTheatres({name:"Stora Salongen"});
+      this.movieTheatres = response.data.movie_theaters
     },
     addActor() {
       if (

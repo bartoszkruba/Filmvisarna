@@ -15,7 +15,14 @@ export default {
 	// Example: getMovies({Title: 'Batman'}) - gets all movies with title "Batman"
 	getMovies: (query) => {
 		return api.post('movies', { query: query });
+	},
 
+	getTheatres: (query) => {
+		return api.post('movieTheatres', {query: query});
+	},
+
+	getMovieSessions: (query) => {
+		return api.post('movieSessions', {query: query});
 	}
 }
 

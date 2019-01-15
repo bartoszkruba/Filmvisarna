@@ -7,6 +7,10 @@ const Router = express.Router();
 const moviesController = require('./controllers/moviesController');
 const moviesPolicy = require('./policies/moviesPolicy');
 
+const movieTheatreController = require('./controllers/movieTheatreController');
+
+const movieSessionsController = require('./controllers/movieSessionController');
+
 Router.post('/addMovie',moviesPolicy.postAddMoviePolicy, moviesController.postAddMovie);
 
 // Creating routes for different URLs
@@ -20,6 +24,10 @@ Router.get('/', (req, res, next) => {
 
 // route for POST request to localhost:8081/movies
 Router.post('/movies', moviesController.getMovies);
+
+Router.post('/movieTheatres', movieTheatreController.postMovieTheatres);
+
+Router.post('/movieSessions', movieSessionsController.postMovieSessions);
 
 // Exporting Router
 module.exports = Router;
