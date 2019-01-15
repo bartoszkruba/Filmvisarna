@@ -3,11 +3,11 @@
     <b-navbar toggleable="md" type="dark" class="navbar">
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
-      <b-navbar-brand class="router-link" style="color:white;" to="/">Filmvisarna</b-navbar-brand>
+      <b-navbar-brand class="router-link" style="color:white;" to="/Startsida">Filmvisarna</b-navbar-brand>
 
       <b-collapse is-nav id="nav_collapse">
         <b-navbar-nav>
-          <b-nav-item class="router-link" to="/" exact-active-class="menu-item-active" exact>Hem</b-nav-item>
+          <b-nav-item class="router-link" to="/Startsida" exact-active-class="menu-item-active" exact>Hem</b-nav-item>
           <b-nav-item class="router-link" to="/moviesPage" exact-active-class="menu-item-active">Filmer</b-nav-item>
           <b-nav-item class="router-link" to="/kontaktSida" exact-active-class="menu-item-active">Kontakta Oss </b-nav-item>
         </b-navbar-nav>
