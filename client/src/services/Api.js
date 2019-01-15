@@ -15,4 +15,3 @@ export default {
 		return api.post('movies', { query: query });
 	}
 }
-

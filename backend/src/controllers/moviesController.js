@@ -24,4 +24,3 @@ module.exports.postAddMovie = async (req, res, next ) => {
         })
     }
 }
-
