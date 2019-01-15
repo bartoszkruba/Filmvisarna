@@ -3,9 +3,6 @@
 <template>
   <div class="Movie">
 
-    <router-link class="router-link" to="/Movie?5c3c67130e6703180823a062" exact-active-class="menu-item-active">Movie1</router-link>
-    <router-link class="router-link" to="/Movie?5c3c68990e6703180823a064" exact-active-class="menu-item-active">Movie 2</router-link>
-
     <section v-if="aMovie === null">
       <p>Något blev galet!</p>
       <router-link class="router-link" to="/moviesPage" exact-active-class="menu-item-active">Klicka här för att komma till alla filmer</router-link>
@@ -13,18 +10,25 @@
     </section>
 
     <section v-else>
-    <router-link class="router-link" :to="'/Movie?'+this.aMovie._id" exact-active-class="menu-item-active">Link to this movie</router-link>
 
       <b-jumbotron bg-variant="white">
 
         <!-- Title -->
-        <template slot="header">
-          {{aMovie.title}}
-        </template>
-        <!-- description -->
-        <template slot="lead">
-            <span v-html="aMovie.description"></span>
-        </template>
+        <section class="movieheader">
+          <section class="movieheader_pic">
+            <img class="movieposter" :src="require('../assets/'+this.aMovie.images[0])">
+          </section>
+          <section class="movieheader_text">
+            <h1 class="movietitle">
+              {{aMovie.title}}
+            </h1>
+            <!-- description -->
+            <article>
+              <span class="moviedescription" v-html="aMovie.description"></span>
+            </article>
+          </section>
+        </section>
+
         <b-btn variant="primary" href="#">Boka platser</b-btn>
 
 
@@ -35,10 +39,10 @@
           </section>
           <section class="trailer-text">
             <ul>
-              <li>Genre: {{aMovie.tenre}}</li>
-              <li>Längd: {{aMovie.length}}</li>
+              <li>Genre: {{aMovie.genre}}</li>
+              <li>Längd: {{parseInt(aMovie.length/60)}} timmar och {{aMovie.length%60}} minuter</li>
               <li>År: {{aMovie.productionYear}}</li>
-              <li>Land:<span v-for="c in aMovie.ProductionCountries"> {{c}}</span></li>
+              <li>Land:<span v-for="c in aMovie.productionCountries"> {{c}}</span></li>
               <li>Språk: {{aMovie.language}}</li>
               <li>Undertexter: {{aMovie.subtitles}}</li>
               <li>Regisör: {{aMovie.director}}</li>
@@ -53,7 +57,6 @@
               Quote
             </p>
 
-            <img class="movieposter" :src="require('../assets/'+this.aMovie.images[0])">
 
           </section>
         </section>
@@ -75,9 +78,6 @@ export default {
     return {
       aMovie: null
     };
-  },
-  computed: {
-
   },
   methods: {
     getImageUrl(){
@@ -141,16 +141,47 @@ export default {
   flex: 1;
 }
 
+.movieheader{
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 5%;
+}
+
+.movieheader_pic{
+  flex: 1;
+}
+
+.movieheader_text{
+  flex: 5;
+  padding: 0 2%;
+}
+
+.moviedescription{
+  font-style: italic;
+  font-size: 150%;
+  color: rgb(85, 85, 85);
+}
+
+.movietitle{
+  color: rgb(55, 55, 55);
+  font-size: 300%;
+  font-weight: bold;
+}
+
 li{
   list-style: none;
 }
 
 .movieposter{
-  width: 30%;
+  width: 100%;
 }
+
 
 @media screen and (min-width: 1024px) {
   .trailer-view{
+    flex-direction: row;
+  }
+  .movieheader{
     flex-direction: row;
   }
 }
