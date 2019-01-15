@@ -6,7 +6,8 @@
 
 <script>
 import api from "@/services/Api.js";
-export default {};
+export default {
+};
 </script>
 
 <style scoped>

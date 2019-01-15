@@ -177,7 +177,6 @@
 
 <script>
 import api from "@/services/Api.js";
-export let loggedIn = false;
 export default {
   name: "LoggaIn",
   data() {
@@ -247,6 +246,7 @@ export default {
         alert("User Logged In");
         this.showErrorMessageSignIn = false;
         this.$router.push('/MinSida');
+        this.$store.commit('showMinaSidor');
       }else{
         this.messageSignIn = "Email adressen och lösenordet matchade inte varandra eller finns inte registrerad, vänligen försök igen";
         this.showErrorMessageSignIn = true; 
