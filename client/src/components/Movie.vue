@@ -79,14 +79,20 @@ export default {
   methods: {
     async getMovieByID() {
       if(this.movieID() !== null){
-        const response = await api.getMovies({_id: this.movieID()});
-        if(response.data.movies.length > 0){
-          this.aMovie = response.data.movies[0];
+        try{
+          const response = await api.getMovies({_id: this.movieID()});
+          if(response.data.movies.length > 0)
+            this.aMovie = response.data.movies[0];
+
+        } catch(error){
+          this.aMovie = null;
         }
-      }
-    },
+    } else {
+      this.aMovie = null;
+    }
+  },
     movieID(){
-      if((window.location.hash.indexOf("?")+1) > 0)
+      if(window.location.hash.indexOf("?") > 0)
         return window.location.hash.substr(window.location.hash.indexOf("?")+1);
       return null;
     }
