@@ -27,8 +27,8 @@ export default {
 
 	addMovieSession: (movieSession) => {
 		return api.post('addMovieSession', {movieSession: movieSession});
-	}
-}
+	},
+
 	// Example:
 	// registerUser({name: "John Doe", email: "john.doe@test.com", password:"password1234"})
 	// should return "user registered" or "email already exist in database"
