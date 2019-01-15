@@ -23,6 +23,10 @@ export default {
 
 	getMovieSessions: (query) => {
 		return api.post('movieSessions', {query: query});
+	},
+
+	addMovieSession: (movieSession) => {
+		return api.post('addMovieSession', {movieSession: movieSession});
 	}
 }
 

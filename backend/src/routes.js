@@ -9,7 +9,7 @@ const moviesPolicy = require('./policies/moviesPolicy');
 
 const movieTheatreController = require('./controllers/movieTheatreController');
 
-const movieSessionsController = require('./controllers/movieSessionController');
+const movieSessionController = require('./controllers/movieSessionController');
 
 Router.post('/addMovie',moviesPolicy.postAddMoviePolicy, moviesController.postAddMovie);
 
@@ -27,7 +27,9 @@ Router.post('/movies', moviesController.getMovies);
 
 Router.post('/movieTheatres', movieTheatreController.postMovieTheatres);
 
-Router.post('/movieSessions', movieSessionsController.postMovieSessions);
+Router.post('/movieSessions', movieSessionController.postMovieSessions);
+
+Router.post('/addMovieSession', movieSessionController.postAddMovieSession);
 
 // Exporting Router
 module.exports = Router;
