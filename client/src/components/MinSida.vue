@@ -3,7 +3,7 @@
     <b-jumbotron class="jumbotron"><h1>{{this.$store.state.loggedInUser.name}}</h1></b-jumbotron>
     <section class="order-history">
       <h1>Orderhistorik</h1>
-    <b-table striped hover :items="this.$store.state.loggedInUser.bookedTickets"></b-table>
+    <b-table striped hover :fields="fields" :items="this.$store.state.loggedInUser.bookedTickets"></b-table>
     </section>
   </section>
 </template>
@@ -14,7 +14,21 @@ export default {
   
   data(){
     return{
-      
+      fields: {
+        movie: {
+          label: 'Film',
+          sortable: false
+        },
+        price: {
+          label: 'Pris',
+          sortable: false
+        },
+        date: {
+          label: 'Datum',
+          sortable: true
+        },
+        
+      },
     }
   },
   methods: {
