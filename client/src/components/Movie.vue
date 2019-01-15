@@ -78,7 +78,6 @@ export default {
   },
   methods: {
     async getMovieByID() {
-      console.log("Getting new movie");
       if(this.movieID() !== null){
         const response = await api.getMovies({_id: this.movieID()});
         if(response.data.movies.length > 0){
@@ -87,7 +86,6 @@ export default {
       }
     },
     movieID(){
-      console.log("computed");
       if((window.location.hash.indexOf("?")+1) > 0)
         return window.location.hash.substr(window.location.hash.indexOf("?")+1);
       return null;
