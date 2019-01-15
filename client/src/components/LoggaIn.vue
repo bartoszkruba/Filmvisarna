@@ -49,7 +49,7 @@
       <b-button 
       variant="primary" 
       type="submit" 
-      class="mt-3">Registrera
+      class="mt-3 btn-danger">Registrera
       </b-button>
     </b-form>
     
@@ -73,7 +73,7 @@
       variant="danger" 
       class="mt-3">{{this.messageSignIn}}
       </b-alert>
-      <b-button variant="primary" type="submit" class="mt-3">Logga In</b-button>
+      <b-button variant="primary" type="submit" class="mt-3 btn-danger">Logga In</b-button>
     </b-form>
     <b-modal v-model="modalShow" title="Medlemsvillkor" ok-only>
       <b>1.</b> Allmänt om medlemskapet
