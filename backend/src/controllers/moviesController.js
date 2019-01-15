@@ -3,7 +3,7 @@ const Movie = require('../models/movie');
 
 
 module.exports.getMovies = (req, res, next) => {
-    Movie.find().then(movies => {
+    Movie.find(req.body.query).then(movies => {
         res.send({
             movies
         })
