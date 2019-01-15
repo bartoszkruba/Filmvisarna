@@ -25,7 +25,10 @@ module.exports.postValidate = async (req, res, next) => {
     if(users.length > 0){
         res.send({
             validated: true,
-            message: 'User matched database'
+            message: 'User matched database',
+            user: users[0].name,
+            id: users[0].id,
+            bookedTickets: users[0].bookedTickets,
         })
     }else{
         res.send({

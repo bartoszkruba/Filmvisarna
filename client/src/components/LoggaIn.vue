@@ -243,10 +243,10 @@ export default {
       const response = await api.loginUser({user})
       console.log(response.data.validated)
       if(response.data.validated){
-        alert("User Logged In");
         this.showErrorMessageSignIn = false;
         this.$router.push('/MinSida');
         this.$store.commit('showMinaSidor');
+        this.$store.commit('setLoggedInUser',response.data)
       }else{
         this.messageSignIn = "Email adressen och lösenordet matchade inte varandra eller finns inte registrerad, vänligen försök igen";
         this.showErrorMessageSignIn = true; 
