@@ -74,25 +74,32 @@ export default {
     };
   },
   computed: {
-    movieID: function(){
+
+  },
+  methods: {
+    async getMovieByID() {
+      console.log("Getting new movie");
+      if(this.movieID() !== null){
+        const response = await api.getMovies({_id: this.movieID()});
+        if(response.data.movies.length > 0){
+          this.aMovie = response.data.movies[0];
+        }
+      }
+    },
+    movieID(){
+      console.log("computed");
       if((window.location.hash.indexOf("?")+1) > 0)
         return window.location.hash.substr(window.location.hash.indexOf("?")+1);
       return null;
     }
   },
-  methods: {
-    async getMovieByID() {
-      console.log(this.movieID);
-      if(this.movieID !== null){
-        const response = await api.getMovies({_id: this.movieID});
-        if(response.data.movies.length > 0){
-          this.aMovie = response.data.movies[0];
-        }
-      }
-    }
-  },
   mounted: function() {
     this.getMovieByID();
+  },
+  watch: {
+    '$route': function() {
+      this.getMovieByID();
+    }
   }
 };
 </script>
