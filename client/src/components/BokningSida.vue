@@ -1,14 +1,15 @@
 <template> 
 <div>
     <div>
-        <div class="papillon">
+       
+       
+    <img src ="https://i.ytimg.com/vi/xqj7XOv9mC8/maxresdefault.jpg"> 
+     <div class="papillon">
             <h1>{{movie.title}}</h1>
             <div class="antal-bilijetter">
                <h4>Antal bilijetter:</h4>
             </div>
         </div>
-    <img src ="https://i.ytimg.com/vi/xqj7XOv9mC8/maxresdefault.jpg"> 
-    
   </div> 
    
 
@@ -180,18 +181,19 @@ h1{
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 40vh;
+    
 }
 
 .papillon{
-    position: absolute;
+       position: relative;
+margin-top: -15vh;
     display: block;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background: linear-gradient(180deg,rgba(14,15,15,0) 50%,#0e0f0f);
-    height: 52.6vh;
+    height: 13.6vh;
 }
 img{
     height: 45vh;
@@ -214,12 +216,6 @@ img{
 }
 .hej{
     margin: 0 2vw;
-}
-@media screen and (max-width: 600px) {
-    .papillon{
-    height: 53.8vh;
-}
-    
 }
 
 
