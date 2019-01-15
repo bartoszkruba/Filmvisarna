@@ -53,7 +53,7 @@
               Quote
             </p>
 
-            <img :src="require('../assets/'+this.aMovie.images[0])">
+            <img class="movieposter" :src="require('../assets/'+this.aMovie.images[0])">
 
           </section>
         </section>
@@ -146,7 +146,7 @@ li{
 }
 
 .movieposter{
-  width: 100%;
+  width: 30%;
 }
 
 @media screen and (min-width: 1024px) {
