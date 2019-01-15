@@ -20,9 +20,9 @@
           </b-nav-form>
 
           <b-navbar-nav right>
-            <b-nav-item class="router-link" to="/LoggaIn" v-show="this.$store.state.showLoggaInButton" exact-active-class="menu-item-active">Logga In</b-nav-item>
-            <b-nav-item class="router-link" to="/MinSida" v-show="this.$store.state.showMinaSidorButton" exact-active-class="menu-item-active">Min Sida</b-nav-item>
-            <b-nav-item class="router-link" to="/" exact-active-class="menu-item-active" v-show="this.$store.state.showMinaSidorButton">Logga Ut</b-nav-item>
+            <b-nav-item class="router-link" to="/LoggaIn"  exact-active-class="menu-item-active">Logga In</b-nav-item>
+            <b-nav-item class="router-link" to="/MinSida"  exact-active-class="menu-item-active">Min Sida</b-nav-item>
+            <b-nav-item class="router-link" to="/" exact-active-class="menu-item-active">Logga Ut</b-nav-item>
           </b-navbar-nav>
         </b-navbar-nav>
       </b-collapse>
@@ -37,10 +37,7 @@ export default {
     return {};
   },
   methods: {
-      signOut(){
-      this.$store.commit('showMinaSidor');
-      this.$router.push('/LoggaIn');
-    }
+      
   }
 };
 </script>
