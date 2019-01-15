@@ -13,7 +13,7 @@
     </section>
 
     <section v-else>
-
+    <router-link class="router-link" :to="'/Movie?'+this.aMovie._id" exact-active-class="menu-item-active">Link to this movie</router-link>
 
       <b-jumbotron bg-variant="white">
 
@@ -31,7 +31,7 @@
         <hr class="my-4">
         <section class="trailer-view">
           <section class="trailer-video">
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/Z9AYPxH5NTM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <iframe width="100%" height="100%" :src="'https://www.youtube.com/embed/'+this.aMovie.youtubeTrailers[0]" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           </section>
           <section class="trailer-text">
             <ul>
@@ -53,9 +53,12 @@
               Quote
             </p>
 
+            <img :src="require('../assets/'+this.aMovie.images[0])">
+
           </section>
         </section>
         <hr class="my-4">
+
 
 
       </b-jumbotron>
@@ -77,6 +80,10 @@ export default {
 
   },
   methods: {
+    getImageUrl(){
+      return { sample: require('../assets/'+this.aMovie.images[0]) };
+    }
+    ,
     async getMovieByID() {
       if(this.movieID() !== null){
         try{
