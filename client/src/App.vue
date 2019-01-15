@@ -2,7 +2,6 @@
   <div id="app">
     <Header />
     <main>
-
     <router-view/>
     </main>
     <Footer />
@@ -17,7 +16,7 @@ export default {
   components: {
     Header,
     Footer
-  }
+  },
 }
 </script>
 
@@ -26,6 +25,8 @@ export default {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    /* background-color: black;
+    color: white; */
   }
   #app{
     flex: 1;
