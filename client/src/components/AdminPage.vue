@@ -331,8 +331,7 @@ export default {
   },
   methods: {
     async getMovies(){
-      let response = await api.getMovies({_id: "5c3897dba4b4065c06286187"});
-      console.log(response.data.movies)
+      let response = await api.getMovies();
     },
     addActor() {
       if (
