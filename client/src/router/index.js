@@ -6,6 +6,9 @@ import KontaktSida from '@/components/KontaktSida'
 import BokningSida from '@/components/BokningSida'
 import MoviesPage from '@/components/MoviesPage'
 import Startsida from '@/components/Startsida'
+import Movie from '@/components/Movie'
+import LoggaIn from '@/components/LoggaIn'
+import MinSida from '@/components/MinSida'
 
 Vue.use(Router)
 
@@ -25,6 +28,16 @@ export default new Router({
       path: '/kontaktSida',
       name: 'KontaktSida',
       component: KontaktSida
+    },
+    {
+      path: '/LoggaIn',
+      name: 'LoggaIn',
+      component: LoggaIn
+    },
+    {
+      path: '/MinSida',
+      name: 'MinSida',
+      component: MinSida
     }, 
     {
       path: '/bokningSida',
@@ -40,6 +53,11 @@ export default new Router({
       path:'/Startsida',
       name: 'Startsida',
       component: Startsida
+    },
+    {
+      path: '/movie',
+      name: 'Movie',
+      component: Movie
     }
 
   ]

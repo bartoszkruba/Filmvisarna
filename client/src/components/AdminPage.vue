@@ -449,6 +449,7 @@ export default {
           youtubeTrailers: this.trailers,
           reviews: this.reviews
         };
+        console.log(movie);
         try {
           const response = await api.addMovie({ movie });
           this.message = response.data.message;
