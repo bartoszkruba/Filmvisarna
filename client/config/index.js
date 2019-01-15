@@ -35,17 +35,16 @@ module.exports = {
 
     cssSourceMap: true,
     proxyTable: {
-      'api': {
+      // proxy all requests starting with /api to jsonplaceholder
+      '/api': {
         target: 'http://localhost:8081',
         changeOrigin: true,
-        ws: true,
         pathRewrite: {
-          '^/api': ""
+          '^/api': ''
         }
       }
     }
   },
-
   build: {
     // Template for index.html
     index: path.resolve(__dirname, '../dist/index.html'),
