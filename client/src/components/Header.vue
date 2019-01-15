@@ -39,6 +39,7 @@ export default {
   methods: {
       signOut(){
       this.$store.commit('showMinaSidor');
+      this.$store.commit('resetUserProperties');
       this.$router.push('/LoggaIn');
     }
   }

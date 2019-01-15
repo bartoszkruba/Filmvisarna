@@ -20,6 +20,12 @@ export const store = new Vuex.Store({
             this.state.showLoggaInButton = !this.state.showLoggaInButton;
         },
 
+        resetUserProperties(state){
+            state.loggedInUser.name = '';
+            state.loggedInUser.id = '';
+            state.loggedInUser.bookedTickets = [];
+        },
+
         setLoggedInUser(state,user){
             state.loggedInUser.name = user.user;
             state.loggedInUser.id = user.id;

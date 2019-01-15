@@ -10,18 +10,19 @@
 
 <script>
 import api from "@/services/Api.js";
-
-const items = [
-  {Film: 'Djunelboken' , Pris: '85kr', Datum: '2018-12-01'},
-  {Film: 'Tintin' , Pris: '300kr', Datum: '2019-11-01'},
-  {Film: 'Skönheten och Odjuret' , Pris: '85kr', Datum: '2019-12-01'},
-  {Film: 'Göta Kanal' , Pris: '85kr', Datum: '2019-01-01'},
-  {Film: 'Hejsan Hoppsan' , Pris: '85kr', Datum: '2018-12-01'},
-]
 export default {
+  
   data(){
     return{
-      items
+      
+    }
+  },
+  methods: {
+    
+  },
+  mounted: function(){
+    if(!this.$store.state.loggedInUser.name){
+      this.$router.push('/LoggaIn');
     }
   }
 };
