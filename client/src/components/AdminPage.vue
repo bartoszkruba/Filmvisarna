@@ -591,7 +591,6 @@ export default {
 
         const userCredentials = this.$store.getters.getCredentials;
 
-        console.log(movie);
         try {
           const response = await api.addMovie(movie , userCredentials);
           this.message = response.data.message;
