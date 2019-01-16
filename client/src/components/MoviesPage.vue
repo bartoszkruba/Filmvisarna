@@ -24,6 +24,7 @@
             </router-link>
           </figure>
 
+          <div class="movietext">
           <div class="flex-col">
             <router-link
               class="router-link"
@@ -33,13 +34,14 @@
               <h2>{{m.title}}</h2>
             </router-link>
 
-            <div class="flexbox ptaggar">
-              <p>Längd: {{m.length}} minuter</p>
-              <p>|</p>
+            <div class="flexbox ptaggar info-direction">
+              <p>Längd: {{parseInt(m.length/60)}} timmar och {{m.length%60}} minuter</p>
+              <p class="destop-only">|</p>
               <p>Genre: {{m.genre}}</p>
-              <p>|</p>
+              <p class="destop-only">|</p>
               <p>Ålder: {{m.ageLimit}} år</p>
             </div>
+          </div>
           </div>
         </div>
       </div>
@@ -93,7 +95,6 @@ p {
 h2 {
   margin-left: 1rem;
   margin-bottom: 0;
-  margin-top: 5rem;
   color: black;
   font-weight: bold;
   font-size: 3rem;
@@ -106,43 +107,64 @@ hr {
 }
 .posterpic {
   width: 20vmin;
-  box-shadow: 2px 2px 5px black;  
+  box-shadow: 2px 2px 5px black;
 }
 .images {
   margin: 0;
 }
+.info-direction {
+  flex-direction: row;
+}
+.movietext{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 @media screen and (min-width: 501px) and (max-width: 1500px) {
- h2{
-   font-size: 2rem;
- }
- p{
-   font-size: 1.2rem;
- }
+  h2 {
+    font-size: 2rem;
+  }
+  p {
+    font-size: 1.2rem;
+    margin: 0;
+    line-height: 0.5rem;
+  }
   
-  
+  .info-direction {
+    flex-direction: column;
+  }
+  .destop-only {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 500px) {
   h2 {
     font-size: 1.5rem;
-    margin-top: 0.5rem;
+    margin-top: 0.8rem;
+    margin-bottom: 0.5rem;
     text-align: center;
   }
   p {
     font-size: 0.7rem;
     padding: 0.1rem;
-    
+    line-height: 0.5rem;
   }
-  .ptaggar{
-   justify-content: center;
-   
+  .ptaggar {
+    justify-content: center;
   }
-  .flex-mobil{
+  .flex-mobil {
     flex-direction: column;
   }
-  .posterpic{
+  .posterpic {
     width: 90vmin;
-   
+  }
+  .info-direction {
+    flex-direction: column;
+    text-align: center;
+  }
+  .destop-only {
+    display: none;
   }
 }
 </style>
