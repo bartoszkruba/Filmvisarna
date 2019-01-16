@@ -12,8 +12,20 @@ export const store = new Vuex.Store({
             name: '',
             id: '',
             bookedTickets: [],
-            admin: null
+            admin: null,
+            email: '',
+            password: ''
         },
+    },
+
+    getters: {
+        getCredentials: (state) => {
+            const credentials = {
+                email: state.loggedInUser.email,
+                password: state.loggedInUser.password
+            }
+            return credentials;
+        }
     },
 
     mutations: {
@@ -34,10 +46,16 @@ export const store = new Vuex.Store({
             state.loggedInUser.id = user.id;
             state.loggedInUser.bookedTickets = user.bookedTickets;
             state.loggedInUser.admin = user.admin;
+            state.loggedInUser.email = user.email;
+            state.loggedInUser.password = user.password;
         },
 
         showAdminControls(state){
             state.showAdminButton = !state.showAdminButton;
+        },
+
+        updateTickets(state, tickets){
+            state.loggedInUser.bookedTickets = tickets;
         }
     }
 })

@@ -38,5 +38,10 @@ export default {
 
 	loginUser: (user) => {
 		return api.post('login', user);
+	},
+
+	getTickets: (user) => {
+		return api.post('getTickets', { user });
 	}
+
 } 
