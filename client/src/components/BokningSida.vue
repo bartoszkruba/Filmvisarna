@@ -20,7 +20,10 @@
 
     <img :src="require('../assets/'+this.movie.images[0])" class="img">
         <div class="papillon">
-            <h1>{{movie.title}}</h1>
+          <h1>{{movie.title}}</h1>
+          <h1>
+            {{this.session.date.day+'/'+this.session.date.month+' '+this.session.date.year +' '+ this.session.date.time}}
+          </h1>
             <div class="antal-bilijetter">
 
             </div>
@@ -29,6 +32,9 @@
 
 
     <div class="text">
+      <p>
+        Antal lediga platser: {{this.session.freePlaces}} 
+      </p>
          <h4>Antal biljetter:</h4>
         <p><strong> Ordinarie</strong></p>
         <div class="antal">
@@ -88,38 +94,41 @@ export default {
         prisBarn: null,
         pris: null,
         movie: null,
+        session: null,
         totalt: null,
-        visaMedellande: false
+        visaMedellande: false,
+        movieID: null,
+        sessionID: null
     };
 
   },
   mounted: function() {
+    this.getIdFromUrl();
     this.getMovieByID();
+    this.getSessionByID();
   },
   watch: {
     '$route': function() {
+      this.getIdFromUrl();
       this.getMovieByID();
+      this.getSessionByID();
     }
   },
-   created(){
-      this.pris=85;
-      this.prisPensionar= 75;
-      this.prisBarn= 65;
-      this.antalPensionar=0;
-      this.antalBarn=0;
-      this.antal=0;
-      this.totalt=0;
-
-        },
+  created(){
+    this.pris=85;
+    this.prisPensionar= 75;
+    this.prisBarn= 65;
+    this.antalPensionar=0;
+    this.antalBarn=0;
+    this.antal=0;
+    this.totalt=0;
+  },
   methods: {
       async getMovieByID() {
-      if(this.movieID() !== null){
+      if(this.movieID !== null){
         try{
-          const response = await api.getMovies({_id: this.movieID()});
-          if(response.data.movies.length > 0)
-            this.movie = response.data.movies[0];
-
-
+          const response = await api.getMovies({_id: this.movieID});
+          this.movie = response.data.movies[0];
         } catch(error){
           this.movie = null;
         }
@@ -127,11 +136,28 @@ export default {
          this.movie = null;
         }
       },
-      movieID(){
-      if(window.location.hash.indexOf("?") > 0)
-        return window.location.hash.substr(window.location.hash.indexOf("?")+1);
-      return null;
-
+      async getSessionByID() {
+      if(this.sessionID !== null){
+        try{
+          const response = await api.getMovieSessions({_id: this.sessionID});
+          this.session = response.data.movie_sessions[0];
+        } catch(error){
+          this.session = null;
+        }
+      } else {
+         this.session = null;
+        }
+        console.log(this.session);
+      },
+      getIdFromUrl(){
+        let id = window.location.hash.substr(window.location.hash.indexOf("?")+1);
+        id = id.split("&");
+        if(id.length === 2){
+          this.movieID = id[0];
+          this.sessionID = id[1];
+        }
+        console.log(this.movieID);
+        console.log(this.sessionID);
       },
       plus(){
           this.antal+=1;
@@ -237,7 +263,7 @@ text-align: center;
 
 .papillon{
     position: relative;
-    margin-top: -17vh;
+    margin-top: -25vh;
     display: block;
     top: 0;
     left: 0;
