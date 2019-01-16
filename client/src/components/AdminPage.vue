@@ -1,8 +1,7 @@
 <template>
-  <div>
-    <h1 class="text-center">Admin Page</h1>
-    <br>
-    <hr>
+<div>
+  <div v-show="this.$store.state.loggedInUser.admin">
+    <b-jumbotron class="jumbotron"><h1>Admin Sida</h1></b-jumbotron>
     <h2 class="text-center">Add Movie</h2>
     <form class="container mb-5">
       <div class="row">
@@ -403,6 +402,10 @@
         </div>
       </div>
     </form>
+    </div>
+    <div v-show="!this.$store.state.loggedInUser.admin">
+      <b-jumbotron class="jumbotron"><h1>Du måste vara inloggad som administratör <br> för att få åtkomst till den här sidan</h1></b-jumbotron>
+    </div>
   </div>
 </template>
 
@@ -642,4 +645,10 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .jumbotron {
+    background:linear-gradient(180deg,transparent,rgba(0,0,0,.16)),linear-gradient(#860717,#860717);
+    border-radius: 0;
+    color: white;
+    text-align: center;
+  }
 </style>
