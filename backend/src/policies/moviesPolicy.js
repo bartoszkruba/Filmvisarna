@@ -1,7 +1,9 @@
 const Joi = require('joi');
 const Movie = require('../models/movie');
+const User = require('../models/user');
 
 module.exports.postAddMoviePolicy = async (req, res, next) => {
+    const users = await User.find({email: req.body.user.email, password: req.body.user.password});
     const movies = await Movie.find(req.body.movie);
     const schema = {
         title: Joi.string().required(),
@@ -28,6 +30,10 @@ module.exports.postAddMoviePolicy = async (req, res, next) => {
     } else if (movies.length > 0) {
         res.status(400).send({
             message: "Movie already exist in the database."
+        })
+    }else if(users.length === 0){
+        res.status(400).send({
+            message: "User is not authorized to add new movies"
         })
     } else {
         next();
