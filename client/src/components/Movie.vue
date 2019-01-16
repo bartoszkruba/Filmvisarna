@@ -23,7 +23,7 @@
         <section class="movieheader">
 
           <section class="movieheader_pic">
-            <img class="movieposter" :src="require('../assets/'+this.aMovie.images[0])">
+            <img class="movieposter" :src="require('../assets/'+this.aMovie.images[1])">
           </section>
 
           <section class="movieheader_text">
@@ -97,7 +97,7 @@ export default {
   },
   methods: {
     getImageUrl(){
-      return { sample: require('../assets/'+this.aMovie.images[0]) };
+      return { sample: require('../assets/'+this.aMovie.images[1]) };
     },
     starView(s, n){
       let starPut = "";

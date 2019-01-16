@@ -20,7 +20,7 @@
               :to="'/Movie?'+m._id"
               exact-active-class="menu-item-active"
             >
-              <img :src="require('../assets/'+m.images[0])" class="posterpic">
+              <img :src="require('../assets/'+m.images[1])" class="posterpic">
             </router-link>
           </figure>
 
@@ -106,7 +106,7 @@ hr {
 }
 .posterpic {
   width: 50vmin;
-  height: 70vmin;
+  
 }
 .images {
   
@@ -133,7 +133,7 @@ hr {
   }
   .posterpic{
     width: 90vmin;
-    height: 100vmin;
+   
   }
 }
 </style>

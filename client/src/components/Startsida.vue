@@ -9,7 +9,7 @@
           <b-row>
             <b-col>
               <figure class="imgbox">
-                <img class="poster" :src="require('../assets/'+this.movies[0].images[0])">
+                <img class="poster" :src="require('../assets/'+this.movies[0].images[1])">
                 <h3>{{movies[0].title}}</h3>
                 <router-link
                   class="router-link"
@@ -18,12 +18,12 @@
                 >
                   <b-button>Film</b-button>
                 </router-link> 
-                <b-button>Bestäl</b-button>
+                <b-button>Boka</b-button>
               </figure>
             </b-col>
             <b-col>
               <figure class="imgbox">
-                <img class="poster" :src="require('../assets/'+this.movies[1].images[0])">
+                <img class="poster" :src="require('../assets/'+this.movies[1].images[1])">
                 <h3>{{movies[1].title}}</h3>
                 <router-link
                   class="router-link"
@@ -32,12 +32,12 @@
                 >
                   <b-button>Film</b-button>
                 </router-link>
-                <b-button>Bestäl</b-button>
+                <b-button>Boka</b-button>
               </figure>
             </b-col>
             <b-col>
               <figure class="imgbox">
-                <img class="poster" :src="require('../assets/'+this.movies[2].images[0])">
+                <img class="poster" :src="require('../assets/'+this.movies[2].images[1])">
                 <h3>{{movies[2].title}}</h3>
                 <router-link
                   class="router-link"
@@ -46,7 +46,7 @@
                 >
                   <b-button>Film</b-button>
                 </router-link>
-                <b-button>Bestäl</b-button>
+                <b-button>Boka</b-button>
               </figure>
             </b-col>
           </b-row>
@@ -79,7 +79,7 @@
             <li></li>
           </ul>
           <b-button>Film</b-button>
-          <b-button>Bestäl</b-button>
+          <b-button>Boka</b-button>
         </b-carousel-slide>
       </b-carousel>
     </div>
