@@ -49,7 +49,7 @@
       <b-button 
       variant="primary" 
       type="submit" 
-      class="mt-3">Registrera
+      class="mt-3 btn-danger">Registrera
       </b-button>
     </b-form>
     
@@ -73,7 +73,7 @@
       variant="danger" 
       class="mt-3">{{this.messageSignIn}}
       </b-alert>
-      <b-button variant="primary" type="submit" class="mt-3">Logga In</b-button>
+      <b-button variant="primary" type="submit" class="mt-3 btn-danger">Logga In</b-button>
     </b-form>
     <b-modal v-model="modalShow" title="Medlemsvillkor" ok-only>
       <b>1.</b> Allmänt om medlemskapet
@@ -246,7 +246,11 @@ export default {
         this.showErrorMessageSignIn = false;
         this.$router.push('/MinSida');
         this.$store.commit('showMinaSidor');
-        this.$store.commit('setLoggedInUser',response.data)
+        this.$store.commit('setLoggedInUser',response.data);
+        if(response.data.admin){
+          this.$store.commit('showAdminControls');
+        }
+        
       }else{
         this.messageSignIn = "Email adressen och lösenordet matchade inte varandra eller finns inte registrerad, vänligen försök igen";
         this.showErrorMessageSignIn = true; 
