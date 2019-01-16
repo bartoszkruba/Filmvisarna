@@ -35,7 +35,9 @@
               <span class="moviedescription" v-html="aMovie.description"></span>
             </article>
             <br>
-            <b-btn variant="danger" href="#">Boka platser</b-btn>
+            <router-link class="router-link" :to="'/BokningSida?'+aMovie._id" exact-active-class="menu-item-active">
+              <b-btn variant="danger">Boka biljetter</b-btn>
+            </router-link>
           </section>
         </section>
 
@@ -48,19 +50,43 @@
             <iframe class="videoplayer" :src="'https://www.youtube.com/embed/'+this.aMovie.youtubeTrailers[0]" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           </section>
           <section class="trailer-text">
-            <ul>
-              <li>Genre: {{aMovie.genre}}</li>
-              <li>Längd: {{parseInt(aMovie.length/60)}} timmar och {{aMovie.length%60}} minuter</li>
-              <li>År: {{aMovie.productionYear}}</li>
-              <li>Land:<span v-for="c in aMovie.productionCountries"> {{c}}</span></li>
-              <li>Språk: {{aMovie.language}}</li>
-              <li>Undertexter: {{aMovie.subtitles}}</li>
-              <li>Regisör: {{aMovie.director}}</li>
-            </ul>
-            <ul v-if="aMovie.actors.length > 0">
-              <li>Skådespelare:</li>
-              <li v-for="actor in aMovie.actors">{{actor}}</li>
-            </ul>
+            <h5>Om filmen</h5>
+            <p>
+              <span v-if="aMovie.genre.length > 0">
+                Genre: {{aMovie.genre}}<br>
+              </span>
+              <span v-if="aMovie.genre.length > 0">
+                Längd: {{parseInt(aMovie.length/60)}} timmar och {{aMovie.length%60}} minuter<br>
+              </span>
+              <span v-if="aMovie.productionYear">
+                År: {{aMovie.productionYear}}<br>
+              </span>
+              <span v-if="aMovie.productionCountries.length > 0">
+                Land:<span v-for="c in aMovie.productionCountries"> {{c}}</span>
+                <br>
+              </span>
+              <span v-if="aMovie.language.length > 0">
+                Språk: {{aMovie.language}}<br>
+              </span>
+              <span v-if="aMovie.subtitles.length > 0">
+                Undertexter: {{aMovie.subtitles}}<br>
+              </span>
+              <span v-if="aMovie.ageLimit">
+                Åldersgräns: {{aMovie.ageLimit}} år<br>
+              </span>
+            </p>
+
+            <p>
+              <span v-if="aMovie.actors.length > 0">
+                Regisör: {{aMovie.director}}<br>
+              </span>
+              <span v-if="aMovie.actors.length > 0">
+                Skådespelare:
+              </span>
+              <span v-for="actor in aMovie.actors">
+                <br>{{actor}}
+              </span>
+            </p>
           </section>
           <section class="trailer-text">
             <article v-for="review in aMovie.reviews">
