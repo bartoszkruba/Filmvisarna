@@ -1,9 +1,9 @@
 <template> 
-<div>
+<main>
     <div>
        
-       
-    <img src ="https://i.ytimg.com/vi/xqj7XOv9mC8/maxresdefault.jpg"> 
+       {{movie.images[0]}}
+    <!--<img src="../assets/SecoundActBokning1.png"> -->
      <div class="papillon">
             <h1>{{movie.title}}</h1>
             <div class="antal-bilijetter">
@@ -37,12 +37,14 @@
             <h3>Kostnad</h3>
             <p class="totalt" >totalt: {{totalt}}kr</p>
         </div>
-        <div>
-           <button type="button" class="slutför btn btn-danger">Slutför bokning</button>
+        <div class="slutför btn">
+           <button v-on:click="visaFelMedellande" type="button" class="btn btn-danger">Slutför bokning</button>
+
+           <p class="felMedellande" v-if="visaMedellande">Du måste välja minst ett biljett</p>
         </div>
     </div>
 
-</div>
+</main>
 
 </template> 
  
@@ -70,7 +72,8 @@ export default {
         movie: null,
         totalt: null,
 
-        visaTotal: false
+        visaTotal: false,
+        visaMedellande: false
     };
     
   }, 
@@ -88,12 +91,13 @@ export default {
   methods: {
       async getMovies(){
           const response = await api.getMovies();
-          this.movie = response.data.movies[0];
+          this.movie = response.data.movies[1];
       },
       plus(){
           this.antal+=1;
           this.totalt+=85;
           this.visaTotal = true;
+          this.visaMedellande = false;
       },
       minus(){
           
@@ -111,6 +115,7 @@ export default {
           this.totalt+=75;
           this.antalPensionar+=1;
           this.visaTotal = true;
+          this.visaMedellande = false;
 
       },
       minusPensionar(){
@@ -129,6 +134,7 @@ export default {
           this.totalt+=65
           this.antalBarn+=1;
           this.visaTotal = true;
+           this.visaMedellande = false;
       },
       minusBarn(){
           if (this.antalBarn>0){
@@ -141,24 +147,25 @@ export default {
           if (this.antalBarn<1 && this.antalPensionar==0 && this.antal==0){
               this.visaTotal=false;
           }
+      },
+      visaFelMedellande(){
+          if(this.totalt==0)
+              this.visaMedellande = true;
       }
   } 
 }; 
 </script> 
  
 <!-- Add "scoped" attribute to limit CSS to this component only --> 
-<style > 
-main{
-    background-color: black;
-}
+<style scoped> 
 
 .kostnad{
+    
     display: flex;
     width: 40vw;
     justify-content: space-between;
     margin-top: 10vh;
     padding-top: 2vh;
-    color: white;
     border-top: .0625rem solid rgba(255, 255, 255, 0.411);
 }
 .antal-bilijetter{
@@ -170,12 +177,10 @@ main{
     margin: 3vh;
 }
 h4, h5,p, h1{
-    color: white;
     margin-top: 2vh;
 }
 .totalt{
     margin-top: 0.5vh;
-    color: white;
 }
 h1{
     display: flex;
@@ -196,8 +201,8 @@ margin-top: -15vh;
     height: 13.6vh;
 }
 img{
-    height: 45vh;
-    width: 100%;
+    width: 100vw;
+    height: 40vh;
 }
 
 .antal{
@@ -206,7 +211,7 @@ img{
     justify-content:space-around;
 }
 .slutför{
-    margin: 5vh auto
+    margin: 8vh auto
 }
 .text{
    display: flex;
@@ -216,6 +221,13 @@ img{
 }
 .hej{
     margin: 0 2vw;
+}
+
+.felMedellande{
+    font-size: 1vw;
+    color: red;
+    margin-top: 1vh;
+    margin-bottom: 0;
 }
 
 
