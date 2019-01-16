@@ -116,6 +116,17 @@
 </template>
 
 <script>
+/*
+NEEDS TO BE DONE:
+
+FIRST MOVIE IN SESSIONLIST NEEDS TO BE ADDED INTO ARRAY
+
+WHAT IF NO SESSIONS ARE AVAILABLE? WE NEED A CHECK FOR
+IF THIS.MOVIESESSIONS = NULL OR length = null
+
+BOOKING NEEDS TO ACCEPT THE NEW SEARCH ROUTE
+*/
+
 import api from "@/services/Api.js";
 
 export default {
@@ -130,7 +141,6 @@ export default {
   methods: {
     changeSession(e){
       this.sessionID = e.target.value;
-      console.log(this.sessionID);
     },
     goToBooking(){
       this.$router.push('/BokningSida?'+this.movieID()+'&'+this.sessionID);
@@ -164,6 +174,7 @@ export default {
             movieID: this.movieID()
           });
           this.movieSessions = response.data.movie_sessions;
+          this.sessionID = this.movieSessions[0]._id;
 
         } catch (error) {
           this.movieSessions = null;
