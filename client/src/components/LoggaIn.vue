@@ -22,6 +22,7 @@
         v-model="form.password"
         required
         placeholder="Lösenord"
+        type="password"
       />
       <label for class="mt-3">Repetera Lösenord</label>
       <b-input
@@ -29,6 +30,7 @@
         v-model="form.repeatPassword"
         required
         placeholder="Repetera Lösenord"
+        type="password"
       />
       <b-alert 
       v-model="this.showErrorMessage" 

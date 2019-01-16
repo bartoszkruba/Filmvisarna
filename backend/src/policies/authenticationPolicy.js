@@ -36,7 +36,7 @@ module.exports.postRegister = async (req, res, next) => {
                 res.status(400).send({
                     error: `Lösenordet som du angivet matchade inte följande regler:
                     
-                    1. Det får endast innehålla följande karaktärer:liten bokstav, stor bokstav och siffror
+                    1. Det måste innehålla följande karaktärer: liten bokstav, stor bokstav och siffror
                     
                     2. Det måste vara minst 8 karaktärer långt men inte längre än 32
                     `
