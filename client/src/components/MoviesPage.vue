@@ -106,19 +106,12 @@ hr {
 }
 .posterpic {
   width: 20vmin;
-
-  
+  box-shadow: 2px 2px 5px black;  
 }
 .images {
-   
-  box-shadow: 2px 2px 5px black;
-  display: block;
+  margin: 0;
 }
-@media screen and (min-width: 600px) and (max-width: 800px) {
- .images{
-   height: 22.2vh;
- }
-
+@media screen and (min-width: 501px) and (max-width: 1500px) {
  h2{
    font-size: 2rem;
  }
@@ -128,10 +121,11 @@ hr {
   
   
 }
+
 @media screen and (max-width: 500px) {
   h2 {
     font-size: 1.5rem;
-    margin-top: 0;
+    margin-top: 0.5rem;
     text-align: center;
   }
   p {
