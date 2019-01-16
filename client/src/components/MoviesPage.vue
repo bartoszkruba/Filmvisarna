@@ -93,7 +93,7 @@ p {
 h2 {
   margin-left: 1rem;
   margin-bottom: 0;
-  margin-top: 15rem;
+  margin-top: 5rem;
   color: black;
   font-weight: bold;
   font-size: 3rem;
@@ -105,22 +105,37 @@ hr {
   border-color: black;
 }
 .posterpic {
-  width: 50vmin;
+  width: 20vmin;
+
   
 }
 .images {
-  
+   
   box-shadow: 2px 2px 5px black;
   display: block;
 }
-@media screen and (max-width: 600px) {
+@media screen and (min-width: 600px) and (max-width: 800px) {
+ .images{
+   height: 22.2vh;
+ }
+
+ h2{
+   font-size: 2rem;
+ }
+ p{
+   font-size: 1.2rem;
+ }
+  
+  
+}
+@media screen and (max-width: 500px) {
   h2 {
-    font-size: 1rem;
+    font-size: 1.5rem;
     margin-top: 0;
     text-align: center;
   }
   p {
-    font-size: 0.5rem;
+    font-size: 0.7rem;
     padding: 0.1rem;
     
   }

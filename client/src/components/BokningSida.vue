@@ -2,7 +2,7 @@
 <main>
     <div>
        
-       {{movie.}}
+       
     <!--<img src="../assets/SecoundActBokning1.png"> -->
      <div class="papillon">
             <h1>{{movie.title}}</h1>
