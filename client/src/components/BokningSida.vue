@@ -56,7 +56,31 @@
             <p class="totalt" >totalt: {{totalt}}kr</p>
         </div>
         <div class="slutför btn">
-           <button v-on:click="visaFelMedellande" type="button" class="btn btn-danger">Slutför bokning</button>
+            <div>
+                <b-btn v-on:click="visaFelMedellande" v-b-modal.modal1>Slutför bokning</b-btn>
+
+                <!-- Modal Component -->
+                <b-modal id="modal1" v-if="totalt>=65" title="Bekräftelse">
+                <p>Film: <strong> {{movie.title}}</strong></p>
+                <p>Datum: </p>
+                <p>Tid: </p>
+                <div class="Biljetter">
+                  <p>Biljetter:</p>
+                  <div class="vilkaBiljetter">
+                    <p v-if="antal>0"> {{antal}} Ordinarie</p>
+                    <p v-if="antalPensionar>0"> {{antalPensionar}} Pensionär</p>
+                    <p v-if="antalBarn>0"> {{antalBarn}} Barn</p>
+                  </div>
+                </div>
+                <p>Att betala: {{totalt}}kr</p>
+
+                <p></p>
+
+                <p class="my-4">Din bokningsnummer: {{bokningsnummer}}</p>
+                <p class="my-4"><strong>OBS!</strong>Du kan hämta ut dina biljetter senast 40min innan filmen börjar</p>
+                <p>  betalningen sker vid kassan i biografen</p>
+                </b-modal>
+            </div>
 
            <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
         </div>
@@ -88,6 +112,7 @@ export default {
         prisBarn: null,
         pris: null,
         movie: null,
+        bokningsnummer: null,
         totalt: null,
         visaMedellande: false
     };
@@ -132,6 +157,12 @@ export default {
         return window.location.hash.substr(window.location.hash.indexOf("?")+1);
       return null;
     
+      },
+      bokningsnummer(){
+          this.bokningsnummer=(Math.random()+1);
+          console.log(this.bokningsnummer);
+          
+
       },
       plus(){
           this.antal+=1;
@@ -183,8 +214,12 @@ export default {
           
       },
       visaFelMedellande(){
-          if(this.totalt==0)
+          if(this.totalt==0){
               this.visaMedellande = true;
+          }
+          else{
+              this.bokningsnummer=Math.floor(Math.random() * 10000000000);
+          }
       }
   } 
 }; 
@@ -192,6 +227,16 @@ export default {
  
 <!-- Add "scoped" attribute to limit CSS to this component only --> 
 <style scoped> 
+.modal-body p{
+    margin: 0.8rem;
+    text-align: start;
+}
+.Biljetter{
+    display: flex
+}
+.vilkaBiljetter p{
+    margin: 0.3rem;
+}
 
 .kostnad{
     
