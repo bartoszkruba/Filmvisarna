@@ -35,9 +35,13 @@
             <span class="moviedescription" v-html="aMovie.description"></span>
           </article>
           <br>
-          <router-link class="router-link" :to="'/BokningSida?'+aMovie._id" exact-active-class="menu-item-active">
-            <b-btn variant="danger">Boka biljetter</b-btn>
-          </router-link>
+          <!-- <router-link class="router-link" :to="'/BokningSida?'+aMovie._id" exact-active-class="menu-item-active"> -->
+            <b-btn v-on:click="goToBooking" variant="danger">Boka biljetter</b-btn>
+          <!-- </router-link> -->
+
+            <b-dropdown id="ddown-buttons" text="Välj datum: " variant="danger" class="m-2">
+              <b-dropdown-item-button v-on:click="changeSession" v-for="session in this.movieSessions" :value="session._id" :key="session._id"> {{session.date.day + '/' + session.date.month + ' ' + session.date.year + ' ' + session.date.time }}</b-dropdown-item-button>
+            </b-dropdown>
         </section>
       </section>
 
@@ -119,14 +123,17 @@ export default {
   data() {
     return {
       aMovie: null,
-      movieSessions: null
+      movieSessions: null,
+      sessionID: null
     };
   },
   methods: {
-    getImageUrl() {
-      return {
-        sample: require('../assets/' + this.aMovie.images[1])
-      };
+    changeSession(e){
+      this.sessionID = e.target.value;
+      console.log(this.sessionID);
+    },
+    goToBooking(){
+      this.$router.push('/BokningSida?'+this.movieID()+'&'+this.sessionID);
     },
     starView(s, n) {
       let starPut = "";
@@ -157,7 +164,6 @@ export default {
             movieID: this.movieID()
           });
           this.movieSessions = response.data.movie_sessions;
-          console.log(this.movieSessions);
 
         } catch (error) {
           this.movieSessions = null;
