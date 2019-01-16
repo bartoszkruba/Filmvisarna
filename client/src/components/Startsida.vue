@@ -225,7 +225,9 @@ li {
   display: flex;
   flex-direction: row;
 }
-
+.startposter{
+  padding-top: 2vh;
+}
 @media only screen and (max-device-width: 580px) {
   .b-carousel-slide {
     width: 100%;  
