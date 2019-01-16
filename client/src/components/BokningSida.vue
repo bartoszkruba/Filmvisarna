@@ -1,49 +1,67 @@
 <template> 
 <main>
+
+<section v-if="movie === null">
+        <h1>Något blev fel!</h1>
+        <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
+        <ul>
+          <li>Antipiratbyrån har hackat oss</li>
+          <li>Vår hemsida har tekniskt strul</li>
+          <li>Du har klickat på en gammal länk</li>
+        </ul>
+        <router-link class="router-link" to="/moviesPage" exact-active-class="menu-item-active">Klicka här för att komma till alla filmer</router-link>
+
+      </section>
+
+      <section v-else>
+
     <div>
        
-       {{movie.images[0]}}
-    <!--<img src="../assets/SecoundActBokning1.png"> -->
-     <div class="papillon">
+    
+    <img :src="require('../assets/'+this.movie.images[0])" class="img">
+        <div class="papillon">
             <h1>{{movie.title}}</h1>
             <div class="antal-bilijetter">
-               <h4>Antal bilijetter:</h4>
+              
             </div>
         </div>
   </div> 
    
 
     <div class="text"> 
-        
-        <p>Ordinarie</p>
+         <h4>Antal bilijetter:</h4>
+        <p><strong> Ordinarie</strong></p>
         <div class="antal">
            <button v-on:click="minus" type="button" class="btn btn-dark">-</button>
-           <h5 class="hej"> {{antal}}st / {{pris}}kr per st </h5>
+           <h5 class="hej"> {{antal}} st / {{pris}}kr per st </h5>
            <button v-on:click="plus" type="button" class="btn btn-dark">+</button>
         </div>
-        <p>Pensionär</p>
+        <p><strong> Pensionär</strong></p>
          <div class="antal">
            <button v-on:click="minusPensionar" type="button" class="btn btn-dark">-</button>
-           <h5 class="hej"> {{antalPensionar}}st / {{prisPensionar}}kr per st </h5>
+           <h5 class="hej"> {{antalPensionar}} st / {{prisPensionar}}kr per st </h5>
            <button v-on:click="plusPensionar" type="button" class="btn btn-dark">+</button>
         </div>
-        <p>Barn</p>
+
+        <div v-if="movie.ageLimit<15">
+        <p class="barn"><strong> Barn</strong></p>
         <div class="antal">
            <button v-on:click="minusBarn" type="button" class="btn btn-dark">-</button>
-           <h5 class="hej"> {{antalBarn}}st / {{prisBarn}}kr per st </h5>
+           <h5 class="hej"> {{antalBarn}} st / {{prisBarn}}kr per st </h5>
            <button v-on:click="plusBarn" type="button" class="btn btn-dark">+</button>
         </div>
-        <div class="kostnad" v-if="visaTotal">
+        </div>
+        <div class="kostnad" v-if="totalt>=65">
             <h3>Kostnad</h3>
             <p class="totalt" >totalt: {{totalt}}kr</p>
         </div>
         <div class="slutför btn">
            <button v-on:click="visaFelMedellande" type="button" class="btn btn-danger">Slutför bokning</button>
 
-           <p class="felMedellande" v-if="visaMedellande">Du måste välja minst ett biljett</p>
+           <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
         </div>
     </div>
-
+      </section>
 </main>
 
 </template> 
@@ -71,14 +89,19 @@ export default {
         pris: null,
         movie: null,
         totalt: null,
-
-        visaTotal: false,
         visaMedellande: false
     };
     
   }, 
+  mounted: function() {
+    this.getMovieByID();
+  },
+  watch: {
+    '$route': function() {
+      this.getMovieByID();
+    }
+  },
    created(){
-      this.getMovies();
       this.pris=85;
       this.prisPensionar= 75;
       this.prisBarn= 65;
@@ -89,9 +112,26 @@ export default {
 
         },
   methods: {
-      async getMovies(){
-          const response = await api.getMovies();
-          this.movie = response.data.movies[1];
+      async getMovieByID() {
+      if(this.movieID() !== null){
+        try{
+          const response = await api.getMovies({_id: this.movieID()});
+          if(response.data.movies.length > 0)
+            this.movie = response.data.movies[0];
+
+
+        } catch(error){
+          this.movie = null;
+        }
+      } else {
+         this.movie = null;
+        }
+      },
+      movieID(){
+      if(window.location.hash.indexOf("?") > 0)
+        return window.location.hash.substr(window.location.hash.indexOf("?")+1);
+      return null;
+    
       },
       plus(){
           this.antal+=1;
@@ -105,11 +145,9 @@ export default {
           this.totalt-=85
           this.antal-=1;}
           else {
-              alert('Du kan inte välja mindre än ett biljett ')
+              alert('Du kan inte välja mindre än en biljett ')
           }
-          if (this.antalBarn<1 && this.antalPensionar==0 && this.antal==0){
-              this.visaTotal=false;
-          }
+          
       },
       plusPensionar(){
           this.totalt+=75;
@@ -124,11 +162,9 @@ export default {
           this.antalPensionar-=1;
           }
           else {
-              alert('Du kan inte välja mindre än ett biljett ')
+              alert('Du kan inte välja mindre än en biljett ')
           }
-          if (this.antalBarn==0 && this.antalPensionar<1 && this.antal==0){
-              this.visaTotal=false;
-          }
+          
       },
       plusBarn(){
           this.totalt+=65
@@ -142,11 +178,9 @@ export default {
           this.totalt-=65
           }
           else {
-              alert('Du kan inte välja mindre än ett biljett ')
+              alert('Du kan inte välja mindre än en biljett ')
           }
-          if (this.antalBarn<1 && this.antalPensionar==0 && this.antal==0){
-              this.visaTotal=false;
-          }
+          
       },
       visaFelMedellande(){
           if(this.totalt==0)
@@ -166,7 +200,7 @@ export default {
     justify-content: space-between;
     margin-top: 10vh;
     padding-top: 2vh;
-    border-top: .0625rem solid rgba(255, 255, 255, 0.411);
+    border-top: .0625rem solid rgba(94, 94, 94, 0.411);
 }
 .antal-bilijetter{
     display: flex;
@@ -177,6 +211,7 @@ export default {
     margin: 3vh;
 }
 h4, h5,p, h1{
+   
     margin-top: 2vh;
 }
 .totalt{
@@ -186,23 +221,33 @@ h1{
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+    font-size: 2.55rem;
+    margin-top: 5vh;
+    color: white;
+    text-shadow: -3px 3px 10px black, -3px 3px 10px black, -3px 3px 10px black, 3px -3px 10px black;
+    font-weight: bold;
+    font-style: oblique;
+}
+h4{
+    margin: 0;
+}
+.barn{
+text-align: center;
 }
 
 .papillon{
-       position: relative;
-margin-top: -15vh;
+    position: relative;
+    margin-top: -17vh;
     display: block;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(180deg,rgba(14,15,15,0) 50%,#0e0f0f);
-    height: 13.6vh;
+    
 }
 img{
     width: 100vw;
-    height: 40vh;
+    box-shadow: 2px 2px 80px black;
 }
 
 .antal{
@@ -228,6 +273,12 @@ img{
     color: red;
     margin-top: 1vh;
     margin-bottom: 0;
+}
+@media screen and (max-width: 416px) {
+    h1{
+    margin-top: 8vh;
+    font-size: 1.3rem;
+    }
 }
 
 
