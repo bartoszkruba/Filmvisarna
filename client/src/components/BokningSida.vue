@@ -2,8 +2,8 @@
 <main>
     <div>
        
-       
-    <img src ="https://i.ytimg.com/vi/xqj7XOv9mC8/maxresdefault.jpg"> 
+       {{movie.}}
+    <!--<img src="../assets/SecoundActBokning1.png"> -->
      <div class="papillon">
             <h1>{{movie.title}}</h1>
             <div class="antal-bilijetter">
@@ -207,8 +207,8 @@ margin-top: -15vh;
     height: 13.6vh;
 }
 img{
-    height: 45vh;
-    width: 100%;
+    width: 100vw;
+    height: 40vh;
 }
 
 .antal{
