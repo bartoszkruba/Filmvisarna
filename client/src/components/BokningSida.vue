@@ -2,7 +2,7 @@
 <main>
     <div>
        
-       
+       {{movie.images[0]}}
     <!--<img src="../assets/SecoundActBokning1.png"> -->
      <div class="papillon">
             <h1>{{movie.title}}</h1>
@@ -158,9 +158,6 @@ export default {
  
 <!-- Add "scoped" attribute to limit CSS to this component only --> 
 <style scoped> 
-main{
-    background-color: black;
-}
 
 .kostnad{
     
@@ -169,7 +166,6 @@ main{
     justify-content: space-between;
     margin-top: 10vh;
     padding-top: 2vh;
-    color: white;
     border-top: .0625rem solid rgba(255, 255, 255, 0.411);
 }
 .antal-bilijetter{
@@ -181,12 +177,10 @@ main{
     margin: 3vh;
 }
 h4, h5,p, h1{
-    color: white;
     margin-top: 2vh;
 }
 .totalt{
     margin-top: 0.5vh;
-    color: white;
 }
 h1{
     display: flex;
