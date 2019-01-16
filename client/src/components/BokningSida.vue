@@ -19,7 +19,7 @@
        
     
     <img :src="require('../assets/'+this.movie.images[0])" class="img">
-     <div class="papillon">
+        <div class="papillon">
             <h1>{{movie.title}}</h1>
             <div class="antal-bilijetter">
               
@@ -33,20 +33,23 @@
         <p>Ordinarie</p>
         <div class="antal">
            <button v-on:click="minus" type="button" class="btn btn-dark">-</button>
-           <h5 class="hej"> {{antal}}st / {{pris}}kr per st </h5>
+           <h5 class="hej"> {{antal}} st / {{pris}}kr per st </h5>
            <button v-on:click="plus" type="button" class="btn btn-dark">+</button>
         </div>
         <p>Pensionär</p>
          <div class="antal">
            <button v-on:click="minusPensionar" type="button" class="btn btn-dark">-</button>
-           <h5 class="hej"> {{antalPensionar}}st / {{prisPensionar}}kr per st </h5>
+           <h5 class="hej"> {{antalPensionar}} st / {{prisPensionar}}kr per st </h5>
            <button v-on:click="plusPensionar" type="button" class="btn btn-dark">+</button>
         </div>
-        <p>Barn</p>
+
+        <div v-if="movie.ageLimit<15">
+        <p class="barn">Barn</p>
         <div class="antal">
            <button v-on:click="minusBarn" type="button" class="btn btn-dark">-</button>
-           <h5 class="hej"> {{antalBarn}}st / {{prisBarn}}kr per st </h5>
+           <h5 class="hej"> {{antalBarn}} st / {{prisBarn}}kr per st </h5>
            <button v-on:click="plusBarn" type="button" class="btn btn-dark">+</button>
+        </div>
         </div>
         <div class="kostnad" v-if="visaTotal">
             <h3>Kostnad</h3>
@@ -221,11 +224,6 @@ h4, h5,p, h1{
    
     margin-top: 2vh;
 }
-h1{
-    margin-top: 5vh;
-    color: rgb(207, 96, 96);
-    font-style: oblique;
-}
 .totalt{
     margin-top: 0.5vh;
 }
@@ -233,10 +231,16 @@ h1{
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+    font-size: 2.55rem;
+    margin-top: 5vh;
+    color: rgb(207, 96, 96);
+    font-style: oblique;
 }
 h4{
     margin: 0;
+}
+.barn{
+text-align: center;
 }
 
 .papillon{
@@ -247,11 +251,11 @@ h4{
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(180deg,rgba(14,15,15,0) 50%,#b1b1b1);
     
 }
 img{
     width: 100vw;
+    box-shadow: 2px 2px 80px black;
 }
 
 .antal{
@@ -277,6 +281,12 @@ img{
     color: red;
     margin-top: 1vh;
     margin-bottom: 0;
+}
+@media screen and (max-width: 414px) {
+    h1{
+    margin-top: 8vh;
+    font-size: 1.3rem;
+    }
 }
 
 
