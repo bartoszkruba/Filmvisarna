@@ -2,12 +2,18 @@
 const Movie = require('../models/movie');
 
 
-module.exports.getMovies = (req, res, next) => {
-    Movie.find(req.body.query).then(movies => {
+module.exports.getMovies = async (req, res, next) => {
+  try{
+    await Movie.find(req.body.query).then(movies => {
         res.send({
             movies
         })
     });
+  }catch(error){
+    res.status(400).send({
+      error: 'No movie found'
+    })
+  }
 };
 
 // controller for adding new movies to the DB

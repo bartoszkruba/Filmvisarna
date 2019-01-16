@@ -1,218 +1,86 @@
-<<<<<<< current
-<!-- INTE KOPPLAD MOT DATABAS -->
-
-<template>
-  <b-jumbotron bg-variant="white">
-
-    <!-- Title -->
-    <template slot="header">
-      {{aStaticMovie.title}}
-    </template>
-    <!-- description -->
-    <template slot="lead">
-        <span v-html="aStaticMovie.description"></span>
-    </template>
-    <b-btn variant="primary" href="#">Boka platser</b-btn>
-
-
-    <hr class="my-4">
-    <section class="trailer-view">
-      <section class="trailer-video">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/Z9AYPxH5NTM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </section>
-      <section class="trailer-text">
-        <ul>
-          <li>Genre: {{aStaticMovie.genre}}</li>
-          <li>Längd: {{parseInt(aStaticMovie.length/60)}} timmar {{parseInt(aStaticMovie.length%60)}} minuter</li>
-          <li>År: {{aStaticMovie.productionYear}}</li>
-          <li>Land:<span v-for="c in aStaticMovie.productionCountries"> {{c}}</span></li>
-          <li>Språk: {{aStaticMovie.language}}</li>
-          <li>Undertexter: {{aStaticMovie.subtitles}}</li>
-          <li>Regisör: {{aStaticMovie.director}}</li>
-          <li>Utgivare: {{aStaticMovie.distributor}}</li>
-        </ul>
-      </section>
-      <section class="trailer-text">
-        <ul>
-          <li>Skådespelare:</li>
-          <li v-for="actor in aStaticMovie.actors">{{actor}}</li>
-        </ul>
-      </section>
-    </section>
-    <hr class="my-4">
-
-
-  </b-jumbotron>
-</template>
-
-<script>
-import api from "@/services/Api.js";
-
-export default {
-  name: "HelloWorld",
-  data() {
-    return {
-      aStaticMovie: {
-        "title": "Call me by your name",
-        "productionCountries": [
-          "Italien",
-          "USA"
-        ],
-        "productionYear": 2017,
-        "length": 132,
-        "genre": "Drama",
-        "distributor": "UIP",
-        "language": "engelska",
-        "subtitles": "svenska",
-        "director": "Luca Guadagnino",
-        "actors": [
-          "Armie Hammer",
-          "Timothée Chalamet",
-          "Michael Stuhlbarg"
-        ],
-        "description": "<p>Filmen utspelas i norra Italien sommaren 1983. En ung amerikansk-italienare blir förälskad i en amerikansk student som kommer för att studera och bo hos hans familj.</p><p>Tillsammans upplever de en oförglömlig sommar - full av musik, mat och kärlek - som för evigt kommer att förändra dem.</p>",
-        "images": [
-           "https://i.pinimg.com/originals/eb/27/e6/eb27e6462a18f5c3bc82f5cf6a0b351c.jpg",
-           "https://i.pinimg.com/originals/eb/27/e6/eb27e6462a18f5c3bc82f5cf6a0b351c.jpg"
-        ],
-        "youtubeTrailers": [
-          "Z9AYPxH5NTM"
-        ],
-        "reviews": [
-          {
-            "source": "Sydsvenskan",
-            "quote": "ett drama berättat med stor ömhet",
-            "stars": 4,
-            "max": 5
-          },
-          {
-            "source": "Svenska Dagbladet",
-            "quote": "en film att förälska sig i",
-            "stars": 5,
-            "max": 5
-          },
-          {
-            "source": "DN",
-            "quote": "en het romans i åttiotalskostym",
-            "stars": 4,
-            "max": 5
-          }
-        ]
-      }
-    };
-  },
-  methods: {
-    async getMovie() {
-      const response = await api.getMovies();
-      this.movies = response.data.movies;
-    }
-  },
-  computed: {
-    randomReview: function(){
-      var random = parseInt(Math.random() * this.aStaticMovie.reviews.length);
-      console.log(random);
-      var ranReview = this.aStaticMovie.reviews[random];
-
-
-      let text = `
-      <h5>${ranReview.source}</h5>
-      <p class="reviewQuote">${ranReview.quote}</p>
-      `;
-      return text;
-    }
-  }
-};
-</script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-*{
-  box-sizing: border-box;
-}
-.trailer-view{
-  display: flex;
-}
-.trailer-text{
-  flex: 1;
-  order: 2;
-}
-.trailer-video{
-  display: flex;
-  justify-content: space-around;
-  flex: 1;
-}
-
-.combined-view{
-  display: flex;
-}
-.combined-view > section{
-  flex: 1;
-}
-
-li{
-  list-style: none;
-}
-
-.movieposter{
-  width: 100%;
-}
-
-</style>
-=======
 <!-- INTE KOPPLAD MOT DATABAS -->
 
 <template>
   <div class="Movie">
 
-    <section v-if="aMovie === null">
-      <p>Något blev galet!</p>
-      <p>Det finns ingen film med det ID du angav </p>
-      <p>Länk tillbaka till MoviesPage</p>
-    </section>
-
     <b-jumbotron bg-variant="white">
+      <section v-if="aMovie === null">
+        <h1>Något blev fel!</h1>
+        <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
+        <ul>
+          <li>Antipiratbyrån har hackat oss</li>
+          <li>Vår hemsida har tekniskt strul</li>
+          <li>Du har klickat på en gammal länk</li>
+        </ul>
+        <router-link class="router-link" to="/moviesPage" exact-active-class="menu-item-active">Klicka här för att komma till alla filmer</router-link>
 
-      <!-- Title -->
-      <template slot="header">
-        {{aMovie.title}}
-      </template>
-      <!-- description -->
-      <template slot="lead">
-          <span v-html="aMovie.description"></span>
-      </template>
-      <b-btn variant="primary" href="#">Boka platser</b-btn>
-
-
-      <hr class="my-4">
-      <section class="trailer-view">
-        <section class="trailer-video">
-          <iframe width="100%" height="100%" src="https://www.youtube.com/embed/Z9AYPxH5NTM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </section>
-        <section class="trailer-text">
-          <ul>
-            <li>Genre: {{aMovie.tenre}}</li>
-            <li>Längd: {{aMovie.length}}</li>
-            <li>År: {{aMovie.productionYear}}</li>
-            <li>Land:<span v-for="c in aMovie.ProductionCountries"> {{c}}</span></li>
-            <li>Språk: {{aMovie.language}}</li>
-            <li>Undertexter: {{aMovie.subtitles}}</li>
-            <li>Regisör: {{aMovie.director}}</li>
-          </ul>
-          <ul>
-            <li>Skådespelare:</li>
-            <li v-for="actor in aMovie.actors">{{actor}}</li>
-          </ul>
-        </section>
-        <section class="trailer-text">
-          <p>
-            Quote
-          </p>
-
-        </section>
       </section>
-      <hr class="my-4">
+
+      <section v-else>
 
 
+        <!-- Title -->
+        <section class="movieheader">
+
+          <section class="movieheader_pic">
+            <img class="movieposter" :src="require('../assets/'+this.aMovie.images[0])">
+          </section>
+
+          <section class="movieheader_text">
+            <h1 class="movietitle">
+              {{aMovie.title}}
+            </h1>
+            <!-- description -->
+            <article>
+              <span class="moviedescription" v-html="aMovie.description"></span>
+            </article>
+            <br>
+            <b-btn variant="danger" href="#">Boka platser</b-btn>
+          </section>
+        </section>
+
+
+
+
+        <hr class="my-4">
+        <section class="trailer-view">
+          <section class="trailer-video">
+            <iframe class="videoplayer" :src="'https://www.youtube.com/embed/'+this.aMovie.youtubeTrailers[0]" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </section>
+          <section class="trailer-text">
+            <ul>
+              <li>Genre: {{aMovie.genre}}</li>
+              <li>Längd: {{parseInt(aMovie.length/60)}} timmar och {{aMovie.length%60}} minuter</li>
+              <li>År: {{aMovie.productionYear}}</li>
+              <li>Land:<span v-for="c in aMovie.productionCountries"> {{c}}</span></li>
+              <li>Språk: {{aMovie.language}}</li>
+              <li>Undertexter: {{aMovie.subtitles}}</li>
+              <li>Regisör: {{aMovie.director}}</li>
+            </ul>
+            <ul v-if="aMovie.actors.length > 0">
+              <li>Skådespelare:</li>
+              <li v-for="actor in aMovie.actors">{{actor}}</li>
+            </ul>
+          </section>
+          <section class="trailer-text">
+            <article v-for="review in aMovie.reviews">
+              <p>
+                <span class="reviewHead">{{review.source}}</span>
+                <span class="star activeStar">{{starView(0, (review.stars/1))}}</span><span class="star inactiveStar">{{starView((review.stars/1), (review.max/1))}}</span>
+                <br>
+                <em>{{review.quote}}</em>
+              </p>
+
+            </article>
+
+
+          </section>
+        </section>
+        <hr class="my-4">
+
+
+
+      </section>
     </b-jumbotron>
   </div>
 </template>
@@ -224,29 +92,46 @@ export default {
   name: "Movie",
   data() {
     return {
-      aMovie: null,
-      movieID: null
+      aMovie: null
     };
   },
-  computed: {
-    movieID: function(){
-      if((window.location.hash.indexOf("?")+1) > 0)
+  methods: {
+    getImageUrl(){
+      return { sample: require('../assets/'+this.aMovie.images[0]) };
+    },
+    starView(s, n){
+      let starPut = "";
+      for(let i = s; i < n; i++)
+        starPut += "*";
+      return starPut;
+    },
+    async getMovieByID() {
+      if(this.movieID() !== null){
+        try{
+          const response = await api.getMovies({_id: this.movieID()});
+          if(response.data.movies.length > 0)
+            this.aMovie = response.data.movies[0];
+
+        } catch(error){
+          this.aMovie = null;
+        }
+    } else {
+      this.aMovie = null;
+    }
+  },
+    movieID(){
+      if(window.location.hash.indexOf("?") > 0)
         return window.location.hash.substr(window.location.hash.indexOf("?")+1);
       return null;
     }
   },
-  methods: {
-    async getMovieByID(id = this.movieID) {
-      const response = await api.getMovieByID(id);
-      this.aMovie = response.data.movie;
-    },
-
-  },
-  created: function() {
-    this.getMovieByID();
-  },
   mounted: function() {
     this.getMovieByID();
+  },
+  watch: {
+    '$route': function() {
+      this.getMovieByID();
+    }
   }
 };
 </script>
@@ -256,6 +141,7 @@ export default {
 *{
   box-sizing: border-box;
 }
+
 .trailer-view{
   display: flex;
   flex-direction: column;
@@ -264,17 +150,43 @@ export default {
   flex: 1;
   order: 2;
 }
+
 .trailer-video{
-  display: flex;
-  justify-content: space-around;
+  text-align: center;
   flex: 1;
 }
 
-.combined-view{
-  display: flex;
+.videoplayer{
+  height: 60vmin;
+  width: 90vmin;
 }
-.combined-view > section{
+
+
+.movieheader{
+  display: flex;
+  flex-direction: column;
+}
+
+.movieheader_pic{
+  padding: 0 2%;
   flex: 1;
+  text-align: center;
+}
+
+.movieheader_text{
+  flex: 5;
+}
+
+.moviedescription{
+  font-style: italic;
+  font-size: 100%;
+  color: rgb(85, 85, 85);
+}
+
+.movietitle{
+  color: rgb(55, 55, 55);
+  font-size: 200%;
+  font-weight: bold;
 }
 
 li{
@@ -282,14 +194,53 @@ li{
 }
 
 .movieposter{
-  width: 100%;
+  width: 85vmin;
+  height: auto;
 }
 
-@media screen and (min-width: 1024px) {
+.star{
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+  font-size: 180%;
+  text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+}
+
+.reviewHead{
+  font-size: 200%;
+}
+
+.activeStar{
+  color: rgb(233, 255, 0);
+}
+.inactiveStar{
+  color: rgb(122, 122, 122);
+}
+
+@media screen and (min-width: 768px) {
+  .moviedescription{
+    font-size: 150%;
+  }
+  .movietitle{
+    font-size: 300%;
+  }
   .trailer-view{
     flex-direction: row;
+  }
+  .movieheader{
+    flex-direction: row;
+  }
+  .movieposter{
+    width: 30vmin;
+    height: auto;
+  }
+  .trailer-video{
+    margin-bottom: 0;
+  }
+  .videoplayer{
+    height: 20vmax;
+    width: 30vmax;
   }
 }
 
 </style>
->>>>>>> before discard
