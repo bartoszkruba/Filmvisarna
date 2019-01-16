@@ -1,5 +1,5 @@
 <template> 
-<div>
+<main>
     <div>
        
        
@@ -37,12 +37,14 @@
             <h3>Kostnad</h3>
             <p class="totalt" >totalt: {{totalt}}kr</p>
         </div>
-        <div>
-           <button type="button" class="slutför btn btn-danger">Slutför bokning</button>
+        <div class="slutför btn">
+           <button v-on:click="visaFelMedellande" type="button" class="btn btn-danger">Slutför bokning</button>
+
+           <p class="felMedellande" v-if="visaMedellande">Du måste välja minst ett biljett</p>
         </div>
     </div>
 
-</div>
+</main>
 
 </template> 
  
@@ -70,7 +72,8 @@ export default {
         movie: null,
         totalt: null,
 
-        visaTotal: false
+        visaTotal: false,
+        visaMedellande: false
     };
     
   }, 
@@ -88,12 +91,13 @@ export default {
   methods: {
       async getMovies(){
           const response = await api.getMovies();
-          this.movie = response.data.movies[0];
+          this.movie = response.data.movies[1];
       },
       plus(){
           this.antal+=1;
           this.totalt+=85;
           this.visaTotal = true;
+          this.visaMedellande = false;
       },
       minus(){
           
@@ -111,6 +115,7 @@ export default {
           this.totalt+=75;
           this.antalPensionar+=1;
           this.visaTotal = true;
+          this.visaMedellande = false;
 
       },
       minusPensionar(){
@@ -129,6 +134,7 @@ export default {
           this.totalt+=65
           this.antalBarn+=1;
           this.visaTotal = true;
+           this.visaMedellande = false;
       },
       minusBarn(){
           if (this.antalBarn>0){
@@ -141,18 +147,23 @@ export default {
           if (this.antalBarn<1 && this.antalPensionar==0 && this.antal==0){
               this.visaTotal=false;
           }
+      },
+      visaFelMedellande(){
+          if(this.totalt==0)
+              this.visaMedellande = true;
       }
   } 
 }; 
 </script> 
  
 <!-- Add "scoped" attribute to limit CSS to this component only --> 
-<style > 
+<style scoped> 
 main{
     background-color: black;
 }
 
 .kostnad{
+    
     display: flex;
     width: 40vw;
     justify-content: space-between;
@@ -206,7 +217,7 @@ img{
     justify-content:space-around;
 }
 .slutför{
-    margin: 5vh auto
+    margin: 8vh auto
 }
 .text{
    display: flex;
@@ -216,6 +227,13 @@ img{
 }
 .hej{
     margin: 0 2vw;
+}
+
+.felMedellande{
+    font-size: 1vw;
+    color: red;
+    margin-top: 1vh;
+    margin-bottom: 0;
 }
 
 
