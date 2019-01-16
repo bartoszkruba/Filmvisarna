@@ -1,7 +1,7 @@
 <template>
 <main>
 
-<section v-if="movie === null">
+<section v-if="movie === null || session === null">
         <h1>Något blev fel!</h1>
         <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
         <ul>
@@ -33,7 +33,7 @@
 
     <div class="text">
       <p>
-        Antal lediga platser: {{this.session.freePlaces}} 
+        Antal lediga platser: {{this.session.freePlaces}}
       </p>
          <h4>Antal biljetter:</h4>
         <p><strong> Ordinarie</strong></p>
@@ -140,25 +140,27 @@ export default {
       if(this.sessionID !== null){
         try{
           const response = await api.getMovieSessions({_id: this.sessionID});
-          this.session = response.data.movie_sessions[0];
+          if(response.data.movie_sessions.length)
+            this.session = response.data.movie_sessions[0];
+          else
+            this.session = null;
         } catch(error){
           this.session = null;
         }
       } else {
          this.session = null;
         }
-        console.log(this.session);
       },
       getIdFromUrl(){
+        this.movieID = null;
+        this.sessionID = null;
         let id = window.location.hash.substr(window.location.hash.indexOf("?")+1);
         id = id.split("&");
         if(id.length === 2){
           this.movieID = id[0];
           this.sessionID = id[1];
         }
-        console.log(this.movieID);
-        console.log(this.sessionID);
-      },
+        },
       plus(){
           this.antal+=1;
           this.totalt+=85;
