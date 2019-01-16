@@ -593,7 +593,7 @@ export default {
 
         console.log(movie);
         try {
-          const response = await api.addMovie({ movie , userCredentials});
+          const response = await api.addMovie(movie , userCredentials);
           this.message = response.data.message;
           this.error = null;
           window.scrollTo(0, 0);
