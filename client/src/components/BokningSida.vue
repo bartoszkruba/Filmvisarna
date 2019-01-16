@@ -30,13 +30,13 @@
 
     <div class="text"> 
          <h4>Antal bilijetter:</h4>
-        <p>Ordinarie</p>
+        <p><strong> Ordinarie</strong></p>
         <div class="antal">
            <button v-on:click="minus" type="button" class="btn btn-dark">-</button>
            <h5 class="hej"> {{antal}} st / {{pris}}kr per st </h5>
            <button v-on:click="plus" type="button" class="btn btn-dark">+</button>
         </div>
-        <p>Pensionär</p>
+        <p><strong> Pensionär</strong></p>
          <div class="antal">
            <button v-on:click="minusPensionar" type="button" class="btn btn-dark">-</button>
            <h5 class="hej"> {{antalPensionar}} st / {{prisPensionar}}kr per st </h5>
@@ -44,21 +44,21 @@
         </div>
 
         <div v-if="movie.ageLimit<15">
-        <p class="barn">Barn</p>
+        <p class="barn"><strong> Barn</strong></p>
         <div class="antal">
            <button v-on:click="minusBarn" type="button" class="btn btn-dark">-</button>
            <h5 class="hej"> {{antalBarn}} st / {{prisBarn}}kr per st </h5>
            <button v-on:click="plusBarn" type="button" class="btn btn-dark">+</button>
         </div>
         </div>
-        <div class="kostnad" v-if="visaTotal">
+        <div class="kostnad" v-if="totalt>=65">
             <h3>Kostnad</h3>
             <p class="totalt" >totalt: {{totalt}}kr</p>
         </div>
         <div class="slutför btn">
            <button v-on:click="visaFelMedellande" type="button" class="btn btn-danger">Slutför bokning</button>
 
-           <p class="felMedellande" v-if="visaMedellande">Du måste välja minst ett biljett</p>
+           <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
         </div>
     </div>
       </section>
@@ -89,7 +89,6 @@ export default {
         pris: null,
         movie: null,
         totalt: null,
-        visaTotal: false,
         visaMedellande: false
     };
     
@@ -119,24 +118,21 @@ export default {
           const response = await api.getMovies({_id: this.movieID()});
           if(response.data.movies.length > 0)
             this.movie = response.data.movies[0];
-console.log(this.movie);
+
 
         } catch(error){
           this.movie = null;
         }
-    } else {
-      this.movie = null;
-    }
-  },
-  movieID(){
+      } else {
+         this.movie = null;
+        }
+      },
+      movieID(){
       if(window.location.hash.indexOf("?") > 0)
         return window.location.hash.substr(window.location.hash.indexOf("?")+1);
       return null;
     
-  },
-      
-
-
+      },
       plus(){
           this.antal+=1;
           this.totalt+=85;
@@ -149,11 +145,9 @@ console.log(this.movie);
           this.totalt-=85
           this.antal-=1;}
           else {
-              alert('Du kan inte välja mindre än ett biljett ')
+              alert('Du kan inte välja mindre än en biljett ')
           }
-          if (this.antalBarn<1 && this.antalPensionar==0 && this.antal==0){
-              this.visaTotal=false;
-          }
+          
       },
       plusPensionar(){
           this.totalt+=75;
@@ -168,11 +162,9 @@ console.log(this.movie);
           this.antalPensionar-=1;
           }
           else {
-              alert('Du kan inte välja mindre än ett biljett ')
+              alert('Du kan inte välja mindre än en biljett ')
           }
-          if (this.antalBarn==0 && this.antalPensionar<1 && this.antal==0){
-              this.visaTotal=false;
-          }
+          
       },
       plusBarn(){
           this.totalt+=65
@@ -186,11 +178,9 @@ console.log(this.movie);
           this.totalt-=65
           }
           else {
-              alert('Du kan inte välja mindre än ett biljett ')
+              alert('Du kan inte välja mindre än en biljett ')
           }
-          if (this.antalBarn<1 && this.antalPensionar==0 && this.antal==0){
-              this.visaTotal=false;
-          }
+          
       },
       visaFelMedellande(){
           if(this.totalt==0)
@@ -233,7 +223,9 @@ h1{
     align-items: center;
     font-size: 2.55rem;
     margin-top: 5vh;
-    color: rgb(207, 96, 96);
+    color: white;
+    text-shadow: -3px 3px 10px black, -3px 3px 10px black, -3px 3px 10px black, 3px -3px 10px black;
+    font-weight: bold;
     font-style: oblique;
 }
 h4{
@@ -282,7 +274,7 @@ img{
     margin-top: 1vh;
     margin-bottom: 0;
 }
-@media screen and (max-width: 414px) {
+@media screen and (max-width: 416px) {
     h1{
     margin-top: 8vh;
     font-size: 1.3rem;

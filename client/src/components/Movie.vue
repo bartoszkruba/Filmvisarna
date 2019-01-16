@@ -229,7 +229,7 @@ li{
   padding: 0;
   font-weight: bold;
   font-size: 180%;
-  text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
 .reviewHead{
