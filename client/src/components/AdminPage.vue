@@ -628,6 +628,7 @@ export default {
       }
     },
     async addMovieSession() {
+      const userCredentials = this.$store.getters.getCredentials;
       this.movieSession.movieID = this.movies.filter((m)=>{
         return m.title === this.movieSession.movieTitle;
       })[0]._id;
@@ -640,7 +641,7 @@ export default {
       this.movieSession.date.time = this.movieSession.date.hour.padStart(2, '0') + ":" + this.movieSession.date.minute.padStart(2, '0');
       delete this.movieSession.date.hour;
       delete this.movieSession.date.minute;
-      const response = await api.addMovieSession(this.movieSession);
+      const response = await api.addMovieSession(this.movieSession , userCredentials);
       console.log(response);
     }
   }
