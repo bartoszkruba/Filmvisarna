@@ -20,9 +20,10 @@
           </b-nav-form>
 
           <b-navbar-nav right>
-            <b-nav-item class="router-link" to="/LoggaIn" v-show="this.$store.state.showLoggaInButton" exact-active-class="menu-item-active">Logga In</b-nav-item>
-            <b-nav-item class="router-link" to="/MinSida" v-show="this.$store.state.showMinaSidorButton" exact-active-class="menu-item-active"><font-awesome-icon style="margin-right: 5px" icon="user"/>{{this.$store.state.loggedInUser.name.split(' ')[0]}}</b-nav-item>
-            <b-nav-item class="router-link" @click="signOut" exact-active-class="menu-item-active" v-show="this.$store.state.showMinaSidorButton">Logga Ut</b-nav-item>
+            <b-nav-item class="router-link" to="/LoggaIn" v-if="this.$store.state.showLoggaInButton" exact-active-class="menu-item-active">Logga In</b-nav-item>
+            <b-nav-item class="router-link" to="/MinSida" v-if="this.$store.state.showMinaSidorButton" exact-active-class="menu-item-active"><font-awesome-icon style="margin-right: 5px" icon="user"/>{{this.$store.state.loggedInUser.name.split(' ')[0]}}</b-nav-item>
+            <b-nav-item class="router-link" to="/adminPage" v-if="this.$store.state.showAdminButton" exact-active-class="menu-item-active">Admin Sida</b-nav-item>
+            <b-nav-item class="router-link" @click="signOut" exact-active-class="menu-item-active" v-if="this.$store.state.showMinaSidorButton">Logga Ut</b-nav-item>
           </b-navbar-nav>
         </b-navbar-nav>
       </b-collapse>
@@ -38,6 +39,9 @@ export default {
   },
   methods: {
       signOut(){
+        if(this.$store.state.loggedInUser.admin){
+          this.$store.commit('showAdminControls');
+        }
       this.$store.commit('showMinaSidor');
       this.$store.commit('resetUserProperties');
       this.$router.push('/LoggaIn');

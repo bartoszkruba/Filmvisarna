@@ -1,8 +1,7 @@
 <template>
-  <div>
-    <h1 class="text-center">Admin Page</h1>
-    <br>
-    <hr>
+<div>
+  <div v-if="this.$store.state.loggedInUser.admin">
+    <b-jumbotron class="jumbotron"><h1>Admin Sida</h1></b-jumbotron>
     <h2 class="text-center">Add Movie</h2>
     <form class="container mb-5">
       <div class="row">
@@ -403,6 +402,10 @@
         </div>
       </div>
     </form>
+    </div>
+    <div v-if="!this.$store.state.loggedInUser.admin">
+      <b-jumbotron class="jumbotron"><h1>Du måste vara inloggad som administratör <br> för att få åtkomst till den här sidan</h1></b-jumbotron>
+    </div>
   </div>
 </template>
 
@@ -585,9 +588,12 @@ export default {
           youtubeTrailers: this.trailers,
           reviews: this.reviews
         };
+
+        const userCredentials = this.$store.getters.getCredentials;
+
         console.log(movie);
         try {
-          const response = await api.addMovie({ movie });
+          const response = await api.addMovie(movie , userCredentials);
           this.message = response.data.message;
           this.error = null;
           window.scrollTo(0, 0);
@@ -622,6 +628,7 @@ export default {
       }
     },
     async addMovieSession() {
+      const userCredentials = this.$store.getters.getCredentials;
       this.movieSession.movieID = this.movies.filter((m)=>{
         return m.title === this.movieSession.movieTitle;
       })[0]._id;
@@ -634,7 +641,7 @@ export default {
       this.movieSession.date.time = this.movieSession.date.hour.padStart(2, '0') + ":" + this.movieSession.date.minute.padStart(2, '0');
       delete this.movieSession.date.hour;
       delete this.movieSession.date.minute;
-      const response = await api.addMovieSession(this.movieSession);
+      const response = await api.addMovieSession(this.movieSession , userCredentials);
       console.log(response);
     }
   }
@@ -642,4 +649,10 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .jumbotron {
+    background:linear-gradient(180deg,transparent,rgba(0,0,0,.16)),linear-gradient(#860717,#860717);
+    border-radius: 0;
+    color: white;
+    text-align: center;
+  }
 </style>

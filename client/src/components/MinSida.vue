@@ -15,6 +15,10 @@ export default {
   data(){
     return{
       fields: {
+        orderId: {
+          label: 'Bokningsnummer',
+          sortable: false
+        },
         movie: {
           label: 'Film',
           sortable: false
@@ -34,9 +38,12 @@ export default {
   methods: {
     
   },
-  mounted: function(){
+  mounted: async function(){
     if(!this.$store.state.loggedInUser.name){
       this.$router.push('/LoggaIn');
+    }else{
+      const response = await api.getTickets(this.$store.getters.getCredentials);
+      this.$store.commit('updateTickets', response.data.bookedTickets);
     }
   }
 };
