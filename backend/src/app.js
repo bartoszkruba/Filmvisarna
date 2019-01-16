@@ -30,6 +30,18 @@ const startServer = async () => {
     await mongoose.connect('mongodb+srv://groupaccount:groupaccount1234@cluster0-ydy7f.mongodb.net/filmvisarna', {useNewUrlParser: true});
     // Telling server to start listening on localhost:8081
     app.listen(8081, () => {
+        
+        // new MovieSession({
+        //     movieID: '5c3897dba4b4065c06286187',
+        //     date: {
+        //         year: 2019,
+        //         month: 2,
+        //         day: 12,
+        //         time: "20:00"
+        //     },
+        //     freePlaces: 81,
+        //     movieTheatreID: "5c3dae361a418e28df53e67a"
+        // }).save();
         console.log('Listening on 8081');
     });
 }
