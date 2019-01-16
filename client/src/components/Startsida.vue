@@ -76,7 +76,6 @@
         controls
         indicators
         :interval="4000"
-        v-model="slide"
         @sliding-start="onSlideStart"
         @sliding-end="onSlideEnd"
         class="calusel"
