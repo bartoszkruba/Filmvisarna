@@ -39,6 +39,7 @@ Router.post('/addMovieSession', movieSessionController.postAddMovieSession);
 
 Router.post('/register', authenticationPolicy.postRegister, authenticationController.postRegister);
 Router.post('/login', authenticationController.postValidate);
+Router.post('/getTickets', authenticationController.getBookedTickets);
 
 // Exporting Router
 module.exports = Router;
