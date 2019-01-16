@@ -99,7 +99,10 @@ export default {
     },
     async searchForMovies() {
       const response = await api.searchMovies(this.searchQuery);
-      console.log(response.data.movies);
+      if(this.searchQuery && this.searchQuery.trim() !== ''){
+        this.$router.push(`/moviesPage?${this.searchQuery.replace(' ', '_')}`);
+      }
+      this.searchQuery = null;
     }
   }
 };

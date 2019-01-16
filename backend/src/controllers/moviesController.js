@@ -35,9 +35,8 @@ module.exports.searchMovies = async (req, res, next) =>{
     let query = {};
     if(req.body.query){
        const nameExp = new RegExp(req.body.query, 'i');
-       query = { $or : [ { title: nameExp }, { director: nameExp }, { genre: nameExp } ] }; 
+       query = { $or : [ { title: nameExp }, { director: nameExp }, { genre: nameExp }, { "actors": { "$all": [ nameExp ] } } ] }; 
        const movies = await Movie.find(query);
-       console.log(movies);
        res.send({
            movies: movies
        });
