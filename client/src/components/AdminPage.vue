@@ -588,9 +588,12 @@ export default {
           youtubeTrailers: this.trailers,
           reviews: this.reviews
         };
+
+        const userCredentials = this.$store.getters.getCredentials;
+
         console.log(movie);
         try {
-          const response = await api.addMovie({ movie });
+          const response = await api.addMovie({ movie , userCredentials});
           this.message = response.data.message;
           this.error = null;
           window.scrollTo(0, 0);
