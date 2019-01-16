@@ -1,7 +1,7 @@
-<template> 
+<template>
 <main>
 
-<section v-if="movie === null">
+<section v-if="movie === null || session === null">
         <h1>Något blev fel!</h1>
         <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
         <ul>
@@ -16,20 +16,26 @@
       <section v-else>
 
     <div>
-       
-    
+
+
     <img :src="require('../assets/'+this.movie.images[0])" class="img">
         <div class="papillon">
-            <h1>{{movie.title}}</h1>
+          <h1>{{movie.title}}</h1>
+          <h1>
+            {{this.session.date.day+'/'+this.session.date.month+' '+this.session.date.year +' '+ this.session.date.time}}
+          </h1>
             <div class="antal-bilijetter">
-              
+
             </div>
         </div>
-  </div> 
-   
+  </div>
 
-    <div class="text"> 
-         <h4>Antal bilijetter:</h4>
+
+    <div class="text">
+      <p>
+        Antal lediga platser: {{this.session.freePlaces}}
+      </p>
+         <h4>Antal biljetter:</h4>
         <p><strong> Ordinarie</strong></p>
         <div class="antal">
            <button v-on:click="minus" type="button" class="btn btn-dark">-</button>
@@ -88,9 +94,9 @@
       </section>
 </main>
 
-</template> 
- 
-<script> 
+</template>
+
+<script>
 let pris = 85;
 let antal=0;
 let antalPensionar=0;
@@ -98,13 +104,13 @@ let prisPensionar= 75;
 let antalBarn=0;
 let prisBarn= 65;
 let totalt=0;
-import api from "@/services/Api.js"; 
+import api from "@/services/Api.js";
 
- 
+
 export default {
-  name: "BokningSida", 
-  data() { 
-    return { 
+  name: "BokningSida",
+  data() {
+    return {
         antal: null,
         antalPensionar: null,
         prisPensionar: null,
@@ -112,39 +118,42 @@ export default {
         prisBarn: null,
         pris: null,
         movie: null,
+        session: null,
         bokningsnummer: null,
         totalt: null,
-        visaMedellande: false
+        visaMedellande: false,
+        movieID: null,
+        sessionID: null
     };
-    
-  }, 
+
+  },
   mounted: function() {
+    this.getIdFromUrl();
     this.getMovieByID();
+    this.getSessionByID();
   },
   watch: {
     '$route': function() {
+      this.getIdFromUrl();
       this.getMovieByID();
+      this.getSessionByID();
     }
   },
-   created(){
-      this.pris=85;
-      this.prisPensionar= 75;
-      this.prisBarn= 65;
-      this.antalPensionar=0;
-      this.antalBarn=0;
-      this.antal=0;
-      this.totalt=0;
-
-        },
+  created(){
+    this.pris=85;
+    this.prisPensionar= 75;
+    this.prisBarn= 65;
+    this.antalPensionar=0;
+    this.antalBarn=0;
+    this.antal=0;
+    this.totalt=0;
+  },
   methods: {
       async getMovieByID() {
-      if(this.movieID() !== null){
+      if(this.movieID !== null){
         try{
-          const response = await api.getMovies({_id: this.movieID()});
-          if(response.data.movies.length > 0)
-            this.movie = response.data.movies[0];
-
-
+          const response = await api.getMovies({_id: this.movieID});
+          this.movie = response.data.movies[0];
         } catch(error){
           this.movie = null;
         }
@@ -152,12 +161,31 @@ export default {
          this.movie = null;
         }
       },
-      movieID(){
-      if(window.location.hash.indexOf("?") > 0)
-        return window.location.hash.substr(window.location.hash.indexOf("?")+1);
-      return null;
-    
+      async getSessionByID() {
+      if(this.sessionID !== null){
+        try{
+          const response = await api.getMovieSessions({_id: this.sessionID});
+          if(response.data.movie_sessions.length)
+            this.session = response.data.movie_sessions[0];
+          else
+            this.session = null;
+        } catch(error){
+          this.session = null;
+        }
+      } else {
+         this.session = null;
+        }
       },
+      getIdFromUrl(){
+        this.movieID = null;
+        this.sessionID = null;
+        let id = window.location.hash.substr(window.location.hash.indexOf("?")+1);
+        id = id.split("&");
+        if(id.length === 2){
+          this.movieID = id[0];
+          this.sessionID = id[1];
+        }
+        },
       bokningsnummer(){
           this.bokningsnummer=(Math.random()+1);
           console.log(this.bokningsnummer);
@@ -171,14 +199,14 @@ export default {
           this.visaMedellande = false;
       },
       minus(){
-          
+
           if (this.antal>0){
           this.totalt-=85
           this.antal-=1;}
           else {
               alert('Du kan inte välja mindre än en biljett ')
           }
-          
+
       },
       plusPensionar(){
           this.totalt+=75;
@@ -195,7 +223,7 @@ export default {
           else {
               alert('Du kan inte välja mindre än en biljett ')
           }
-          
+
       },
       plusBarn(){
           this.totalt+=65
@@ -211,7 +239,7 @@ export default {
           else {
               alert('Du kan inte välja mindre än en biljett ')
           }
-          
+
       },
       visaFelMedellande(){
           if(this.totalt==0){
@@ -239,7 +267,7 @@ export default {
 }
 
 .kostnad{
-    
+
     display: flex;
     width: 40vw;
     justify-content: space-between;
@@ -256,7 +284,7 @@ export default {
     margin: 3vh;
 }
 h4, h5,p, h1{
-   
+
     margin-top: 2vh;
 }
 .totalt{
@@ -282,13 +310,13 @@ text-align: center;
 
 .papillon{
     position: relative;
-    margin-top: -17vh;
+    margin-top: -25vh;
     display: block;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    
+
 }
 img{
     width: 100vw;
@@ -327,4 +355,4 @@ img{
 }
 
 
-</style> 
+</style>
