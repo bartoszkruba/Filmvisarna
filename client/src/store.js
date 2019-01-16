@@ -44,7 +44,6 @@ export const store = new Vuex.Store({
         setLoggedInUser(state,user){
             state.loggedInUser.name = user.user;
             state.loggedInUser.id = user.id;
-            state.loggedInUser.bookedTickets = user.bookedTickets;
             state.loggedInUser.admin = user.admin;
             state.loggedInUser.email = user.email;
             state.loggedInUser.password = user.password;

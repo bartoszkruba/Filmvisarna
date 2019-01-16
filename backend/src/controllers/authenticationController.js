@@ -28,7 +28,6 @@ module.exports.postValidate = async (req, res, next) => {
             message: 'User matched database',
             user: users[0].name,
             id: users[0].id,
-            bookedTickets: users[0].bookedTickets,
             admin: users[0].admin,
             email: users[0].email,
             password: users[0].password,

@@ -44,7 +44,6 @@ export default {
     }else{
       const response = await api.getTickets(this.$store.getters.getCredentials);
       this.$store.commit('updateTickets', response.data.bookedTickets);
-      
     }
   }
 };
