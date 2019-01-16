@@ -118,7 +118,8 @@ export default {
   name: "Movie",
   data() {
     return {
-      aMovie: null
+      aMovie: null,
+      movieSessions: null
     };
   },
   methods: {
@@ -149,6 +150,22 @@ export default {
         this.aMovie = null;
       }
     },
+    async getMovieSessions(){
+      if (this.movieID() !== null) {
+        try {
+          const response = await api.getMovieSessions({
+            movieID: this.movieID()
+          });
+          this.movieSessions = response.data.movie_sessions;
+          console.log(this.movieSessions);
+
+        } catch (error) {
+          this.movieSessions = null;
+        }
+      } else {
+        this.movieSessions = null;
+      }
+    },
     movieID() {
       if (window.location.hash.indexOf("?") > 0)
         return window.location.hash.substr(window.location.hash.indexOf("?") + 1);
@@ -157,10 +174,12 @@ export default {
   },
   mounted: function() {
     this.getMovieByID();
+    this.getMovieSessions();
   },
   watch: {
     '$route': function() {
       this.getMovieByID();
+      this.getMovieSessions();
     }
   }
 };
