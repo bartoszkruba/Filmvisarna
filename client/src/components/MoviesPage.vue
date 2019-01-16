@@ -73,6 +73,9 @@ export default {
       if(window.location.hash.indexOf("?") > 0){
         const response = await api.searchMovies(window.location.hash.substr(window.location.hash.indexOf("?")+1).replace('_', ' ')); 
         this.movies = response.data.movies;
+        if(this.movies.length === 1){
+          this.$router.push(`/Movie?${this.movies[0]._id}`);
+        }
       }else{
         const response = await api.getMovies();
         this.movies = response.data.movies;
