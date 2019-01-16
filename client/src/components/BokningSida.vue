@@ -1,4 +1,4 @@
-<template> 
+<template>
 <main>
 
 <section v-if="movie === null">
@@ -16,20 +16,20 @@
       <section v-else>
 
     <div>
-       
-    
+
+
     <img :src="require('../assets/'+this.movie.images[0])" class="img">
         <div class="papillon">
             <h1>{{movie.title}}</h1>
             <div class="antal-bilijetter">
-              
+
             </div>
         </div>
-  </div> 
-   
+  </div>
 
-    <div class="text"> 
-         <h4>Antal bilijetter:</h4>
+
+    <div class="text">
+         <h4>Antal biljetter:</h4>
         <p><strong> Ordinarie</strong></p>
         <div class="antal">
            <button v-on:click="minus" type="button" class="btn btn-dark">-</button>
@@ -64,9 +64,9 @@
       </section>
 </main>
 
-</template> 
- 
-<script> 
+</template>
+
+<script>
 let pris = 85;
 let antal=0;
 let antalPensionar=0;
@@ -74,13 +74,13 @@ let prisPensionar= 75;
 let antalBarn=0;
 let prisBarn= 65;
 let totalt=0;
-import api from "@/services/Api.js"; 
+import api from "@/services/Api.js";
 
- 
+
 export default {
-  name: "BokningSida", 
-  data() { 
-    return { 
+  name: "BokningSida",
+  data() {
+    return {
         antal: null,
         antalPensionar: null,
         prisPensionar: null,
@@ -91,8 +91,8 @@ export default {
         totalt: null,
         visaMedellande: false
     };
-    
-  }, 
+
+  },
   mounted: function() {
     this.getMovieByID();
   },
@@ -131,7 +131,7 @@ export default {
       if(window.location.hash.indexOf("?") > 0)
         return window.location.hash.substr(window.location.hash.indexOf("?")+1);
       return null;
-    
+
       },
       plus(){
           this.antal+=1;
@@ -140,14 +140,14 @@ export default {
           this.visaMedellande = false;
       },
       minus(){
-          
+
           if (this.antal>0){
           this.totalt-=85
           this.antal-=1;}
           else {
               alert('Du kan inte välja mindre än en biljett ')
           }
-          
+
       },
       plusPensionar(){
           this.totalt+=75;
@@ -164,7 +164,7 @@ export default {
           else {
               alert('Du kan inte välja mindre än en biljett ')
           }
-          
+
       },
       plusBarn(){
           this.totalt+=65
@@ -180,21 +180,21 @@ export default {
           else {
               alert('Du kan inte välja mindre än en biljett ')
           }
-          
+
       },
       visaFelMedellande(){
           if(this.totalt==0)
               this.visaMedellande = true;
       }
-  } 
-}; 
-</script> 
- 
-<!-- Add "scoped" attribute to limit CSS to this component only --> 
-<style scoped> 
+  }
+};
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
 
 .kostnad{
-    
+
     display: flex;
     width: 40vw;
     justify-content: space-between;
@@ -211,7 +211,7 @@ export default {
     margin: 3vh;
 }
 h4, h5,p, h1{
-   
+
     margin-top: 2vh;
 }
 .totalt{
@@ -243,7 +243,7 @@ text-align: center;
     left: 0;
     width: 100%;
     height: 100%;
-    
+
 }
 img{
     width: 100vw;
@@ -282,4 +282,4 @@ img{
 }
 
 
-</style> 
+</style>
