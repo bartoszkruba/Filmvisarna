@@ -19,7 +19,7 @@
        
     
     <img :src="require('../assets/'+this.movie.images[0])" class="img">
-     <div class="papillon">
+        <div class="papillon">
             <h1>{{movie.title}}</h1>
             <div class="antal-bilijetter">
               
@@ -30,32 +30,59 @@
 
     <div class="text"> 
          <h4>Antal bilijetter:</h4>
-        <p>Ordinarie</p>
+        <p><strong> Ordinarie</strong></p>
         <div class="antal">
            <button v-on:click="minus" type="button" class="btn btn-dark">-</button>
-           <h5 class="hej"> {{antal}}st / {{pris}}kr per st </h5>
+           <h5 class="hej"> {{antal}} st / {{pris}}kr per st </h5>
            <button v-on:click="plus" type="button" class="btn btn-dark">+</button>
         </div>
-        <p>Pensionär</p>
+        <p><strong> Pensionär</strong></p>
          <div class="antal">
            <button v-on:click="minusPensionar" type="button" class="btn btn-dark">-</button>
-           <h5 class="hej"> {{antalPensionar}}st / {{prisPensionar}}kr per st </h5>
+           <h5 class="hej"> {{antalPensionar}} st / {{prisPensionar}}kr per st </h5>
            <button v-on:click="plusPensionar" type="button" class="btn btn-dark">+</button>
         </div>
-        <p>Barn</p>
+
+        <div v-if="movie.ageLimit<15">
+        <p class="barn"><strong> Barn</strong></p>
         <div class="antal">
            <button v-on:click="minusBarn" type="button" class="btn btn-dark">-</button>
-           <h5 class="hej"> {{antalBarn}}st / {{prisBarn}}kr per st </h5>
+           <h5 class="hej"> {{antalBarn}} st / {{prisBarn}}kr per st </h5>
            <button v-on:click="plusBarn" type="button" class="btn btn-dark">+</button>
         </div>
-        <div class="kostnad" v-if="visaTotal">
+        </div>
+        <div class="kostnad" v-if="totalt>=65">
             <h3>Kostnad</h3>
             <p class="totalt" >totalt: {{totalt}}kr</p>
         </div>
         <div class="slutför btn">
-           <button v-on:click="visaFelMedellande" type="button" class="btn btn-danger">Slutför bokning</button>
+            <div>
+                <b-btn v-on:click="visaFelMedellande" v-b-modal.modal1>Slutför bokning</b-btn>
 
-           <p class="felMedellande" v-if="visaMedellande">Du måste välja minst ett biljett</p>
+                <!-- Modal Component -->
+                <b-modal id="modal1" v-if="totalt>=65" title="Bekräftelse">
+                <p>Film: <strong> {{movie.title}}</strong></p>
+                <p>Datum: </p>
+                <p>Tid: </p>
+                <div class="Biljetter">
+                  <p>Biljetter:</p>
+                  <div class="vilkaBiljetter">
+                    <p v-if="antal>0"> {{antal}} Ordinarie</p>
+                    <p v-if="antalPensionar>0"> {{antalPensionar}} Pensionär</p>
+                    <p v-if="antalBarn>0"> {{antalBarn}} Barn</p>
+                  </div>
+                </div>
+                <p>Att betala: {{totalt}}kr</p>
+
+                <p></p>
+
+                <p class="my-4">Din bokningsnummer: {{bokningsnummer}}</p>
+                <p class="my-4"><strong>OBS!</strong>Du kan hämta ut dina biljetter senast 40min innan filmen börjar</p>
+                <p>  betalningen sker vid kassan i biografen</p>
+                </b-modal>
+            </div>
+
+           <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
         </div>
     </div>
       </section>
@@ -85,8 +112,8 @@ export default {
         prisBarn: null,
         pris: null,
         movie: null,
+        bokningsnummer: null,
         totalt: null,
-        visaTotal: false,
         visaMedellande: false
     };
     
@@ -116,24 +143,27 @@ export default {
           const response = await api.getMovies({_id: this.movieID()});
           if(response.data.movies.length > 0)
             this.movie = response.data.movies[0];
-console.log(this.movie);
+
 
         } catch(error){
           this.movie = null;
         }
-    } else {
-      this.movie = null;
-    }
-  },
-  movieID(){
+      } else {
+         this.movie = null;
+        }
+      },
+      movieID(){
       if(window.location.hash.indexOf("?") > 0)
         return window.location.hash.substr(window.location.hash.indexOf("?")+1);
       return null;
     
-  },
-      
+      },
+      bokningsnummer(){
+          this.bokningsnummer=(Math.random()+1);
+          console.log(this.bokningsnummer);
+          
 
-
+      },
       plus(){
           this.antal+=1;
           this.totalt+=85;
@@ -146,11 +176,9 @@ console.log(this.movie);
           this.totalt-=85
           this.antal-=1;}
           else {
-              alert('Du kan inte välja mindre än ett biljett ')
+              alert('Du kan inte välja mindre än en biljett ')
           }
-          if (this.antalBarn<1 && this.antalPensionar==0 && this.antal==0){
-              this.visaTotal=false;
-          }
+          
       },
       plusPensionar(){
           this.totalt+=75;
@@ -165,11 +193,9 @@ console.log(this.movie);
           this.antalPensionar-=1;
           }
           else {
-              alert('Du kan inte välja mindre än ett biljett ')
+              alert('Du kan inte välja mindre än en biljett ')
           }
-          if (this.antalBarn==0 && this.antalPensionar<1 && this.antal==0){
-              this.visaTotal=false;
-          }
+          
       },
       plusBarn(){
           this.totalt+=65
@@ -183,15 +209,17 @@ console.log(this.movie);
           this.totalt-=65
           }
           else {
-              alert('Du kan inte välja mindre än ett biljett ')
+              alert('Du kan inte välja mindre än en biljett ')
           }
-          if (this.antalBarn<1 && this.antalPensionar==0 && this.antal==0){
-              this.visaTotal=false;
-          }
+          
       },
       visaFelMedellande(){
-          if(this.totalt==0)
+          if(this.totalt==0){
               this.visaMedellande = true;
+          }
+          else{
+              this.bokningsnummer=Math.floor(Math.random() * 10000000000);
+          }
       }
   } 
 }; 
@@ -199,6 +227,16 @@ console.log(this.movie);
  
 <!-- Add "scoped" attribute to limit CSS to this component only --> 
 <style scoped> 
+.modal-body p{
+    margin: 0.8rem;
+    text-align: start;
+}
+.Biljetter{
+    display: flex
+}
+.vilkaBiljetter p{
+    margin: 0.3rem;
+}
 
 .kostnad{
     
@@ -221,11 +259,6 @@ h4, h5,p, h1{
    
     margin-top: 2vh;
 }
-h1{
-    margin-top: 5vh;
-    color: rgb(207, 96, 96);
-    font-style: oblique;
-}
 .totalt{
     margin-top: 0.5vh;
 }
@@ -233,10 +266,18 @@ h1{
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+    font-size: 2.55rem;
+    margin-top: 5vh;
+    color: white;
+    text-shadow: -3px 3px 10px black, -3px 3px 10px black, -3px 3px 10px black, 3px -3px 10px black;
+    font-weight: bold;
+    font-style: oblique;
 }
 h4{
     margin: 0;
+}
+.barn{
+text-align: center;
 }
 
 .papillon{
@@ -247,11 +288,11 @@ h4{
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(180deg,rgba(14,15,15,0) 50%,#b1b1b1);
     
 }
 img{
     width: 100vw;
+    box-shadow: 2px 2px 80px black;
 }
 
 .antal{
@@ -277,6 +318,12 @@ img{
     color: red;
     margin-top: 1vh;
     margin-bottom: 0;
+}
+@media screen and (max-width: 416px) {
+    h1{
+    margin-top: 8vh;
+    font-size: 1.3rem;
+    }
 }
 
 

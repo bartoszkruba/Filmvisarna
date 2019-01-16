@@ -73,7 +73,6 @@
 
       <b-carousel
         id="carousel1"
-        style="text-shadow: 1px 1px 2px #333;"
         controls
         indicators
         :interval="4000"
@@ -84,7 +83,7 @@
         <b-carousel-slide>
           <img slot="img" class="d-block img-fluid b-carousel-slide poster"
            :src="require('../assets/'+this.movies[0].images[1])">
-          <ul>
+          <ul class="schadow-text">
             <h3>{{movies[0].title}}</h3>
             <li>Visnings tid: {{parseInt(movies[1].length/60)}} timmar och {{movies[1].length%60}} minuter</li>
             <li>Åldersgräns {{movies[0].ageLimit}}år</li>
@@ -107,7 +106,7 @@
         <b-carousel-slide>
           <img slot="img" class="d-block img-fluid b-carousel-slide poster"
            :src="require('../assets/'+this.movies[1].images[1])">
-          <ul>
+          <ul class="schadow-text">
             <h3>{{movies[1].title}}</h3>
             <li>Visnings tid: {{parseInt(movies[1].length/60)}} timmar och {{movies[1].length%60}} minuter</li>
             <li>Åldersgräns {{movies[1].ageLimit}}år</li>
@@ -130,7 +129,7 @@
         <b-carousel-slide>
           <img slot="img" class="d-block img-fluid b-carousel-slide poster"
            :src="require('../assets/'+this.movies[2].images[1])">
-          <ul>
+          <ul class="schadow-text">
             <h3>{{movies[2].title}}</h3>
             <li>Visnings tid: {{parseInt(movies[2].length/60)}} timmar och {{movies[2].length%60}} minuter</li>
             <li>Åldersgräns {{movies[2].ageLimit}}år</li>
@@ -225,13 +224,18 @@ li {
   display: flex;
   flex-direction: row;
 }
-
+.startposter{
+  padding-top: 2vh;
+}
 @media only screen and (max-device-width: 580px) {
   .b-carousel-slide {
-    width: 100%;
-
+    width: 100%;  
   }
-  
+  .schadow-text{
+    color: white;
+    font-weight: bold;
+    text-shadow: 2px 2px 5px black;
+  }
   .startposter {
     display: none;
   }

@@ -15,11 +15,6 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
-    },
-    {
       path: '/adminpage',
       name: 'AdminPage',
       component: AdminPage
@@ -50,7 +45,7 @@ export default new Router({
       component: MoviesPage
     },
     {
-      path:'/Startsida',
+      path:'/',
       name: 'Startsida',
       component: Startsida
     },
