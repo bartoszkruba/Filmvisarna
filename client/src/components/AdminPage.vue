@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div v-show="this.$store.state.loggedInUser.admin">
+  <div v-if="this.$store.state.loggedInUser.admin">
     <b-jumbotron class="jumbotron"><h1>Admin Sida</h1></b-jumbotron>
     <h2 class="text-center">Add Movie</h2>
     <form class="container mb-5">
@@ -403,7 +403,7 @@
       </div>
     </form>
     </div>
-    <div v-show="!this.$store.state.loggedInUser.admin">
+    <div v-if="!this.$store.state.loggedInUser.admin">
       <b-jumbotron class="jumbotron"><h1>Du måste vara inloggad som administratör <br> för att få åtkomst till den här sidan</h1></b-jumbotron>
     </div>
   </div>
@@ -588,9 +588,12 @@ export default {
           youtubeTrailers: this.trailers,
           reviews: this.reviews
         };
+
+        const userCredentials = this.$store.getters.getCredentials;
+
         console.log(movie);
         try {
-          const response = await api.addMovie({ movie });
+          const response = await api.addMovie({ movie , userCredentials});
           this.message = response.data.message;
           this.error = null;
           window.scrollTo(0, 0);
