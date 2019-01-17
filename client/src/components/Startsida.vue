@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <div v-if="movies">
     <div class="box">
       <div>
         <b-container fluid class="startposter">
@@ -194,6 +195,7 @@
         <li>mm</li>
       </ul>
     </b-jumbotron>
+    </div>
   </div>
 </template>
 <script>
@@ -218,7 +220,6 @@ export default {
     async getMovies() {
       const response = await api.getMovies();
       this.movies = response.data.movies;
-      console.log(this.movies);
     },
     linkToMovePage(e) {
     return this.$router.push('/Movie?'+e.srcElement.attributes.value.value);
