@@ -1,6 +1,84 @@
 <template>
   <section class="hello">
-      <h1>kalendarium</h1>
+    <section v-if="errorFromMongo">
+      <h1>Något blev fel!</h1>
+      <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
+      <ul>
+        <li>Antipiratbyrån har hackat oss</li>
+        <li>Vår hemsida har tekniskt strul</li>
+        <li>Du har klickat på en gammal länk</li>
+      </ul>
+      <router-link
+        class="router-link"
+        to="/moviesPage"
+        exact-active-class="menu-item-active"
+      >Klicka här för att komma till alla filmer</router-link>
+    </section>
+
+    <section v-if="movies && sessions && theatres">
+      <b-jumbotron class="jumbo" header="Kalendarium" lead="Nedan kan du se kommande filmer"></b-jumbotron>
+
+      <section class="flex-col wrapping">
+        <section v-for="session in this.sessions">
+          <div class="flexbox flex-mobil">
+            <figure class="images">
+              <router-link
+                class="router-link"
+                :to="'/Movie?'+ session.movieID"
+                exact-active-class="menu-item-active"
+              >
+                <img
+                  class="posterpic"
+                  :src="require('../assets/'+movies.find((cur)=>{
+               return cur._id === session.movieID
+               }).images[1])"
+                >
+              </router-link>
+            </figure>
+
+            <div class="flex-col text">
+              <h4>{{session.date.day.toString().padStart(2, "0")}}/{{session.date.month.toString().padStart(2, "0")}}-{{session.date.year}}</h4>
+
+              <h5>
+                {{movies.find((cur)=>{
+                return cur._id === session.movieID
+                }).title}}
+              </h5>
+              <p>
+                <span>tid:</span>
+                {{session.date.time}} |
+                <span>Lediga Platser:</span>
+                {{session.freePlaces}}
+              </p>
+              <p>
+                {{theatres.find((cur)=>{
+                return cur._id === session.movieTheatreID
+                }).name}}
+              </p>
+
+              <div class="flexbox buttons">
+                <router-link
+                  class="router-link"
+                  :to="'/Movie?'+ session.movieID"
+                  exact-active-class="menu-item-active"
+                >
+                  <b-button>Film</b-button>
+                </router-link>
+
+                <router-link
+                  class="router-link"
+                  :to="'/BokningSida?'+session.movieID + '&' + session._id"
+                  exact-active-class="menu-item-active"
+                >
+                  <b-button class="secound-button">Boka</b-button>
+                </router-link>
+              </div>
+            </div>
+          </div>
+          <hr>
+        </section>
+      </section>
+    </section>
   </section>
 </template>
 
@@ -12,34 +90,51 @@ export default {
   data() {
     return {
       msg: "Welcome to Your Vue.js App",
-      movies: null
+      movies: null,
+      sessions: null,
+      theatres: null,
+      errorFromMongo: false
     };
   },
-  created() {
+  mounted() {
+    this.errorFromMongo = false;
     this.getMovies();
-  },
-  mounted(){
-    this.getMovies();
+    this.getSessions();
+    this.getTheatres();
   },
   methods: {
+    //movies data
     async getMovies() {
-      if(window.location.hash.indexOf("?") > 0){
-        const response = await api.searchMovies(window.location.hash.substr(window.location.hash.indexOf("?")+1).replace('_', ' ')); 
-        this.movies = response.data.movies;
-        if(this.movies.length === 1){
-          this.$router.push(`/Movie?${this.movies[0]._id}`);
-        }
-      }else{
+      this.movies = null;
+      try {
         const response = await api.getMovies();
+
         this.movies = response.data.movies;
-      }
+      } catch (error) {}
+      if (this.movies === null) this.errorFromMongo = true;
+    },
+    //moviesessions data
+    async getSessions() {
+      this.sessions = null;
+      try {
+        const response = await api.getMovieSessions();
+        this.sessions = response.data.movie_sessions;
+      } catch (error) {}
+      if (this.sessions === null) this.errorFromMongo = true;
+    },
+    //movietheatres data
+    async getTheatres() {
+      // Sätt theatre till null för att testa om lyckas hämtning
+      this.theatres = null;
+      // Hämta salong om det finns ID
+
+      try {
+        const response = await api.getTheatres();
+        this.theatres = response.data.movie_theatres;
+      } catch (error) {}
+      if (this.theatres === null) this.errorFromMongo = true;
     }
-  },
-  watch:{
-    $route (to, from){
-        this.getMovies();
-    }
-} 
+  }
 };
 </script>
 
@@ -51,90 +146,64 @@ export default {
 .flex-col {
   display: flex;
   flex-direction: column;
+  align-content: center;
+  justify-content: center;
 }
-.flex-mobil {
-  display: flex;
-}
-.main-placing {
-  margin: 1rem;
-}
-p {
-  padding: 0.5rem;
-  padding-left: 1rem;
-}
-h2 {
-  margin-left: 1rem;
-  margin-bottom: 0;
-  color: black;
-  font-weight: bold;
-  font-size: 3rem;
-}
-a:hover {
-  text-decoration: none;
+.jumbo {
+  text-align: center;
+  margin-bottom: 1rem;
 }
 hr {
-  border-color: black;
+  border-color: rgb(124, 123, 123);
 }
 .posterpic {
-  width: 20vmin;
+  width: 15vmin;
   box-shadow: 2px 2px 5px black;
 }
 .images {
   margin: 0;
 }
-.info-direction {
-  flex-direction: row;
+.text {
+  margin-left: 1rem;
 }
-.movietext{
-  display: flex;
-  align-items: center;
-  justify-content: center;
+h4,
+h1 {
+  font-weight: bold;
 }
-@media screen and (min-width: 501px) and (max-width: 1500px) {
-  h2 {
-    font-size: 2rem;
-  }
-  p {
-    font-size: 1.2rem;
-    margin: 0;
-    line-height: 0.5rem;
-  }
-  
-  .info-direction {
-    flex-direction: column;
-  }
-  .destop-only {
-    display: none;
-  }
+p {
+  font-size: 1rem;
+}
+span {
+  font-weight: 500;
+}
+.secound-button {
+  margin-left: 1rem;
 }
 
 @media screen and (max-width: 500px) {
-  h2 {
-    font-size: 1.5rem;
-    margin-top: 0.8rem;
-    margin-bottom: 0.5rem;
-    text-align: center;
-  }
-  p {
-    font-size: 0.7rem;
-    padding: 0.1rem;
-    line-height: 0.5rem;
-  }
-  .ptaggar {
-    justify-content: center;
+  h1 {
+    font-size: 3rem;
   }
   .flex-mobil {
+    display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-content: center;
   }
-  .posterpic {
-    width: 90vmin;
-  }
-  .info-direction {
-    flex-direction: column;
+  .wrapping {
+    justify-content: center;
+    align-content: center;
     text-align: center;
   }
-  .destop-only {
-    display: none;
+  .buttons {
+    justify-content: center;
+  }
+  .posterpic {
+    width: 40vmin;
+    box-shadow: 2px 2px 5px black;
+  }
+  h4{
+      margin-top: 0.5rem;
   }
 }
 </style>
