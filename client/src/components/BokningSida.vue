@@ -218,7 +218,7 @@ export default {
           this.sessionID = id[1];
         }
         },
-      bokningsnummer(){
+      getBokningsnummer(){
           this.bokningsnummer=(Math.random()+1);
           console.log(this.bokningsnummer);
 
