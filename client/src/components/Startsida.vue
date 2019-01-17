@@ -1,199 +1,207 @@
 <template>
   <div class="main">
-    <div class="box">
-      <div>
-        <b-container fluid class="startposter">
-          <b-row>
-            <b-col>
-              <figure class="imgbox">
-                <router-link
-                  class="router-link"
-                  :to="'/Movie?'+this.movies[0]._id"
-                  exact-active-class="menu-item-active"
-                >
-                  <img class="poster" :src="require('../assets/'+this.movies[0].images[1])">
-                </router-link>
-                <h3>{{movies[0].title}}</h3>
-                <router-link
-                  class="router-link"
-                  :to="'/Movie?'+this.movies[0]._id"
-                  exact-active-class="menu-item-active"
-                >
-                  <b-button>Läs mer</b-button>
-                </router-link>
-                <!-- <router-link
-                  class="router-link"
-                  :to="'/BokningSida?'+this.movies[0]._id"
-                  exact-active-class="menu-item-active"
-                >
-                  <b-button>Boka</b-button>
-                </router-link>-->
-              </figure>
-            </b-col>
-            <b-col>
-              <figure class="imgbox">
-                <router-link
-                  class="router-link"
-                  :to="'/Movie?'+this.movies[1]._id"
-                  exact-active-class="menu-item-active"
-                >
-                  <img class="poster" :src="require('../assets/'+this.movies[1].images[1])">
-                </router-link>
-                <h3>{{movies[1].title}}</h3>
-                <router-link
-                  class="router-link"
-                  :to="'/Movie?'+this.movies[1]._id"
-                  exact-active-class="menu-item-active"
-                >
-                  <b-button>Läs mer</b-button>
-                </router-link>
-                <!-- <router-link
-                  class="router-link"
-                  :to="'/BokningSida?'+this.movies[1]._id"
-                  exact-active-class="menu-item-active"
-                >
-                  <b-button>Boka</b-button>
-                </router-link>-->
-              </figure>
-            </b-col>
-            <b-col>
-              <figure class="imgbox">
-                <router-link
-                  class="router-link"
-                  :to="'/Movie?'+this.movies[2]._id"
-                  exact-active-class="menu-item-active"
-                >
-                  <img class="poster" :src="require('../assets/'+this.movies[2].images[1])">
-                </router-link>
-                <h3>{{movies[2].title}}</h3>
-                <router-link
-                  class="router-link"
-                  :to="'/Movie?'+this.movies[2]._id"
-                  exact-active-class="menu-item-active"
-                >
-                  <b-button>Läs mer</b-button>
-                </router-link>
-                <!-- <router-link
-                  class="router-link"
-                  :to="'/BokningSida?'+this.movies[2]._id"
-                  exact-active-class="menu-item-active"
-                >
-                  <b-button>Boka</b-button>
-                </router-link>-->
-              </figure>
-            </b-col>
-          </b-row>
-        </b-container>
-      </div>
+    <div v-if="movies && sessions">
+      <div class="box">
+        <div>
+          <b-container fluid class="startposter">
+            <b-row>
+              <b-col>
+                <figure class="imgbox">
+                  <router-link
+                    class="router-link"
+                    :to="'/Movie?'+this.movies[0]._id"
+                    exact-active-class="menu-item-active"
+                  >
+                    <img class="poster" :src="require('../assets/'+this.movies[0].images[1])">
+                  </router-link>
+                  <h3>{{movies[0].title}}</h3>
+                  <router-link
+                    class="router-link"
+                    :to="'/Movie?'+this.movies[0]._id"
+                    exact-active-class="menu-item-active"
+                  >
+                    <b-button>Läs mer</b-button>
+                  </router-link>
+                  <router-link
+                    class="router-link"
+                    :to="'/BokningSida?'+this.movies[0]._id + '&' + this.sessions.find((cur)=>{ 
+                    return cur.movieID === movies[0]._id})._id"
+                    exact-active-class="menu-item-active"
+                  >
+                    <b-button>Snabb boka</b-button>
+                  </router-link>
+                </figure>
+              </b-col>
+              <b-col>
+                <figure class="imgbox">
+                  <router-link
+                    class="router-link"
+                    :to="'/Movie?'+this.movies[1]._id"
+                    exact-active-class="menu-item-active"
+                  >
+                    <img class="poster" :src="require('../assets/'+this.movies[1].images[1])">
+                  </router-link>
+                  <h3>{{movies[1].title}}</h3>
+                  <router-link
+                    class="router-link"
+                    :to="'/Movie?'+this.movies[1]._id"
+                    exact-active-class="menu-item-active"
+                  >
+                    <b-button>Läs mer</b-button>
+                  </router-link>
+                  <router-link
+                    class="router-link"
+                    :to="'/BokningSida?'+this.movies[1]._id + '&' + this.sessions.find((cur)=>{ 
+                    return cur.movieID === movies[1]._id})._id"
+                    exact-active-class="menu-item-active"
+                  >
+                    <b-button>Snabb boka</b-button>
+                  </router-link>
+                </figure>
+              </b-col>
+              <b-col>
+                <figure class="imgbox">
+                  <router-link
+                    class="router-link"
+                    :to="'/Movie?'+this.movies[2]._id"
+                    exact-active-class="menu-item-active"
+                  >
+                    <img class="poster" :src="require('../assets/'+this.movies[2].images[1])">
+                  </router-link>
+                  <h3>{{movies[2].title}}</h3>
+                  <router-link
+                    class="router-link"
+                    :to="'/Movie?'+this.movies[2]._id"
+                    exact-active-class="menu-item-active"
+                  >
+                    <b-button>Läs mer</b-button>
+                  </router-link>
+                  <router-link
+                    class="router-link"
+                    :to="'/BokningSida?'+this.movies[2]._id + '&' + this.sessions.find((cur)=>{ 
+                    return cur.movieID === movies[2]._id})._id"
+                    exact-active-class="menu-item-active"
+                  >
+                    <b-button>Snabb boka</b-button>
+                  </router-link>
+                </figure>
+              </b-col>
+            </b-row>
+          </b-container>
+        </div>
 
-      <b-carousel
-        id="carousel1"
-        controls
-        indicators
-        :interval="4000"
-        @sliding-start="onSlideStart"
-        @sliding-end="onSlideEnd"
-        class="calusel"
-      >
-        <b-carousel-slide>
+        <b-carousel
+          id="carousel1"
+          controls
+          indicators
+          :interval="4000"
+          @sliding-start="onSlideStart"
+          @sliding-end="onSlideEnd"
+          class="calusel"
+        >
+          <b-carousel-slide>
             <img
-            @click="linkToMovePage"
+              @click="linkToMovePage"
               slot="img"
               class="d-block img-fluid b-carousel-slide poster"
               :src="require('../assets/'+this.movies[0].images[1])"
-              :value="movies[0]._id" 
+              :value="movies[0]._id"
             >
-          <ul class="schadow-text">
-            <h3>{{movies[0].title}}</h3>
-            <li>Visnings tid: {{parseInt(movies[1].length/60)}} timmar och {{movies[1].length%60}} minuter</li>
-            <li>Åldersgräns {{movies[0].ageLimit}}år</li>
-          </ul>
-          <router-link
-            class="router-link"
-            :to="'/Movie?'+this.movies[0]._id"
-            exact-active-class="menu-item-active"
-          >
-            <b-button>Läs mer</b-button>
-          </router-link>
-          <!-- <router-link
-                  class="router-link"
-                  :to="'/BokningSida?'+this.movies[0]._id"
-                  exact-active-class="menu-item-active"
-                >
-                  <b-button>Boka</b-button>
-          </router-link>-->
-        </b-carousel-slide>
-        <b-carousel-slide>
-          <img
-            @click="linkToMovePage"
+            <ul class="schadow-text">
+              <h3>{{movies[0].title}}</h3>
+              <li>Visnings tid: {{parseInt(movies[1].length/60)}} timmar och {{movies[1].length%60}} minuter</li>
+              <li>Åldersgräns {{movies[0].ageLimit}}år</li>
+            </ul>
+            <router-link
+              class="router-link"
+              :to="'/Movie?'+this.movies[0]._id"
+              exact-active-class="menu-item-active"
+            >
+              <b-button>Läs mer</b-button>
+            </router-link>
+            <router-link
+              class="router-link"
+              :to="'/BokningSida?'+this.movies[0]._id + '&' + this.sessions.find((cur)=>{ 
+                    return cur.movieID === movies[0]._id})._id"
+              exact-active-class="menu-item-active"
+            >
+              <b-button>Snabb boka</b-button>
+            </router-link>
+          </b-carousel-slide>
+          <b-carousel-slide>
+            <img
+              @click="linkToMovePage"
               slot="img"
               class="d-block img-fluid b-carousel-slide poster"
               :src="require('../assets/'+this.movies[1].images[1])"
               :value="movies[1]._id"
             >
-          <ul class="schadow-text">
-            <h3>{{movies[1].title}}</h3>
-            <li>Visnings tid: {{parseInt(movies[1].length/60)}} timmar och {{movies[1].length%60}} minuter</li>
-            <li>Åldersgräns {{movies[1].ageLimit}}år</li>
-          </ul>
-          <router-link
-            class="router-link"
-            :to="'/Movie?'+this.movies[1]._id"
-            exact-active-class="menu-item-active"
-          >
-            <b-button>Läs mer</b-button>
-          </router-link>
-          <!-- <router-link
-                  class="router-link"
-                  :to="'/BokningSida?'+this.movies[1]._id"
-                  exact-active-class="menu-item-active"
-                >
-                  <b-button>Boka</b-button>
-          </router-link>-->
-        </b-carousel-slide>
-        <b-carousel-slide>
-          <img
-            @click="linkToMovePage"
+            <ul class="schadow-text">
+              <h3>{{movies[1].title}}</h3>
+              <li>Visnings tid: {{parseInt(movies[1].length/60)}} timmar och {{movies[1].length%60}} minuter</li>
+              <li>Åldersgräns {{movies[1].ageLimit}}år</li>
+            </ul>
+            <router-link
+              class="router-link"
+              :to="'/Movie?'+this.movies[1]._id"
+              exact-active-class="menu-item-active"
+            >
+              <b-button>Läs mer</b-button>
+            </router-link>
+            <router-link
+              class="router-link"
+              :to="'/BokningSida?'+this.movies[1]._id + '&' + this.sessions.find((cur)=>{ 
+                    return cur.movieID === movies[1]._id})._id"
+              exact-active-class="menu-item-active"
+            >
+              <b-button>Snabb boka</b-button>
+            </router-link>
+          </b-carousel-slide>
+          <b-carousel-slide>
+            <img
+              @click="linkToMovePage"
               slot="img"
               class="d-block img-fluid b-carousel-slide poster"
               :src="require('../assets/'+this.movies[2].images[1])"
               :value="movies[2]._id"
             >
-          <ul class="schadow-text">
-            <h3>{{movies[2].title}}</h3>
-            <li>Visnings tid: {{parseInt(movies[2].length/60)}} timmar och {{movies[2].length%60}} minuter</li>
-            <li>Åldersgräns {{movies[2].ageLimit}}år</li>
-          </ul>
-          <router-link
-            class="router-link"
-            :to="'/Movie?'+this.movies[2]._id"
-            exact-active-class="menu-item-active"
-          >
-            <b-button>Läs mer</b-button>
-          </router-link>
-          <!-- <router-link
-                  class="router-link"
-                  :to="'/BokningSida?'+this.movies[2]._id"
-                  exact-active-class="menu-item-active"
-                >
-                  <b-button>Boka</b-button>
-          </router-link>-->
-        </b-carousel-slide>
-      </b-carousel>
-    </div>
+            <ul class="schadow-text">
+              <h3>{{movies[2].title}}</h3>
+              <li>Visnings tid: {{parseInt(movies[2].length/60)}} timmar och {{movies[2].length%60}} minuter</li>
+              <li>Åldersgräns {{movies[2].ageLimit}}år</li>
+            </ul>
+            <router-link
+              class="router-link"
+              :to="'/Movie?'+this.movies[2]._id"
+              exact-active-class="menu-item-active"
+            >
+              <b-button>Läs mer</b-button>
+            </router-link>
+            <router-link
+              class="router-link"
+              :to="'/BokningSida?'+this.movies[2]._id + '&' + this.sessions.find((cur)=>{ 
+                    return cur.movieID === movies[2]._id})._id"
+              exact-active-class="menu-item-active"
+            >
+              <b-button>Snabb boka</b-button>
+            </router-link>
+          </b-carousel-slide>
+        </b-carousel>
+      </div>
 
-    <b-jumbotron>
-      <template slot="header">Senaste nytt</template>
-      <h1>Vi har nu öppnat, Välkomna</h1>
-      <h2>På plats säljer vi</h2>
-      <ul>
-        <li>Popcorn</li>
-        <li>Läsk</li>
-        <li>Chips</li>
-        <li>Godis</li>
-        <li>mm</li>
-      </ul>
-    </b-jumbotron>
+      <b-jumbotron>
+        <template slot="header">Senaste nytt</template>
+        <h1>Vi har nu öppnat, Välkomna</h1>
+        <h2>På plats säljer vi</h2>
+        <ul>
+          <li>Popcorn</li>
+          <li>Läsk</li>
+          <li>Chips</li>
+          <li>Godis</li>
+          <li>mm</li>
+        </ul>
+      </b-jumbotron>
+    </div>
   </div>
 </template>
 <script>
@@ -202,11 +210,13 @@ export default {
   //Hämta data från server
   data() {
     return {
-      movies: null
+      movies: null,
+      sessions: null
     };
   },
   created() {
     this.getMovies();
+    this.getSessions();
   },
   methods: {
     onSlideStart(slide) {
@@ -218,11 +228,14 @@ export default {
     async getMovies() {
       const response = await api.getMovies();
       this.movies = response.data.movies;
-      console.log(this.movies);
+    },
+    async getSessions() {
+      const response = await api.getMovieSessions();
+      this.sessions = response.data.movie_sessions;
     },
     linkToMovePage(e) {
-    return this.$router.push('/Movie?'+e.srcElement.attributes.value.value);
-  }
+      return this.$router.push("/Movie?" + e.srcElement.attributes.value.value);
+    }
   }
 };
 </script>
