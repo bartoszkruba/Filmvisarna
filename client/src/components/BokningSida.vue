@@ -66,7 +66,6 @@
             <button v-on:click="plusBarn" type="button" class="btn btn-dark">+</button>
           </div>
         </div>
-        </div>
         <p class="ledigaPlatser"> <em> <strong>OBS!</strong> Lediga platser: {{this.ledigaPlatserISal}} av {{this.theatre.seats}}</em></p>
         <div class="kostnad" v-if="totalt>=65">
           <h3>Kostnad</h3>
@@ -76,6 +75,8 @@
             <div>
                 <b-btn v-on:click="visaFelMedellande" v-b-modal.modal1>Slutför bokning</b-btn>
 
+        </div>
+        
                 <!-- Modal Component -->
                 <b-modal id="modal1" v-if="totalt>=65" title="Bekräftelse" @ok="goHem" @cancel="cancelBokning">
                 <p>Film: <strong> {{movie.title}}</strong></p>
