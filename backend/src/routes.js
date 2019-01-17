@@ -14,6 +14,8 @@ const movieSessionController = require('./controllers/movieSessionController');
 const authenticationController = require('./controllers/authenticationController');
 const authenticationPolicy = require('./policies/authenticationPolicy');
 
+const bookingController = require('./controllers/bookingController');
+
 Router.post('/addMovie',moviesPolicy.postAddMoviePolicy, moviesController.postAddMovie);
 
 Router.post('/addMovie', moviesPolicy.postAddMoviePolicy, moviesController.postAddMovie);
@@ -40,6 +42,7 @@ Router.post('/addMovieSession', movieSessionController.postAddMovieSession);
 Router.post('/register', authenticationPolicy.postRegister, authenticationController.postRegister);
 Router.post('/login', authenticationController.postValidate);
 Router.post('/getTickets', authenticationController.getBookedTickets);
+Router.post('/setTickets', bookingController.setBookedTicket);
 
 // Exporting Router
 module.exports = Router;

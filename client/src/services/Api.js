@@ -42,6 +42,10 @@ export default {
 
 	getTickets: (user) => {
 		return api.post('getTickets', { user });
+	},
+
+	setTickets: (ticket,user) => {
+		return api.post('setTickets', {ticket, user });
 	}
 
 } 

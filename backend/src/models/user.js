@@ -27,6 +27,9 @@ const UserSchema = Schema({
                 required: true,
                 ref: 'movieSession'
             },
+            price: {
+                type: String,
+            },
             adults: {
                 type: Number,
             },
@@ -35,7 +38,10 @@ const UserSchema = Schema({
             },
             pensioner: {
                 type: Number
-            }
+            },
+            totalTickets: {
+                type: String,
+            },
         }
     ]
 });
