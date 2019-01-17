@@ -27,7 +27,7 @@ module.exports.postAddMovie = async (req, res, next ) => {
         console.log(error);
         res.status(400).send({
             error: 'Could not add movie to the database'
-        })
+        });
     }
 }
 

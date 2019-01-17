@@ -239,8 +239,6 @@ export default {
       getBokningsnummer(){
           this.bokningsnummer=(Math.random()+1);
           console.log(this.bokningsnummer);
-
-
       },
       plus(){
           this.antal+=1;
@@ -249,7 +247,6 @@ export default {
           this.visaMedellande = false;
       },
       minus(){
-
           if (this.antal>0){
           this.totalt-=85
           this.antal-=1;}
@@ -301,8 +298,8 @@ export default {
       },
 
      async bokaFilm(){
-          this.bokningsnummer =Math.floor(Math.random() * 10000000000);
           const response = await api.setTickets(this.createTicket, this.$store.getters.getCredentials);
+          this.bokningsnummer = response.data.orderID;
           console.log(response.data.bookedTickets);
           this.$store.commit('updateTickets' , response.data.bookedTickets);
       },
