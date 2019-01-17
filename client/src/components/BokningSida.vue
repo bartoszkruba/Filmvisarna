@@ -111,10 +111,8 @@ let prisPensionar= 75;
 let antalBarn=0;
 let prisBarn= 65;
 let totalt=0;
-import api from "@/services/Api.js";
 
 import api from "@/services/Api.js";
-
 
 export default {
   name: "BokningSida",
@@ -152,6 +150,10 @@ export default {
       this.getMovieByID();
       this.getSessionByID();
     }
+  },
+
+  computed: function() {
+      
   },
   created(){
     this.pris=85;
@@ -278,8 +280,13 @@ export default {
               this.visaMedellande = true;
           }
           else{
-              this.bokningsnummer=Math.floor(Math.random() * 10000000000);
+              this.bokaFilm();
           }
+      },
+
+      bokaFilm(){
+          this.bokningsnummer=Math.floor(Math.random() * 10000000000);
+          const response = api.setTickets()
       }
   }
 };

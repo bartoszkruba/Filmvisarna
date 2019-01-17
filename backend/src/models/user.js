@@ -27,6 +27,18 @@ const UserSchema = Schema({
                 required: true,
                 ref: 'movieSession'
             },
+            title: {
+                type: String,
+            },
+            theatre: {
+                type: String,
+            },
+            time: {
+                type: String,
+            },
+            date: {
+                type: String,
+            },
             price: {
                 type: String,
             },
