@@ -43,17 +43,17 @@
          <h4>Antal biljetter:</h4>
         <p><strong> Ordinarie</strong></p>
         <div class="antal">
-          <button v-on:click="minus" type="button" class="btn btn-dark">-</button>
+          <button v-on:click="minus" type="button" class="btn btn-dark" :disabled="this.antal === 0">-</button>
           <h5 class="hej">{{antal}} st / {{pris}}kr per st</h5>
-          <button v-on:click="plus" type="button" class="btn btn-dark" :disabled="noMoreSeats">+</button>
+          <button v-on:click="plus" type="button" class="btn btn-dark" :disabled="this.ledigaPlatserISal === 0">+</button>
         </div>
         <p>
           <strong>Pensionär</strong>
         </p>
         <div class="antal">
-          <button v-on:click="minusPensionar" type="button" class="btn btn-dark">-</button>
+          <button v-on:click="minusPensionar" type="button" class="btn btn-dark" :disabled="this.antalPensionar === 0">-</button>
           <h5 class="hej">{{antalPensionar}} st / {{prisPensionar}}kr per st</h5>
-          <button v-on:click="plusPensionar" type="button" class="btn btn-dark" :disabled="noMoreSeats">+</button>
+          <button v-on:click="plusPensionar" type="button" class="btn btn-dark" :disabled="this.ledigaPlatserISal === 0">+</button>
         </div>
 
         <div v-if="movie.ageLimit<15">
@@ -61,9 +61,9 @@
             <strong>Barn</strong>
           </p>
           <div class="antal">
-            <button v-on:click="minusBarn" type="button" class="btn btn-dark">-</button>
+            <button v-on:click="minusBarn" type="button" class="btn btn-dark" :disabled="this.antalBarn === 0">-</button>
             <h5 class="hej">{{antalBarn}} st / {{prisBarn}}kr per st</h5>
-            <button v-on:click="plusBarn" type="button" class="btn btn-dark" :disabled="noMoreSeats">+</button>
+            <button v-on:click="plusBarn" type="button" class="btn btn-dark" :disabled="this.ledigaPlatserISal === 0">+</button>
           </div>
         </div>
         <p class="ledigaPlatser"> <em> <strong>OBS!</strong> Lediga platser: {{this.ledigaPlatserISal}} av {{this.theatre.seats}}</em></p>
@@ -122,7 +122,6 @@ export default {
   name: "BokningSida",
   data() {
     return {
-        noMoreSeats: false,
         antal: null,
         antalPensionar: null,
         prisPensionar: null,
@@ -176,14 +175,7 @@ export default {
       }
       return ticket;
   },
-  isThereSeatsLeft: function(){
-    let seatsLeft = this.ledigaPlatserISal;
-    if(seatsLeft === 0) {
-      this.noMoreSeats = true;
-    }else{
-      this.noMoreSeats = false;
-    }
-  }
+  
   },
   created(){
     this.pris=85;
@@ -270,14 +262,12 @@ export default {
           this.visaTotal = true;
           this.visaMedellande = false;
           this.ledigaPlatserISal--;
-          this.isThereSeatsLeft;
       },
       minus(){
           if (this.antal>0){
           this.totalt-=85;
           this.antal-=1;
           this.ledigaPlatserISal++;
-          this.isThereSeatsLeft;
           }
           else {
               alert('Du kan inte välja mindre än en biljett ')
@@ -333,7 +323,6 @@ export default {
      async bokaFilm(){
           const response = await api.setTickets(this.createTicket, this.$store.getters.getCredentials);
           this.bokningsnummer = response.data.orderID;
-          console.log(response.data.bookedTickets);
           this.$store.commit('updateTickets' , response.data.bookedTickets);
       },
   }
