@@ -157,6 +157,7 @@ export default {
     createTicket: function() {
       let ticket = {
           orderID: this.bokningsnummer,
+          sessionID: this.sessionID,
           title: this.movie.title,
           theatre: this.theatre.name,
           totalTickets: this.antalBarn + this.antal + this.antalPensionar,
@@ -304,7 +305,6 @@ export default {
           const response = await api.setTickets(this.createTicket, this.$store.getters.getCredentials);
           console.log(response.data.bookedTickets);
           this.$store.commit('updateTickets' , response.data.bookedTickets);
-          console.log(this.$store.state.loggedInUser.bookedTickets);
       },
   }
 };

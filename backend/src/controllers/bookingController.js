@@ -9,6 +9,7 @@ module.exports.setBookedTicket = async (req, res, next) => {
             res.send({
                 message: 'Biljetten är sparad',
                 bookedTickets: users.bookedTickets,
+                
             });
         } catch (error) {
             res.status(400).send({

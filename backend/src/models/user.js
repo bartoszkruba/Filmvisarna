@@ -52,6 +52,9 @@ const UserSchema = Schema({
             totalTickets: {
                 type: String,
             },
+            sessionID: {
+                type: String,
+            },
         }
     ]
 });
