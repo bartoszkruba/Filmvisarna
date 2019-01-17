@@ -22,12 +22,10 @@ const UserSchema = Schema({
     },
     bookedTickets: [
         {
-            movieSessionID: {
-                type: Schema.Types.ObjectId,
-                required: true,
-                ref: 'movieSession'
-            },
             title: {
+                type: String,
+            },
+            orderID: {
                 type: String,
             },
             theatre: {

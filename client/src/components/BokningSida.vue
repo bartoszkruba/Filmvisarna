@@ -152,8 +152,23 @@ export default {
     }
   },
 
-  computed: function() {
-      
+  computed:{
+  
+    createTicket: function() {
+      let ticket = {
+          orderID: this.bokningsnummer,
+          title: this.movie.title,
+          theatre: this.theatre.name,
+          totalTickets: this.antalBarn + this.antal + this.antalPensionar,
+          price: this.totalt,
+          time: this.session.date.time,
+          date: this.session.date.year+'/'+this.session.date.month+'/'+this.session.date.day,
+          children: this.antalBarn,
+          pensioner: this.antalPensionar,
+          adults: this.antal,
+      }
+      return ticket;
+  }
   },
   created(){
     this.pris=85;
@@ -284,10 +299,13 @@ export default {
           }
       },
 
-      bokaFilm(){
-          this.bokningsnummer=Math.floor(Math.random() * 10000000000);
-          const response = api.setTickets()
-      }
+     async bokaFilm(){
+          this.bokningsnummer =Math.floor(Math.random() * 10000000000);
+          const response = await api.setTickets(this.createTicket, this.$store.getters.getCredentials);
+          console.log(response.data.bookedTickets);
+          this.$store.commit('updateTickets' , response.data.bookedTickets);
+          console.log(this.$store.state.loggedInUser.bookedTickets);
+      },
   }
 };
 </script>

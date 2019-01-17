@@ -47,19 +47,19 @@ export default {
       deleteAccountPopup: false,
       test: this.$store.state.loggedInUser.email,
       fields: {
-        orderId: {
+        orderID: {
           label: "Bokningsnummer",
           sortable: false
         },
-        movie: {
+        title: {
           label: "Film",
           sortable: false
         },
-        saloon: {
+        theatre: {
           label: "Salong",
           sortable: false
         },
-        seats: {
+        totalTickets: {
           label: "Biljetter",
           sortable: false
         },
