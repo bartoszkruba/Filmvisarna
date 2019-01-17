@@ -9,7 +9,6 @@
         <b-navbar-nav>
           <b-nav-item class="router-link" to="/" exact-active-class="menu-item-active" exact>Hem</b-nav-item>
           <b-nav-item class="router-link" to="/moviesPage" exact-active-class="menu-item-active">Filmer</b-nav-item>
-           <b-nav-item class="router-link" to="/kalendarium" exact-active-class="menu-item-active">Kalendarium</b-nav-item>
           <b-nav-item class="router-link" to="/kontaktSida" exact-active-class="menu-item-active">Kontakta Oss </b-nav-item>
         </b-navbar-nav>
 
