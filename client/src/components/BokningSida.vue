@@ -62,7 +62,7 @@
            <button v-on:click="plusBarn" type="button" class="btn btn-dark">+</button>
         </div>
         </div>
-        <p class="ledigaPlatser"> <em> <strong>OBS!</strong> Lediga platser: {{this.session.freePlaces}} av {{this.theatre.seats}}</em></p>
+        <p class="ledigaPlatser"> <em> <strong>OBS!</strong> Lediga platser: {{this.ledigaPlatserISal}} av {{this.theatre.seats}}</em></p>
         <div class="kostnad" v-if="totalt>=65">
             <h3>Kostnad</h3>
             <p class="totalt" >totalt: {{totalt}}kr</p>
@@ -72,7 +72,7 @@
                 <b-btn v-on:click="visaFelMedellande" v-b-modal.modal1>Slutför bokning</b-btn>
 
                 <!-- Modal Component -->
-                <b-modal id="modal1" v-if="totalt>=65" title="Bekräftelse">
+                <b-modal id="modal1" v-if="totalt>=65" title="Bekräftelse" @ok="goHem" @cancel="cancelBokning">
                 <p>Film: <strong> {{movie.title}}</strong></p>
                 <p>Datum: <strong>{{this.session.date.day+'/'+this.session.date.month+' '+this.session.date.year }}</strong> </p>
                 <p>Tid: <strong>{{this.session.date.time}}</strong></p>
@@ -89,6 +89,7 @@
                 <p class="my-4">Din bokningsnummer: <strong>{{bokningsnummer}}</strong></p>
                 <p class="my-4"><strong>OBS!</strong>Du kan hämta ut dina biljetter senast 40min innan filmen börjar</p>
                 <p>  betalningen sker vid kassan i biografen</p>
+                
                 </b-modal>
             </div>
 
@@ -122,6 +123,7 @@ export default {
         prisBarn: null,
         pris: null,
         movie: undefined,
+        ledigaPlatserISal: null,
         session: null,
         theatre: null,
         bokningsnummer: null,
@@ -130,7 +132,7 @@ export default {
         movieID: null,
         sessionID: null,
         theatreID: null,
-        errorFromMongo: false
+        errorFromMongo: false,
     };
 
   },
@@ -177,6 +179,7 @@ export default {
           const response = await api.getMovieSessions({_id: this.sessionID});
           if(response.data.movie_sessions.length){
             this.session = response.data.movie_sessions[0];
+            this.ledigaPlatserISal = this.session.freePlaces
             this.theatreID = this.session.movieTheatreID;
           }
         } catch(error){
@@ -215,19 +218,31 @@ export default {
       getBokningsnummer(){
           this.bokningsnummer=(Math.random()+1);
       },
+      goHem(){
+          this.$router.push("/");
+
+      },
+      cancelBokning(){
+          this.antal=0;
+          this.antalPensionar=0;
+          this.antalBarn=0;
+          this.ledigaPlatserISal=this.session.freePlaces;
+          this.totalt=0;
+
+      },
       plus(){
           this.antal+=1;
           this.totalt+=85;
           this.visaTotal = true;
           this.visaMedellande = false;
-          this.session.freePlaces--;
+          this.ledigaPlatserISal--;
       },
       minus(){
 
           if (this.antal>0){
           this.totalt-=85;
           this.antal-=1;
-          this.session.freePlaces++;
+          this.ledigaPlatserISal++;
           }
           else {
               alert('Du kan inte välja mindre än en biljett ')
@@ -239,14 +254,14 @@ export default {
           this.antalPensionar+=1;
           this.visaTotal = true;
           this.visaMedellande = false;
-          this.session.freePlaces--;
+          this.ledigaPlatserISal--;
 
       },
       minusPensionar(){
           if (this.antalPensionar>0){
           this.totalt-=75
           this.antalPensionar-=1;
-          this.session.freePlaces++;
+          this.ledigaPlatserISal++;
           }
           else {
               alert('Du kan inte välja mindre än en biljett ')
@@ -258,13 +273,13 @@ export default {
           this.antalBarn+=1;
           this.visaTotal = true;
           this.visaMedellande = false;
-          this.session.freePlaces--;
+          this.ledigaPlatserISal--;
       },
       minusBarn(){
           if (this.antalBarn>0){
           this.antalBarn-=1;
           this.totalt-=65;
-          this.session.freePlaces++;
+          this.ledigaPlatserISal++;
           }
           else {
               alert('Du kan inte välja mindre än en biljett ')
@@ -323,7 +338,7 @@ div .location{
 }
 h4, h5,p, h1{
 
-    margin-top: 2vh;
+    margin-top: 5vh;
 }
 .totalt{
     margin-top: 0.5vh;
