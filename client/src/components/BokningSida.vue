@@ -78,7 +78,7 @@
         </div>
         
                 <!-- Modal Component -->
-                <b-modal id="modal1" v-if="totalt>=65" title="Bekräftelse" @ok="goHem" @cancel="cancelBokning">
+                <b-modal id="modal1" v-if="totalt>=65" title="Bekräftelse" @ok="goHem" @cancel="cancelBokning" ok-only>
                 <p>Film: <strong> {{movie.title}}</strong></p>
                 <p>Datum: <strong>{{this.session.date.day+'/'+this.session.date.month+' '+this.session.date.year }}</strong> </p>
                 <p>Tid: <strong>{{this.session.date.time}}</strong></p>
@@ -95,7 +95,6 @@
                 <p class="my-4">Din bokningsnummer: <strong>{{bokningsnummer}}</strong></p>
                 <p class="my-4"><strong>OBS!</strong>Du kan hämta ut dina biljetter senast 40min innan filmen börjar</p>
                 <p>  betalningen sker vid kassan i biografen</p>
-                <p><em>Ångrar du köpet? trycka på 'Cancel'</em></p>
                 
                 </b-modal>
             </div>
