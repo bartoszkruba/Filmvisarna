@@ -256,9 +256,6 @@ li {
 .calusel {
   display: none;
 }
-.box {
-  min-width: 50vh;
-}
 .poster {
   height: auto;
   width: 20vw;

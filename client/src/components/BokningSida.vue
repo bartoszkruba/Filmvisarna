@@ -45,7 +45,7 @@
         <div class="antal">
           <button v-on:click="minus" type="button" class="btn btn-dark">-</button>
           <h5 class="hej">{{antal}} st / {{pris}}kr per st</h5>
-          <button v-on:click="plus" type="button" class="btn btn-dark">+</button>
+          <button v-on:click="plus" type="button" class="btn btn-dark" :disabled="noMoreSeats">+</button>
         </div>
         <p>
           <strong>Pensionär</strong>
@@ -53,7 +53,7 @@
         <div class="antal">
           <button v-on:click="minusPensionar" type="button" class="btn btn-dark">-</button>
           <h5 class="hej">{{antalPensionar}} st / {{prisPensionar}}kr per st</h5>
-          <button v-on:click="plusPensionar" type="button" class="btn btn-dark">+</button>
+          <button v-on:click="plusPensionar" type="button" class="btn btn-dark" :disabled="noMoreSeats">+</button>
         </div>
 
         <div v-if="movie.ageLimit<15">
@@ -63,7 +63,7 @@
           <div class="antal">
             <button v-on:click="minusBarn" type="button" class="btn btn-dark">-</button>
             <h5 class="hej">{{antalBarn}} st / {{prisBarn}}kr per st</h5>
-            <button v-on:click="plusBarn" type="button" class="btn btn-dark">+</button>
+            <button v-on:click="plusBarn" type="button" class="btn btn-dark" :disabled="noMoreSeats">+</button>
           </div>
         </div>
         <p class="ledigaPlatser"> <em> <strong>OBS!</strong> Lediga platser: {{this.ledigaPlatserISal}} av {{this.theatre.seats}}</em></p>
@@ -123,6 +123,7 @@ export default {
   name: "BokningSida",
   data() {
     return {
+        noMoreSeats: false,
         antal: null,
         antalPensionar: null,
         prisPensionar: null,
@@ -175,6 +176,14 @@ export default {
           adults: this.antal,
       }
       return ticket;
+  },
+  isThereSeatsLeft: function(){
+    let seatsLeft = this.ledigaPlatserISal;
+    if(seatsLeft === 0) {
+      this.noMoreSeats = true;
+    }else{
+      this.noMoreSeats = false;
+    }
   }
   },
   created(){
@@ -262,12 +271,14 @@ export default {
           this.visaTotal = true;
           this.visaMedellande = false;
           this.ledigaPlatserISal--;
+          this.isThereSeatsLeft;
       },
       minus(){
           if (this.antal>0){
           this.totalt-=85;
           this.antal-=1;
           this.ledigaPlatserISal++;
+          this.isThereSeatsLeft;
           }
           else {
               alert('Du kan inte välja mindre än en biljett ')
