@@ -120,7 +120,7 @@ a:hover {
   text-decoration: none;
 }
 hr {
-  border-color: black;
+  border-color: rgb(124, 123, 123);
 }
 .posterpic {
   width: 20vmin;
