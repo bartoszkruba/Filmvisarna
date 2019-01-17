@@ -62,7 +62,7 @@
                   :to="'/Movie?'+ session.movieID"
                   exact-active-class="menu-item-active"
                 >
-                  <b-button>Film</b-button>
+                  <b-button>Film </b-button>
                 </router-link>
 
                 <router-link
