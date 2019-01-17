@@ -98,7 +98,7 @@ export default {
   },
   mounted: async function() {
     if (!this.$store.state.loggedInUser.name) {
-      this.$router.push("/LoggaIn");
+      this.$router.push("/");
     } else {
       const response = await api.getTickets(this.$store.getters.getCredentials);
       this.$store.commit("updateTickets", response.data.bookedTickets);

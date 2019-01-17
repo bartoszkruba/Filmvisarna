@@ -7,6 +7,7 @@ export const store = new Vuex.Store({
     state: {
         showMinaSidorButton: false,
         showLoggaInButton: true,
+        showLoggaInWindow: false,
         showAdminButton: false,
         loggedInUser: {
             name: '',
@@ -64,6 +65,11 @@ export const store = new Vuex.Store({
 
         updateTickets(state, tickets){
             state.loggedInUser.bookedTickets = tickets;
-        }
+        },
+
+        toggleLoggaInWindow(state) {
+            state.showLoggaInWindow = !state.showLoggaInWindow;
+            console.log("logga in")
+          }
     }
 })

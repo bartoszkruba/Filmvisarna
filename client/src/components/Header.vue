@@ -34,7 +34,7 @@
           <b-navbar-nav right>
             <b-nav-item
               class="router-link"
-              to="/LoggaIn"
+              @click="$store.commit('toggleLoggaInWindow');"
               v-if="this.$store.state.showLoggaInButton"
               exact-active-class="menu-item-active"
             >Logga In</b-nav-item>
@@ -68,12 +68,11 @@
 
 <script>
 import api from "@/services/Api.js";
-
 export default {
   name: "Header",
   data() {
     return {
-      searchQuery: null
+      searchQuery: null,
     };
   },
   methods: {
@@ -83,7 +82,7 @@ export default {
       }
       this.$store.commit("showMinaSidor");
       this.$store.commit("resetUserProperties");
-      this.$router.push("/LoggaIn");
+      this.$router.push("/");
     },
     async searchForMovies() {
       const response = await api.searchMovies(this.searchQuery);
@@ -91,7 +90,7 @@ export default {
         this.$router.push(`/moviesPage?${this.searchQuery.replace(' ', '_')}`);
       }
       this.searchQuery = null;
-    }
+    },
   }
 };
 </script>

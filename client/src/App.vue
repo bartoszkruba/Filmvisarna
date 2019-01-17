@@ -1,7 +1,8 @@
 <template>
   <div id="app">
-    <Header />
+    <Header></Header>
     <main>
+    <b-modal  v-model="$store.state.showLoggaInWindow" hide-footer title="Registrera / Logga In "><LoggaIn /></b-modal>
     <router-view/>
     </main>
     <Footer />
@@ -10,12 +11,19 @@
 
 <script>
 import Header from './components/Header';
-import Footer from './components/Footer'
+import Footer from './components/Footer';
+import LoggaIn from './components/LoggaIn';
 export default {
   name: 'App',
   components: {
     Header,
-    Footer
+    Footer,
+    LoggaIn
+  },
+  data(){
+    return{
+      logginShow: false,
+    }
   },
 }
 </script>
