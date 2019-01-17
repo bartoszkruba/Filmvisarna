@@ -4,7 +4,7 @@
 <div class="Movie">
 
   <b-jumbotron bg-variant="white">
-    <section v-if="aMovie === null">
+    <section v-if="errorFromMongo">
       <h1>Något blev fel!</h1>
       <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
       <ul>
@@ -16,7 +16,7 @@
 
     </section>
 
-    <section v-else>
+    <section v-if="aMovie && movieSessions">
 
 
       <!-- Title -->
@@ -35,13 +35,22 @@
             <span class="moviedescription" v-html="aMovie.description"></span>
           </article>
           <br>
+          <div v-if="movieSessions.length">
+
           <!-- <router-link class="router-link" :to="'/BokningSida?'+aMovie._id" exact-active-class="menu-item-active"> -->
             <b-btn v-on:click="goToBooking" variant="danger">Boka biljetter</b-btn>
           <!-- </router-link> -->
 
-            <b-dropdown id="ddown-buttons" text="Välj datum: " variant="danger" class="m-2">
+            <b-dropdown id="ddown-buttons" text="Ändra visningsdatum: " variant="danger" class="m-2">
               <b-dropdown-item-button v-on:click="changeSession" v-for="session in this.movieSessions" :value="session._id" :key="session._id"> {{session.date.day + '/' + session.date.month + ' ' + session.date.year + ' ' + session.date.time }}</b-dropdown-item-button>
             </b-dropdown>
+            <h3><br>
+              Vald visning: {{targetSessionDisplay}}
+            </h3>
+          </div>
+          <div v-else>
+            <p>Det finns inga visningar publicerade för {{aMovie.title}}</p>
+          </div>
         </section>
       </section>
 
@@ -116,16 +125,7 @@
 </template>
 
 <script>
-/*
-NEEDS TO BE DONE:
 
-FIRST MOVIE IN SESSIONLIST NEEDS TO BE ADDED INTO ARRAY
-
-WHAT IF NO SESSIONS ARE AVAILABLE? WE NEED A CHECK FOR
-IF THIS.MOVIESESSIONS = NULL OR length = null
-
-BOOKING NEEDS TO ACCEPT THE NEW SEARCH ROUTE
-*/
 
 import api from "@/services/Api.js";
 
@@ -133,13 +133,22 @@ export default {
   name: "Movie",
   data() {
     return {
+      errorFromMongo: false,
       aMovie: null,
       movieSessions: null,
-      sessionID: null
+      sessionID: null,
+      targetSessionDisplay: null
     };
   },
   methods: {
     changeSession(e){
+      console.log(e);
+      let target = e.target.innerHTML;
+      target = target.split(" ");
+      target.splice(3, 0, "kl:");
+      target = target.join(" ");
+
+      this.targetSessionDisplay = target;
       this.sessionID = e.target.value;
     },
     goToBooking(){
@@ -152,6 +161,7 @@ export default {
       return starPut;
     },
     async getMovieByID() {
+      this.aMovie = null;
       if (this.movieID() !== null) {
         try {
           const response = await api.getMovies({
@@ -161,27 +171,28 @@ export default {
             this.aMovie = response.data.movies[0];
 
         } catch (error) {
-          this.aMovie = null;
         }
-      } else {
-        this.aMovie = null;
       }
+      if(this.aMovie === null)
+        this.errorFromMongo = true;
     },
     async getMovieSessions(){
+      this.movieSessions = null;
       if (this.movieID() !== null) {
         try {
           const response = await api.getMovieSessions({
             movieID: this.movieID()
           });
           this.movieSessions = response.data.movie_sessions;
-          this.sessionID = this.movieSessions[0]._id;
-
+          if(this.movieSessions.length > 0){
+            this.sessionID = this.movieSessions[0]._id;
+            this.targetSessionDisplay = `${this.movieSessions[0].date.day}/${this.movieSessions[0].date.month} ${this.movieSessions[0].date.year} kl: ${this.movieSessions[0].date.time}`;
+          }
         } catch (error) {
-          this.movieSessions = null;
         }
-      } else {
-        this.movieSessions = null;
       }
+      if(this.movieSessions === null)
+        this.errorFromMongo = true
     },
     movieID() {
       if (window.location.hash.indexOf("?") > 0)
