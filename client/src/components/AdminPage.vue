@@ -15,7 +15,7 @@
       <div class="form-group p-3">
         <div class="row mb-3">
           <div class="col-sm-1"></div>
-          <div class="col-sm-5">import api from "@/services/Api.js";
+          <div class="col-sm-5">
             <label for="Title">Title:</label>
             <input type="text" class="form-control" id="Title" placeholder="Title" v-model="title">
           </div>
@@ -470,7 +470,7 @@ export default {
     },
     async getMovieTheatres() {
       const response = await api.getTheatres();
-      this.movieTheatres = response.data.movie_theaters;
+      this.movieTheatres = response.data.movie_theatres;
     },
     addActor() {
       if (

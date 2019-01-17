@@ -20,10 +20,8 @@
 
     <img :src="require('../assets/'+this.movie.images[0])" class="img">
         <div class="papillon">
-          <h1>{{movie.title}}</h1>
-          <h1>
-            {{this.session.date.day+'/'+this.session.date.month+' '+this.session.date.year +' '+ this.session.date.time}}
-          </h1>
+          <h1 class="title">{{movie.title}}</h1>
+          
             <div class="antal-bilijetter">
 
             </div>
@@ -32,12 +30,16 @@
 
 
     <div class="text">
-      <h3>
-        {{this.theatre.name}}
-      </h3>
-      <p>
-        Lediga platser: {{this.session.freePlaces}} av {{this.theatre.seats}}
-      </p>
+        <div class="location">
+          <h4>
+             Salong: {{this.theatre.name}}
+          </h4>
+          <h4> | </h4>
+          <h4>
+            Tid: {{this.session.date.day+'/'+this.session.date.month+' '+this.session.date.year +' '+ this.session.date.time}}
+          </h4>
+        
+       </div>
          <h4>Antal biljetter:</h4>
         <p><strong> Ordinarie</strong></p>
         <div class="antal">
@@ -64,6 +66,8 @@
             <button v-on:click="plusBarn" type="button" class="btn btn-dark">+</button>
           </div>
         </div>
+        </div>
+        <p class="ledigaPlatser"> <em> <strong>OBS!</strong> Lediga platser: {{this.session.freePlaces}} av {{this.theatre.seats}}</em></p>
         <div class="kostnad" v-if="totalt>=65">
           <h3>Kostnad</h3>
           <p class="totalt">totalt: {{totalt}}kr</p>
@@ -75,21 +79,19 @@
                 <!-- Modal Component -->
                 <b-modal id="modal1" v-if="totalt>=65" title="Bekräftelse">
                 <p>Film: <strong> {{movie.title}}</strong></p>
-                <p>Datum: </p>
-                <p>Tid: </p>
+                <p>Datum: <strong>{{this.session.date.day+'/'+this.session.date.month+' '+this.session.date.year }}</strong> </p>
+                <p>Tid: <strong>{{this.session.date.time}}</strong></p>
+                <p>Salong: <strong>{{this.theatre.name}} </strong></p>
                 <div class="Biljetter">
                   <p>Biljetter:</p>
                   <div class="vilkaBiljetter">
-                    <p v-if="antal>0"> {{antal}} Ordinarie</p>
-                    <p v-if="antalPensionar>0"> {{antalPensionar}} Pensionär</p>
-                    <p v-if="antalBarn>0"> {{antalBarn}} Barn</p>
+                    <p v-if="antal>0"><strong>{{antal}} Ordinarie</strong></p>
+                    <p v-if="antalPensionar>0"><strong>{{antalPensionar}} Pensionär</strong></p>
+                    <p v-if="antalBarn>0"><strong>{{antalBarn}} Barn</strong></p>
                   </div>
                 </div>
-                <p>Att betala: {{totalt}}kr</p>
-
-                <p></p>
-
-                <p class="my-4">Din bokningsnummer: {{bokningsnummer}}</p>
+                <p>Att betala: <strong>{{totalt}}kr</strong></p>
+                <p class="my-4">Din bokningsnummer: <strong>{{bokningsnummer}}</strong></p>
                 <p class="my-4"><strong>OBS!</strong>Du kan hämta ut dina biljetter senast 40min innan filmen börjar</p>
                 <p>  betalningen sker vid kassan i biografen</p>
                 </b-modal>
@@ -224,7 +226,6 @@ export default {
       }
         if(this.theatre === null)
          this.errorFromMongo = true;
-
       },
       getIdFromUrl(){
         this.movieID = null;
@@ -238,21 +239,21 @@ export default {
         },
       getBokningsnummer(){
           this.bokningsnummer=(Math.random()+1);
-          console.log(this.bokningsnummer);
-
-
       },
       plus(){
           this.antal+=1;
           this.totalt+=85;
           this.visaTotal = true;
           this.visaMedellande = false;
+          this.session.freePlaces--;
       },
       minus(){
 
           if (this.antal>0){
-          this.totalt-=85
-          this.antal-=1;}
+          this.totalt-=85;
+          this.antal-=1;
+          this.session.freePlaces++;
+          }
           else {
               alert('Du kan inte välja mindre än en biljett ')
           }
@@ -263,12 +264,14 @@ export default {
           this.antalPensionar+=1;
           this.visaTotal = true;
           this.visaMedellande = false;
+          this.session.freePlaces--;
 
       },
       minusPensionar(){
           if (this.antalPensionar>0){
           this.totalt-=75
           this.antalPensionar-=1;
+          this.session.freePlaces++;
           }
           else {
               alert('Du kan inte välja mindre än en biljett ')
@@ -279,12 +282,14 @@ export default {
           this.totalt+=65
           this.antalBarn+=1;
           this.visaTotal = true;
-           this.visaMedellande = false;
+          this.visaMedellande = false;
+          this.session.freePlaces--;
       },
       minusBarn(){
           if (this.antalBarn>0){
           this.antalBarn-=1;
-          this.totalt-=65
+          this.totalt-=65;
+          this.session.freePlaces++;
           }
           else {
               alert('Du kan inte välja mindre än en biljett ')
@@ -322,9 +327,17 @@ export default {
 .vilkaBiljetter p{
     margin: 0.3rem;
 }
+div .location{
+    margin:5vh 0;
+    display: flex;
+    justify-content: space-around;
+    width: 45vw;
+}
+.ledigaPlatser{
+    margin-top: 6vh
+}
 
 .kostnad{
-
     display: flex;
     width: 40vw;
     justify-content: space-between;
@@ -347,17 +360,16 @@ h4, h5,p, h1{
 .totalt {
   margin-top: 0.5vh;
 }
-h1 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 2.55rem;
-  margin-top: 5vh;
-  color: white;
-  text-shadow: -3px 3px 10px black, -3px 3px 10px black, -3px 3px 10px black,
-    3px -3px 10px black;
-  font-weight: bold;
-  font-style: oblique;
+.title{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 2.55rem;
+    margin-top: 5vh;
+    color: white;
+    text-shadow: -3px 3px 10px black, -3px 3px 10px black, -3px 3px 10px black, 3px -3px 10px black;
+    font-weight: bold;
+    font-style: oblique;
 }
 h4 {
   margin: 0;
@@ -368,7 +380,7 @@ h4 {
 
 .papillon{
     position: relative;
-    margin-top: -25vh;
+    margin-top: -17vh;
     display: block;
     top: 0;
     left: 0;
@@ -386,30 +398,58 @@ img {
   display: flex;
   justify-content: space-around;
 }
-.slutför {
-  margin: 8vh auto;
+.slutför{
+    margin: 6vh auto
 }
-.text {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 8vh;
+.text{
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   margin-top: 3vh
 }
 .hej {
   margin: 0 2vw;
 }
+div .hej{
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+}
 
-.felMedellande {
-  font-size: 1vw;
-  color: red;
-  margin-top: 1vh;
-  margin-bottom: 0;
+.felMedellande{
+    font-size: 0.8rem;
+    color: red;
+    margin-top: 1vh;
+    margin-bottom: 0;
+}
+div .vilkaBiljetter {
+    margin-top:1vh;
 }
 @media screen and (max-width: 416px) {
-  h1 {
-    margin-top: 8vh;
-    font-size: 1.3rem;
-  }
+    .papillon{
+      margin-top: -10vh;
+    
+    }
+    .title{
+      font-size: 5vw;  
+    }
+    div .location h4{
+        font-size: 4vw; 
+    }
+    div .location {
+    width: 90vw;
+    }
+    div .text{
+        margin-top: -3vh;
+    }
+    .ledigaPlatser em{
+        font-size: 4vw;
+    }
+    .kostnad{
+        width: 90vw;
+    }
+    .kostnad h3{
+        font-size: 6.5vw;
+    }
 }
 
 
