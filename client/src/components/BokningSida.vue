@@ -43,29 +43,34 @@
          <h4>Antal biljetter:</h4>
         <p><strong> Ordinarie</strong></p>
         <div class="antal">
-           <button v-on:click="minus" type="button" class="btn btn-dark">-</button>
-           <h5 class="hej"> {{antal}} st / {{pris}}kr per st </h5>
-           <button v-on:click="plus" type="button" class="btn btn-dark">+</button>
+          <button v-on:click="minus" type="button" class="btn btn-dark">-</button>
+          <h5 class="hej">{{antal}} st / {{pris}}kr per st</h5>
+          <button v-on:click="plus" type="button" class="btn btn-dark">+</button>
         </div>
-        <p><strong> Pensionär</strong></p>
-         <div class="antal">
-           <button v-on:click="minusPensionar" type="button" class="btn btn-dark">-</button>
-           <h5 class="hej"> {{antalPensionar}} st / {{prisPensionar}}kr per st </h5>
-           <button v-on:click="plusPensionar" type="button" class="btn btn-dark">+</button>
+        <p>
+          <strong>Pensionär</strong>
+        </p>
+        <div class="antal">
+          <button v-on:click="minusPensionar" type="button" class="btn btn-dark">-</button>
+          <h5 class="hej">{{antalPensionar}} st / {{prisPensionar}}kr per st</h5>
+          <button v-on:click="plusPensionar" type="button" class="btn btn-dark">+</button>
         </div>
 
         <div v-if="movie.ageLimit<15">
-        <p class="barn"><strong> Barn</strong></p>
-        <div class="antal">
-           <button v-on:click="minusBarn" type="button" class="btn btn-dark">-</button>
-           <h5 class="hej"> {{antalBarn}} st / {{prisBarn}}kr per st </h5>
-           <button v-on:click="plusBarn" type="button" class="btn btn-dark">+</button>
+          <p class="barn">
+            <strong>Barn</strong>
+          </p>
+          <div class="antal">
+            <button v-on:click="minusBarn" type="button" class="btn btn-dark">-</button>
+            <h5 class="hej">{{antalBarn}} st / {{prisBarn}}kr per st</h5>
+            <button v-on:click="plusBarn" type="button" class="btn btn-dark">+</button>
+          </div>
         </div>
         </div>
         <p class="ledigaPlatser"> <em> <strong>OBS!</strong> Lediga platser: {{this.ledigaPlatserISal}} av {{this.theatre.seats}}</em></p>
         <div class="kostnad" v-if="totalt>=65">
-            <h3>Kostnad</h3>
-            <p class="totalt" >totalt: {{totalt}}kr</p>
+          <h3>Kostnad</h3>
+          <p class="totalt">totalt: {{totalt}}kr</p>
         </div>
         <div class="slutför btn">
             <div>
@@ -110,8 +115,8 @@ let prisPensionar= 75;
 let antalBarn=0;
 let prisBarn= 65;
 let totalt=0;
-import api from "@/services/Api.js";
 
+import api from "@/services/Api.js";
 
 export default {
   name: "BokningSida",
@@ -150,6 +155,26 @@ export default {
       this.getMovieByID();
       this.getSessionByID();
     }
+  },
+
+  computed:{
+  
+    createTicket: function() {
+      let ticket = {
+          orderID: this.bokningsnummer,
+          sessionID: this.sessionID,
+          title: this.movie.title,
+          theatre: this.theatre.name,
+          totalTickets: this.antalBarn + this.antal + this.antalPensionar,
+          price: this.totalt,
+          time: this.session.date.time,
+          date: this.session.date.year+'/'+this.session.date.month+'/'+this.session.date.day,
+          children: this.antalBarn,
+          pensioner: this.antalPensionar,
+          adults: this.antal,
+      }
+      return ticket;
+  }
   },
   created(){
     this.pris=85;
@@ -292,9 +317,16 @@ export default {
               this.visaMedellande = true;
           }
           else{
-              this.bokningsnummer=Math.floor(Math.random() * 10000000000);
+              this.bokaFilm();
           }
-      }
+      },
+
+     async bokaFilm(){
+          this.bokningsnummer =Math.floor(Math.random() * 10000000000);
+          const response = await api.setTickets(this.createTicket, this.$store.getters.getCredentials);
+          console.log(response.data.bookedTickets);
+          this.$store.commit('updateTickets' , response.data.bookedTickets);
+      },
   }
 };
 </script>
@@ -329,20 +361,20 @@ div .location{
     padding-top: 2vh;
     border-top: .0625rem solid rgba(94, 94, 94, 0.411);
 }
-.antal-bilijetter{
-    display: flex;
-    justify-content: center;
-    margin: 3vh 0;
+.antal-bilijetter {
+  display: flex;
+  justify-content: center;
+  margin: 3vh 0;
 }
-.bokning{
-    margin: 3vh;
+.bokning {
+  margin: 3vh;
 }
 h4, h5,p, h1{
 
     margin-top: 5vh;
 }
-.totalt{
-    margin-top: 0.5vh;
+.totalt {
+  margin-top: 0.5vh;
 }
 .title{
     display: flex;
@@ -355,11 +387,11 @@ h4, h5,p, h1{
     font-weight: bold;
     font-style: oblique;
 }
-h4{
-    margin: 0;
+h4 {
+  margin: 0;
 }
-.barn{
-text-align: center;
+.barn {
+  text-align: center;
 }
 
 .papillon{
@@ -372,15 +404,15 @@ text-align: center;
     height: 100%;
 
 }
-img{
-    width: 100vw;
-    box-shadow: 2px 2px 80px black;
+img {
+  width: 100%;
+  box-shadow: 2px 2px 80px black;
 }
 
-.antal{
-    margin: 0;
-    display: flex;
-    justify-content:space-around;
+.antal {
+  margin: 0;
+  display: flex;
+  justify-content: space-around;
 }
 .slutför{
     margin: 6vh auto
@@ -391,8 +423,8 @@ img{
    align-items: center;
    margin-top: 3vh
 }
-.hej{
-    margin: 0 2vw;
+.hej {
+  margin: 0 2vw;
 }
 div .hej{
     margin-top: 1vh;
