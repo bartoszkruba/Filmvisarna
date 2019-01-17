@@ -1,7 +1,7 @@
 <template>
 <main>
 
-<section v-if="movie === null || session === null">
+<section v-if="errorFromMongo">
         <h1>Något blev fel!</h1>
         <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
         <ul>
@@ -13,7 +13,7 @@
 
       </section>
 
-      <section v-else>
+      <section v-if="movie && session && theatre">
 
     <div>
 
@@ -32,8 +32,11 @@
 
 
     <div class="text">
+      <h3>
+        {{this.theatre.name}}
+      </h3>
       <p>
-        Antal lediga platser: {{this.session.freePlaces}}
+        Lediga platser: {{this.session.freePlaces}} av {{this.theatre.seats}}
       </p>
          <h4>Antal biljetter:</h4>
         <p><strong> Ordinarie</strong></p>
@@ -93,22 +96,27 @@ export default {
         antalBarn: null,
         prisBarn: null,
         pris: null,
-        movie: null,
+        movie: undefined,
         session: null,
+        theatre: null,
         totalt: null,
         visaMedellande: false,
         movieID: null,
-        sessionID: null
+        sessionID: null,
+        theatreID: null,
+        errorFromMongo: false
     };
 
   },
   mounted: function() {
+    this.errorFromMongo = false;
     this.getIdFromUrl();
     this.getMovieByID();
     this.getSessionByID();
   },
   watch: {
     '$route': function() {
+      this.errorFromMongo = false;
       this.getIdFromUrl();
       this.getMovieByID();
       this.getSessionByID();
@@ -125,31 +133,49 @@ export default {
   },
   methods: {
       async getMovieByID() {
+        this.movie = null;
       if(this.movieID !== null){
         try{
           const response = await api.getMovies({_id: this.movieID});
           this.movie = response.data.movies[0];
         } catch(error){
-          this.movie = null;
         }
-      } else {
-         this.movie = null;
-        }
+      }
+       if(this.movie === null)
+        this.errorFromMongo = true;
       },
       async getSessionByID() {
+        this.session = null;
       if(this.sessionID !== null){
         try{
           const response = await api.getMovieSessions({_id: this.sessionID});
-          if(response.data.movie_sessions.length)
+          if(response.data.movie_sessions.length){
             this.session = response.data.movie_sessions[0];
-          else
-            this.session = null;
+            this.theatreID = this.session.movieTheatreID;
+          }
         } catch(error){
-          this.session = null;
         }
-      } else {
-         this.session = null;
+        if(this.session === null)
+         this.errorFromMongo = true;
+        else
+          this.getTheatreByID();
         }
+      },
+      async getTheatreByID() {
+        // Sätt theatre till null för att testa om lyckas hämtning
+        this.theatre = null;
+        // Hämta salong om det finns ID
+      if(this.theatreID !== null){
+        try{
+          const response = await api.getTheatres({_id: this.theatreID});
+          if(response.data.movie_theatres.length)
+            this.theatre = response.data.movie_theatres[0];
+        } catch(error){
+        }
+      }
+        if(this.theatre === null)
+         this.errorFromMongo = true;
+
       },
       getIdFromUrl(){
         this.movieID = null;
