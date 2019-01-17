@@ -37,7 +37,7 @@
             </figure>
 
             <div class="flex-col text">
-              <h4>{{session.date.day.toString().padStart(2, "0")}}/{{session.date.month.toString().padStart(2, "0")}}-{{session.date.year}}</h4>
+              <h4>{{getWeekdayString(session.date.year,session.date.month,session.date.day)}} {{session.date.day.toString().padStart(2, "0")}}/{{session.date.month.toString().padStart(2, "0")}}-{{session.date.year}}</h4>
 
               <h5>
                 {{movies.find((cur)=>{
@@ -62,7 +62,7 @@
                   :to="'/Movie?'+ session.movieID"
                   exact-active-class="menu-item-active"
                 >
-                  <b-button>Film </b-button>
+                  <b-button>Film</b-button>
                 </router-link>
 
                 <router-link
@@ -133,8 +133,42 @@ export default {
         this.theatres = response.data.movie_theatres;
       } catch (error) {}
       if (this.theatres === null) this.errorFromMongo = true;
+    },
+    getWeekdayString(y, m, d){
+      let stringDate = `${y}-${m}-${d}`;
+      let date = new Date(stringDate);
+      let weekday = date.getDay();
+      let output;
+      switch (weekday) {
+        case 0:
+          output = "Söndag";
+          break;
+        case 1:
+          output = "Måndag";
+          break;
+        case 2:
+          output = "Tisdag";
+          break;
+        case 3:
+          output = "Onsdag";
+          break;
+        case 4:
+          output = "Torsdag";
+          break;
+        case 5:
+          output = "Fredag";
+          break;
+        case 6:
+          output = "Lördag";
+          break;
+        default:
+          output = "Ingen dag alls"
+      }
+      return output;
     }
+
   }
+   
 };
 </script>
 
@@ -148,6 +182,9 @@ export default {
   flex-direction: column;
   align-content: center;
   justify-content: center;
+}
+.wrapping{
+    margin-left: 1rem;
 }
 .jumbo {
   text-align: center;
@@ -182,7 +219,7 @@ span {
 
 @media screen and (max-width: 500px) {
   h1 {
-    font-size: 3rem;
+    font-size: 2rem;
   }
   .flex-mobil {
     display: flex;
