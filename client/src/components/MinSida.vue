@@ -2,9 +2,6 @@
   <section>
     <b-jumbotron class="jumbotron">
       <h1>{{this.$store.state.loggedInUser.name}}</h1>
-      <b-link @click="displayUserSettings">
-        <font-awesome-icon class="mr-2" icon="pen"/>Uppdatera Medlemsprofil
-      </b-link>
     </b-jumbotron>
     <section class="order-history">
       <h1>Orderhistorik</h1>

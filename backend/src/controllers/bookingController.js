@@ -12,7 +12,11 @@ module.exports.setBookedTicket = async (req, res, next) => {
                 title: session.movieID.title,
                 theatre: session.movieTheatreID.name,
                 time: session.date.time,
-                date: session.date.year.toString() + session.date.year.toString().padStart(2, '0'),
+                date: session.date.year.toString()
+                + "-"
+                + session.date.month.toString().padStart(2, '0')
+                + "-"
+                + session.date.day.toString().padStart(2, '0'),
                 price: parseInt(req.body.ticket.children) * 65
                     + parseInt(req.body.ticket.pensioner) * 75
                     + parseInt(req.body.ticket.adults) * 85,

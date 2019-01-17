@@ -35,7 +35,7 @@
             <b-nav-item
               class="router-link"
               to="/LoggaIn"
-              v-if="false" 
+              v-if="this.$store.state.showLoggaInButton"
               exact-active-class="menu-item-active"
             >Logga In</b-nav-item>
             <b-nav-item

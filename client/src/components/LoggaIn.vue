@@ -246,7 +246,7 @@ export default {
       console.log(response.data.validated)
       if(response.data.validated){
         this.showErrorMessageSignIn = false;
-        this.$router.push('/MinSida');
+        this.$router.push('/');
         this.$store.commit('showMinaSidor');
         this.$store.commit('setLoggedInUser',response.data);
         if(response.data.admin){

@@ -74,6 +74,7 @@
         <div class="slutför btn">
             <div>
                 <b-btn v-on:click="visaFelMedellande" v-b-modal.modal1>Slutför bokning</b-btn>
+                 <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
 
         </div>
         
@@ -98,10 +99,8 @@
                 
                 </b-modal>
             </div>
-
-           <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
+          
         </div>
-    </div>
       </section>
 </main>
 
@@ -147,6 +146,9 @@ export default {
     this.getIdFromUrl();
     this.getMovieByID();
     this.getSessionByID();
+    if(!this.$store.getters.isUserSignedIn){
+      this.$router.push('/moviesPage');
+    }
   },
   watch: {
     '$route': function() {

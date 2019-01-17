@@ -70,7 +70,7 @@
                   :to="'/BokningSida?'+session.movieID + '&' + session._id"
                   exact-active-class="menu-item-active"
                 >
-                  <b-button class="secound-button">Boka</b-button>
+                  <b-button class="secound-button" v-if="$store.getters.isUserSignedIn">Boka</b-button>
                 </router-link>
               </div>
             </div>

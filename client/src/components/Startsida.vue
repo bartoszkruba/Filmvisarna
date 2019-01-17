@@ -28,7 +28,7 @@
                     return cur.movieID === movies[0]._id})._id"
                     exact-active-class="menu-item-active"
                   >
-                    <b-button>Snabb boka</b-button>
+                    <b-button v-if="this.$store.getters.isUserSignedIn">Snabb boka</b-button>
                   </router-link>
                 </figure>
               </b-col>
@@ -55,7 +55,7 @@
                     return cur.movieID === movies[1]._id})._id"
                     exact-active-class="menu-item-active"
                   >
-                    <b-button>Snabb boka</b-button>
+                    <b-button v-if="this.$store.getters.isUserSignedIn">Snabb boka</b-button>
                   </router-link>
                 </figure>
               </b-col>
@@ -82,7 +82,7 @@
                     return cur.movieID === movies[2]._id})._id"
                     exact-active-class="menu-item-active"
                   >
-                    <b-button>Snabb boka</b-button>
+                    <b-button v-if="this.$store.getters.isUserSignedIn">Snabb boka</b-button>
                   </router-link>
                 </figure>
               </b-col>
@@ -125,7 +125,7 @@
                     return cur.movieID === movies[0]._id})._id"
               exact-active-class="menu-item-active"
             >
-              <b-button>Snabb boka</b-button>
+              <b-button v-if="this.$store.getters.isUserSignedIn">Snabb boka</b-button>
             </router-link>
           </b-carousel-slide>
           <b-carousel-slide>
@@ -154,7 +154,7 @@
                     return cur.movieID === movies[1]._id})._id"
               exact-active-class="menu-item-active"
             >
-              <b-button>Snabb boka</b-button>
+              <b-button v-if="this.$store.getters.isUserSignedIn">Snabb boka</b-button>
             </router-link>
           </b-carousel-slide>
           <b-carousel-slide>
@@ -183,7 +183,7 @@
                     return cur.movieID === movies[2]._id})._id"
               exact-active-class="menu-item-active"
             >
-              <b-button>Snabb boka</b-button>
+              <b-button v-if="this.$store.getters.isUserSignedIn">Snabb boka</b-button>
             </router-link>
           </b-carousel-slide>
         </b-carousel>

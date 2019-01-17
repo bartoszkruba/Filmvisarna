@@ -35,10 +35,11 @@
             <span class="moviedescription" v-html="aMovie.description"></span>
           </article>
           <br>
+          <p v-if="!this.$store.getters.isUserSignedIn" style="color: red">Du måste logga in för att kunna boka biljetter</p>
           <div v-if="movieSessions.length">
 
           <!-- <router-link class="router-link" :to="'/BokningSida?'+aMovie._id" exact-active-class="menu-item-active"> -->
-            <b-btn v-on:click="goToBooking" variant="danger">Boka biljetter</b-btn>
+            <b-btn v-on:click="goToBooking" variant="danger"><span v-if="this.$store.getters.isUserSignedIn">Boka biljetter</span><span v-else>Logga In</span></b-btn>
           <!-- </router-link> -->
 
             <b-dropdown id="ddown-buttons" text="Ändra visningsdatum: " variant="danger" class="m-2">
@@ -201,7 +202,11 @@ export default {
       this.sessionID = e.target.value;
     },
     goToBooking(){
-      this.$router.push('/BokningSida?'+this.movieID()+'&'+this.sessionID);
+      if(!this.$store.getters.isUserSignedIn){
+         this.$router.push('/LoggaIn');
+      }else{
+         this.$router.push('/BokningSida?'+this.movieID()+'&'+this.sessionID);
+      }
     },
     starView(s, n) {
       let starPut = "";

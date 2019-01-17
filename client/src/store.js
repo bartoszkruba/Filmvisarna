@@ -25,10 +25,19 @@ export const store = new Vuex.Store({
                 password: state.loggedInUser.password
             }
             return credentials;
+        },
+
+        isUserSignedIn: (state) => {
+            if(state.loggedInUser.name) {
+                return true;
+            }
+            return false;
         }
     },
 
     mutations: {
+
+
         showMinaSidor(state){
             state.showMinaSidorButton = !state.showMinaSidorButton;
             state.showLoggaInButton = !state.showLoggaInButton;
