@@ -42,7 +42,7 @@
           <!-- </router-link> -->
 
             <b-dropdown id="ddown-buttons" text="Ändra visningsdatum: " variant="danger" class="m-2">
-              <b-dropdown-item-button v-on:click="changeSession" v-for="session in this.movieSessions" :value="session._id" :key="session._id"> {{session.date.day + '/' + session.date.month + ' ' + session.date.year + ' ' + session.date.time }}</b-dropdown-item-button>
+              <b-dropdown-item-button v-on:click="changeSession" v-for="session in this.movieSessions" :value="session._id" :key="session._id">{{getWeekdayString(session.date.year,session.date.month,session.date.day).slice(0,-3)}} {{session.date.day + '/' + session.date.month + ' ' + session.date.year + ' ' + session.date.time }}</b-dropdown-item-button>
             </b-dropdown>
             <h3><br>
               Vald visning: {{targetSessionDisplay}}
@@ -141,14 +141,63 @@ export default {
     };
   },
   methods: {
+    getWeekdayString(y, m, d){
+      let stringDate = `${y}-${m}-${d}`;
+      let date = new Date(stringDate);
+      let weekday = date.getDay();
+      let output;
+      switch (weekday) {
+        case 0:
+          output = "Söndag";
+          break;
+        case 1:
+          output = "Måndag";
+          break;
+        case 2:
+          output = "Tisdag";
+          break;
+        case 3:
+          output = "Onsdag";
+          break;
+        case 4:
+          output = "Torsdag";
+          break;
+        case 5:
+          output = "Fredag";
+          break;
+        case 6:
+          output = "Lördag";
+          break;
+        default:
+          output = "Ingen dag alls"
+      }
+      return output;
+    },
     changeSession(e){
-      console.log(e);
+      /*
+        This function changes the sessionID for pushing route to booking
+        It also updates the text in the HTML
+      */
       let target = e.target.innerHTML;
+      let weekday;
+
+      // Split string
       target = target.split(" ");
-      target.splice(3, 0, "kl:");
+      target.shift(); // First in array is empty
+
+      target[0] = target[0].split("/"); // Split day/month
+      // Padding for month and day
+      target[0][0] = target[0][0].padStart(2, "0");
+      target[0][1] = target[0][1].padStart(2, "0");
+      // Get string with day of week
+      weekday = this.getWeekdayString(target[1], target[0][1], target[0][0]);
+
+      // Join arrays to string again. Add "kl:" before time is displayed
+      target[0] = target[0].join("/");
+      target.splice(2, 0, "kl:");
       target = target.join(" ");
 
-      this.targetSessionDisplay = target;
+      this.targetSessionDisplay = weekday + " " + target;
       this.sessionID = e.target.value;
     },
     goToBooking(){
@@ -186,7 +235,7 @@ export default {
           this.movieSessions = response.data.movie_sessions;
           if(this.movieSessions.length > 0){
             this.sessionID = this.movieSessions[0]._id;
-            this.targetSessionDisplay = `${this.movieSessions[0].date.day}/${this.movieSessions[0].date.month} ${this.movieSessions[0].date.year} kl: ${this.movieSessions[0].date.time}`;
+            this.targetSessionDisplay = `${this.getWeekdayString(this.movieSessions[0].date.year,this.movieSessions[0].date.month,this.movieSessions[0].date.day)} ${this.movieSessions[0].date.day}/${this.movieSessions[0].date.month} ${this.movieSessions[0].date.year} kl: ${this.movieSessions[0].date.time}`;
           }
         } catch (error) {
         }
