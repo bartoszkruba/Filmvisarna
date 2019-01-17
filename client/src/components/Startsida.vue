@@ -1,6 +1,7 @@
 <template>
   <div class="main">
-    <div v-if="movies">
+    <div v-if="movies && sessions">
+
     <div class="box">
       <div>
         <b-container fluid class="startposter">
@@ -22,13 +23,14 @@
                 >
                   <b-button>Läs mer</b-button>
                 </router-link>
-                <!-- <router-link
+                <router-link
                   class="router-link"
-                  :to="'/BokningSida?'+this.movies[0]._id"
+                  :to="'/BokningSida?'+this.movies[0]._id + '&' + this.sessions.find((cur)=>{ 
+                    return cur.movieID === movies[0]._id})._id"
                   exact-active-class="menu-item-active"
                 >
-                  <b-button>Boka</b-button>
-                </router-link>-->
+                  <b-button>Snabb boka</b-button>
+          </router-link>
               </figure>
             </b-col>
             <b-col>
@@ -48,13 +50,14 @@
                 >
                   <b-button>Läs mer</b-button>
                 </router-link>
-                <!-- <router-link
+                <router-link
                   class="router-link"
-                  :to="'/BokningSida?'+this.movies[1]._id"
+                  :to="'/BokningSida?'+this.movies[1]._id + '&' + this.sessions.find((cur)=>{ 
+                    return cur.movieID === movies[1]._id})._id"
                   exact-active-class="menu-item-active"
                 >
-                  <b-button>Boka</b-button>
-                </router-link>-->
+                  <b-button>Snabb boka</b-button>
+          </router-link>
               </figure>
             </b-col>
             <b-col>
@@ -74,13 +77,14 @@
                 >
                   <b-button>Läs mer</b-button>
                 </router-link>
-                <!-- <router-link
+                <router-link
                   class="router-link"
-                  :to="'/BokningSida?'+this.movies[2]._id"
+                  :to="'/BokningSida?'+this.movies[2]._id + '&' + this.sessions.find((cur)=>{ 
+                    return cur.movieID === movies[2]._id})._id"
                   exact-active-class="menu-item-active"
                 >
-                  <b-button>Boka</b-button>
-                </router-link>-->
+                  <b-button>Snabb boka</b-button>
+          </router-link>
               </figure>
             </b-col>
           </b-row>
@@ -116,13 +120,14 @@
           >
             <b-button>Läs mer</b-button>
           </router-link>
-          <!-- <router-link
+          <router-link
                   class="router-link"
-                  :to="'/BokningSida?'+this.movies[0]._id"
+                  :to="'/BokningSida?'+this.movies[0]._id + '&' + this.sessions.find((cur)=>{ 
+                    return cur.movieID === movies[0]._id})._id"
                   exact-active-class="menu-item-active"
                 >
-                  <b-button>Boka</b-button>
-          </router-link>-->
+                  <b-button>Snabb boka</b-button>
+          </router-link>
         </b-carousel-slide>
         <b-carousel-slide>
           <img
@@ -144,13 +149,14 @@
           >
             <b-button>Läs mer</b-button>
           </router-link>
-          <!-- <router-link
+          <router-link
                   class="router-link"
-                  :to="'/BokningSida?'+this.movies[1]._id"
+                  :to="'/BokningSida?'+this.movies[1]._id + '&' + this.sessions.find((cur)=>{ 
+                    return cur.movieID === movies[1]._id})._id"
                   exact-active-class="menu-item-active"
                 >
-                  <b-button>Boka</b-button>
-          </router-link>-->
+                  <b-button>Snabb boka</b-button>
+          </router-link>
         </b-carousel-slide>
         <b-carousel-slide>
           <img
@@ -172,13 +178,14 @@
           >
             <b-button>Läs mer</b-button>
           </router-link>
-          <!-- <router-link
+          <router-link
                   class="router-link"
-                  :to="'/BokningSida?'+this.movies[2]._id"
+                  :to="'/BokningSida?'+this.movies[2]._id + '&' + this.sessions.find((cur)=>{ 
+                    return cur.movieID === movies[2]._id})._id"
                   exact-active-class="menu-item-active"
                 >
-                  <b-button>Boka</b-button>
-          </router-link>-->
+                  <b-button>Snabb boka</b-button>
+          </router-link>
         </b-carousel-slide>
       </b-carousel>
     </div>
@@ -204,11 +211,13 @@ export default {
   //Hämta data från server
   data() {
     return {
-      movies: null
+      movies: null,
+      sessions: null,
     };
   },
   created() {
     this.getMovies();
+    this.getSessions();
   },
   methods: {
     onSlideStart(slide) {
@@ -220,6 +229,10 @@ export default {
     async getMovies() {
       const response = await api.getMovies();
       this.movies = response.data.movies;
+    },
+    async getSessions() {
+      const response = await api.getMovieSessions();
+      this.sessions = response.data.movie_sessions;
     },
     linkToMovePage(e) {
     return this.$router.push('/Movie?'+e.srcElement.attributes.value.value);
