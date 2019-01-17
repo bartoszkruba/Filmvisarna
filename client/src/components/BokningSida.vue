@@ -66,7 +66,6 @@
             <button v-on:click="plusBarn" type="button" class="btn btn-dark">+</button>
           </div>
         </div>
-        </div>
         <p class="ledigaPlatser"> <em> <strong>OBS!</strong> Lediga platser: {{this.ledigaPlatserISal}} av {{this.theatre.seats}}</em></p>
         <div class="kostnad" v-if="totalt>=65">
           <h3>Kostnad</h3>
@@ -76,6 +75,8 @@
             <div>
                 <b-btn v-on:click="visaFelMedellande" v-b-modal.modal1>Slutför bokning</b-btn>
 
+        </div>
+        
                 <!-- Modal Component -->
                 <b-modal id="modal1" v-if="totalt>=65" title="Bekräftelse" @ok="goHem" @cancel="cancelBokning">
                 <p>Film: <strong> {{movie.title}}</strong></p>
@@ -254,7 +255,6 @@ export default {
           this.antalBarn=0;
           this.ledigaPlatserISal=this.session.freePlaces;
           this.totalt=0;
-
       },
       plus(){
           this.antal+=1;
@@ -264,7 +264,6 @@ export default {
           this.ledigaPlatserISal--;
       },
       minus(){
-
           if (this.antal>0){
           this.totalt-=85;
           this.antal-=1;
@@ -322,8 +321,8 @@ export default {
       },
 
      async bokaFilm(){
-          this.bokningsnummer =Math.floor(Math.random() * 10000000000);
           const response = await api.setTickets(this.createTicket, this.$store.getters.getCredentials);
+          this.bokningsnummer = response.data.orderID;
           console.log(response.data.bookedTickets);
           this.$store.commit('updateTickets' , response.data.bookedTickets);
       },
