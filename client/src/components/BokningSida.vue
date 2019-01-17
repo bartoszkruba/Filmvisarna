@@ -89,6 +89,7 @@
                 <p class="my-4">Din bokningsnummer: <strong>{{bokningsnummer}}</strong></p>
                 <p class="my-4"><strong>OBS!</strong>Du kan hämta ut dina biljetter senast 40min innan filmen börjar</p>
                 <p>  betalningen sker vid kassan i biografen</p>
+                <p><em>Ångrar du köpet? trycka på 'Cancel'</em></p>
                 
                 </b-modal>
             </div>
