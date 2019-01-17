@@ -14,10 +14,9 @@ const movieSessionController = require('./controllers/movieSessionController');
 const authenticationController = require('./controllers/authenticationController');
 const authenticationPolicy = require('./policies/authenticationPolicy');
 
-Router.post('/addMovie',moviesPolicy.postAddMoviePolicy, moviesController.postAddMovie);
-
 Router.post('/addMovie', moviesPolicy.postAddMoviePolicy, moviesController.postAddMovie);
 
+Router.post('/searchMovies', moviesController.searchMovies);
 // Creating routes for different URLs
 
 // route for GET request to  localhost:8081/
