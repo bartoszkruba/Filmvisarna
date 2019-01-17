@@ -6,7 +6,7 @@
   <b-jumbotron bg-variant="white">
     <section v-if="errorFromMongo">
       <h1>Något blev fel!</h1>
-      <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
+      <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande </p>
       <ul>
         <li>Antipiratbyrån har hackat oss</li>
         <li>Vår hemsida har tekniskt strul</li>
