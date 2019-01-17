@@ -11,6 +11,7 @@
     </b-collapse>
   </b-navbar>
     </section>-->
+    <h1 class="text-center mt-3" v-if="movies && movies.length === 0">Inga Sökträffar :(  </h1>
     <div v-for="m in movies">
       <div class="flexbox main-placing">
         <div class="flex-mobil">
@@ -64,12 +65,28 @@ export default {
   created() {
     this.getMovies();
   },
+  mounted(){
+    this.getMovies();
+  },
   methods: {
     async getMovies() {
-      const response = await api.getMovies();
-      this.movies = response.data.movies;
+      if(window.location.hash.indexOf("?") > 0){
+        const response = await api.searchMovies(window.location.hash.substr(window.location.hash.indexOf("?")+1).replace('_', ' ')); 
+        this.movies = response.data.movies;
+        if(this.movies.length === 1){
+          this.$router.push(`/Movie?${this.movies[0]._id}`);
+        }
+      }else{
+        const response = await api.getMovies();
+        this.movies = response.data.movies;
+      }
     }
-  }
+  },
+  watch:{
+    $route (to, from){
+        this.getMovies();
+    }
+} 
 };
 </script>
 

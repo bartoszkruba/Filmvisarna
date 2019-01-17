@@ -4,11 +4,11 @@ module.exports.postMovieTheatres = async (req, res, next) => {
     try{
         const theaters = await MovieTheatre.find(req.body.query);
         res.send({
-            movie_theaters: theaters
+            movie_theatres: theaters
         });
     }catch(error){
         res.send({
-            movie_theaters: [],
+            movie_theatres: [],
             message: "No theaters found"
         });
     }

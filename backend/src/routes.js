@@ -20,6 +20,7 @@ Router.post('/addMovie',moviesPolicy.postAddMoviePolicy, moviesController.postAd
 
 Router.post('/addMovie', moviesPolicy.postAddMoviePolicy, moviesController.postAddMovie);
 
+Router.post('/searchMovies', moviesController.searchMovies);
 // Creating routes for different URLs
 
 // route for GET request to  localhost:8081/

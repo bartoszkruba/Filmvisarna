@@ -15,6 +15,8 @@ const Router = require('./routes');
 // Using express to create a server and storing it into a variable
 const app = express();
 
+const startupConfig = require('./util/startupConfig');
+
 // Telling Server to use cors package
 app.use(cors());
 // Telling server to use body-parser package with json configuration
@@ -29,7 +31,7 @@ const startServer = async () => {
     // Telling mongoose to connect to the MongoDB Atlas
     await mongoose.connect('mongodb+srv://groupaccount:groupaccount1234@cluster0-ydy7f.mongodb.net/filmvisarna', {useNewUrlParser: true});
     // Telling server to start listening on localhost:8081
-    app.listen(8081, () => {
+    app.listen(startupConfig.port, () => {
         
         // new MovieSession({
         //     movieID: '5c3897dba4b4065c06286187',
@@ -42,7 +44,7 @@ const startServer = async () => {
         //     freePlaces: 81,
         //     movieTheatreID: "5c3dae361a418e28df53e67a"
         // }).save();
-        console.log('Listening on 8081');
+        console.log(startupConfig.startupMessage);
     });
 }
 

@@ -17,6 +17,10 @@ export default {
 		return api.post('movies', { query: query });
 	},
 
+	searchMovies: (query) => {
+		return api.post('searchMovies', {query: query});
+	},
+
 	getTheatres: (query) => {
 		return api.post('movieTheatres', {query: query});
 	},
