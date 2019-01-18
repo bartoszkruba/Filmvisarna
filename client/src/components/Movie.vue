@@ -203,7 +203,7 @@ export default {
     },
     goToBooking(){
       if(!this.$store.getters.isUserSignedIn){
-         this.$router.push('/LoggaIn');
+         this.$store.commit('toggleLoggaInWindow');
       }else{
          this.$router.push('/BokningSida?'+this.movieID()+'&'+this.sessionID);
       }

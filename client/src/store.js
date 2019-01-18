@@ -9,6 +9,7 @@ export const store = new Vuex.Store({
         showLoggaInButton: true,
         showLoggaInWindow: false,
         showAdminButton: false,
+        loggaInButtonPressed: false,
         loggedInUser: {
             name: '',
             id: '',
@@ -33,6 +34,10 @@ export const store = new Vuex.Store({
                 return true;
             }
             return false;
+        },
+
+        isLoggaInButtonPressed: (state) => {
+            return state.loggaInButtonPressed;
         }
     },
 
@@ -69,7 +74,10 @@ export const store = new Vuex.Store({
 
         toggleLoggaInWindow(state) {
             state.showLoggaInWindow = !state.showLoggaInWindow;
-            console.log("logga in")
+          },
+        
+        loggaInButtonPressed(state) {
+            state.loggaInButtonPressed = !state.loggaInButtonPressed;
           }
     }
 })

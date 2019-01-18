@@ -2,7 +2,7 @@
   <div id="app">
     <Header></Header>
     <main>
-    <b-modal  v-model="$store.state.showLoggaInWindow" hide-footer title="Registrera / Logga In "><LoggaIn /></b-modal>
+    <LoggaIn v-if="$store.state.showLoggaInWindow"></LoggaIn>
     <router-view/>
     </main>
     <Footer />
