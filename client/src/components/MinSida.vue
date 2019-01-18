@@ -8,7 +8,7 @@
     </b-jumbotron>
     <section class="order-history">
       <h1>Orderhistorik</h1>
-      <b-table striped hover :fields="fields" :items="this.$store.state.loggedInUser.bookedTickets"></b-table>
+      <b-table striped hover responsive :fields="fields" :items="this.$store.state.loggedInUser.bookedTickets"></b-table>
     </section>
     <b-modal v-model="showUserSettings" title="Uppdatera Medlemsprofil" ok-only>
       <h5>{{this.$store.state.loggedInUser.name}}</h5>
