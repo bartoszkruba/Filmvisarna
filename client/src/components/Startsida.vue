@@ -1,5 +1,11 @@
 <template>
   <div class="main">
+
+      <b-jumbotron class="white-text jumbotron" style="background-image: url(http://le13emecri.com/wp-content/uploads/2014/01/rideau-rouge.jpg)">
+        <template slot="header" class="white-text welcome-text">
+          <h1 class="white-text welcome-text">Välkommen till Filmvisarna!</h1>
+        </template>
+      </b-jumbotron>
     <div v-if="movies && sessions">
       <div class="box">
         <div>
@@ -188,20 +194,19 @@
           </b-carousel-slide>
         </b-carousel>
       </div>
-
-      <b-jumbotron>
-        <template slot="header">Senaste nytt</template>
-        <h1>Vi har nu öppnat, Välkomna</h1>
-        <h2>På plats säljer vi</h2>
-        <ul>
-          <li>Popcorn</li>
-          <li>Läsk</li>
-          <li>Chips</li>
-          <li>Godis</li>
-          <li>mm</li>
+    </div>
+    <b-jumbotron class="white-text jumbotron" style="background-image: url(http://le13emecri.com/wp-content/uploads/2014/01/rideau-rouge.jpg)">
+        <template slot="header" class="white-text">Senaste nytt</template>
+        <h1 class="white-text">Vi har nu öppnat, Välkomna</h1>
+        <h2 class="white-text">På plats säljer vi:</h2>
+        <ul class="white-text">
+          <li>Popcorn,</li>
+          <li>Läsk,</li>
+          <li>Chips,</li>
+          <li>Godis,</li>
+          <li>m.m.</li>
         </ul>
       </b-jumbotron>
-    </div>
   </div>
 </template>
 <script>
@@ -253,6 +258,13 @@ li {
   text-align: center;
   list-style-type: none;
 }
+ul{
+  margin: 0;
+  padding: 0;
+}
+.jumbotron {
+  margin-bottom: 0;
+}
 .calusel {
   display: none;
 }
@@ -270,7 +282,22 @@ li {
 .startposter {
   padding-top: 2vh;
 }
+
+.white-text{
+  color: white;
+  text-shadow: 20px 20px 20px 20px black;
+}
+
+.welcome-text{
+  font-size: 130%;
+}
+
 @media only screen and (max-device-width: 560px) {
+  
+  .welcome-text{
+    font-size: 70%;
+  }
+
   .b-carousel-slide {
     width: 100%;
   }
