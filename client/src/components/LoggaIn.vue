@@ -155,7 +155,7 @@ export default {
       if(response.data.validated){
         this.showErrorMessageSignIn = false;
         this.$store.commit('toggleLoggaInWindow');
-        this.$emit('goToBooking');
+        this.$store.commit('loggaInButtonPressed');
         this.$store.commit('showMinaSidor');
         this.$store.commit('setLoggedInUser',response.data);
         if(response.data.admin){

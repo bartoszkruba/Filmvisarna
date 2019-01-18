@@ -78,6 +78,7 @@ export const store = new Vuex.Store({
         
         loggaInButtonPressed(state) {
             state.loggaInButtonPressed = !state.loggaInButtonPressed;
+            console.log("loggin button pressed store");
           }
     }
 })

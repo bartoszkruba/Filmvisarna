@@ -138,7 +138,8 @@ export default {
       aMovie: null,
       movieSessions: null,
       sessionID: null,
-      targetSessionDisplay: null
+      targetSessionDisplay: null,
+      loggaInButtonPressed: this.$store.state.loggaInButtonPressed,
     };
   },
   methods: {
@@ -205,7 +206,7 @@ export default {
       if(!this.$store.getters.isUserSignedIn){
          this.$store.commit('toggleLoggaInWindow');
       }else{
-         this.$router.push('/BokningSida?'+this.movieID()+'&'+this.sessionID);
+        this.$router.push('/BokningSida?'+this.movieID()+'&'+this.sessionID);
       }
     },
     starView(s, n) {
@@ -262,7 +263,11 @@ export default {
     '$route': function() {
       this.getMovieByID();
       this.getMovieSessions();
-    }
+    },
+     '$store.state.loggaInButtonPressed': function() {
+      console.log("knappen är tryckt redirekta till film");
+        this.$router.push('/BokningSida?'+this.movieID()+'&'+this.sessionID);
+    }, 
   }
 };
 </script>
