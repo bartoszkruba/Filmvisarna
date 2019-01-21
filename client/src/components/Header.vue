@@ -20,7 +20,7 @@
               size="sm"
               class="mr-sm-2"
               type="text"
-              placeholder="Sök Film"
+              placeholder="Sök"
               v-model="searchQuery"
             />
             <b-button
