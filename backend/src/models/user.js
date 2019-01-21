@@ -22,10 +22,23 @@ const UserSchema = Schema({
     },
     bookedTickets: [
         {
-            movieSessionID: {
-                type: Schema.Types.ObjectId,
-                required: true,
-                ref: 'movieSession'
+            title: {
+                type: String,
+            },
+            orderID: {
+                type: String,
+            },
+            theatre: {
+                type: String,
+            },
+            time: {
+                type: String,
+            },
+            date: {
+                type: String,
+            },
+            price: {
+                type: String,
             },
             adults: {
                 type: Number,
@@ -35,6 +48,9 @@ const UserSchema = Schema({
             },
             pensioner: {
                 type: Number
+            },
+            totalTickets: {
+                type: String,
             }
         }
     ]
