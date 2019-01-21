@@ -24,7 +24,7 @@
           <div class="antal-bilijetter"></div>
         </div>
       </div>
-
+    </section>
     <div class="text">
       <div class="location">
         <h4>Salong: {{this.theatre.name}}</h4>
@@ -112,13 +112,6 @@
             >+</button>
           </div>
         </div>
-        <!-- Modal Component -->
-        <b-modal id="modal1" v-if="totalt>=65" title="Bekräftelse" @ok="goHem" ok-only>
-          <p>Film: <strong> {{movie.title}}</strong></p>
-          <p>Datum: <strong>{{this.session.date.day+'/'+this.session.date.month+' '+this.session.date.year }}</strong> </p>
-          <p>Tid: <strong>{{this.session.date.time}}</strong></p>
-          <p>Salong: <strong>{{this.theatre.name}} </strong></p>
-
           <div class="Biljetter">
             <p>Biljetter:</p>
             <div class="vilkaBiljetter">
@@ -129,8 +122,28 @@
           </div>
         </div>
       </div>
+      <section>
           <MovieSaloon />
     </section>
+    <!-- Modal Component -->
+                <b-modal id="modal1" v-if="totalt>=65" title="Bekräftelse" @ok="goHem" @cancel="cancelBokning" ok-only>
+                <p>Film: <strong> {{movie.title}}</strong></p>
+                <p>Datum: <strong>{{this.session.date.day+'/'+this.session.date.month+' '+this.session.date.year }}</strong> </p>
+                <p>Tid: <strong>{{this.session.date.time}}</strong></p>
+                <p>Salong: <strong>{{this.theatre.name}} </strong></p>
+                <div class="Biljetter">
+                  <p>Biljetter:</p>
+                  <div class="vilkaBiljetter">
+                    <p v-if="antal>0"><strong>{{antal}} Ordinarie</strong></p>
+                    <p v-if="antalPensionar>0"><strong>{{antalPensionar}} Pensionär</strong></p>
+                    <p v-if="antalBarn>0"><strong>{{antalBarn}} Barn</strong></p>
+                  </div>
+                </div>
+                <p>Att betala: <strong>{{totalt}}kr</strong></p>
+                <p class="my-4">Ditt bokningsnummer: <strong>{{bokningsnummer}}</strong></p>
+                <p class="my-4"><strong>OBS!</strong>Du kan hämta ut dina biljetter senast 40min innan filmen börjar</p>
+                <p>  betalningen sker vid kassan i biografen</p>
+                </b-modal>
   </main>
 </template>
 
