@@ -11,8 +11,8 @@
     <section class="seats">
       <template v-for="(rows,index) in seatsPerRow">
         <section class="rows">
-        <template v-for="seat in seatsPerRow[index]">
-          <MovieSeat />
+        <template v-for="(seat) in seatsPerRow[index]">
+          <MovieSeat v-bind:id="freePlaces[index].seatNumber"></MovieSeat>
         </template>
         </section>
       </template>
@@ -39,7 +39,9 @@ export default {
   mounted: async function() {
     const response = await api.getTheatres({ _id: this.theatreID });
     const sessionSeats = await api.getMovieSessions({_id: this.sessionID});
-    this.freePlaces = sessionSeats.data.movie_sessions[0].freePlaces;
+    console.log(sessionSeats.data.movie_sessions[0].places);
+    this.freePlaces = sessionSeats.data.movie_sessions[0].places;
+    console.log(this.freePlaces[0].seatNumber);
     this.seatsPerRow = response.data.movie_theatres[0].seatsPerRow;
     this.totalSeats = response.data.movie_theatres[0].seats;
   }
