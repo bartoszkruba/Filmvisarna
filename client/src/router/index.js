@@ -8,7 +8,7 @@ import MoviesPage from '@/components/MoviesPage'
 import Startsida from '@/components/Startsida'
 import Movie from '@/components/Movie'
 import MinSida from '@/components/MinSida'
-import Nothing from '@/components/Nothing'
+import Nothing from '@/components/nothing'
 
 Vue.use(Router)
 

@@ -123,7 +123,7 @@ export default {
          this.$store.commit('toggleLoggaInWindow');
          this.$store.commit('setRoute', sessionAndMovieID)
       }else{
-        this.$router.push('/BokningSida?'+session.movieID+'&'+session._id);
+        this.$router.push('/BokningSida?movieID='+session.movieID+'&sessionID='+session._id);
       }
     },
     //moviesessions data
