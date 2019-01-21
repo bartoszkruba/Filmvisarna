@@ -196,7 +196,7 @@ export default {
     getUrlQuery() {
       this.urlQuery = {};
       let url = window.location.href;
-      url = url.substr(url.indexOf("#"));
+      url = url.substr(url.lastIndexOf("#"));
       let searchIndex = url.indexOf("?")+1;
       let output = {};
 
