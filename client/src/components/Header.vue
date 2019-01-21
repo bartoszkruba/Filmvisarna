@@ -92,7 +92,6 @@ export default {
         }
       }else {
         this.$router.push(`/moviesPage`);
-
       }
       this.searchQuery = null;
     },

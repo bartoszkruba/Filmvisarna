@@ -69,10 +69,6 @@ export default {
       urlQuery: {}
     };
   },
-  created() {
-    this.getUrlQuery();
-    this.getMovies();
-  },
   mounted(){
     this.getUrlQuery();
     this.getMovies();
@@ -80,7 +76,7 @@ export default {
   methods: {
     async getMovies() {
 
-      if(this.urlQuery.searchQuery !== undefined){
+      if(this.urlQuery.searchQuery){
         const response = await api.searchMovies(this.urlQuery.searchQuery.replace('_', ' '));
         this.movies = response.data.movies;
         if(this.movies.length === 1){
@@ -93,8 +89,9 @@ export default {
     },
     getUrlQuery() {
       this.urlQuery = {};
-      let searchIndex = window.location.href.indexOf("?")+1;
       let url = window.location.href;
+      url = url.substr(url.indexOf("#"));
+      let searchIndex = url.indexOf("?")+1;
       let output = {};
 
       if(searchIndex > 0) {
@@ -143,7 +140,7 @@ export default {
 
 @-webkit-keyframes spin {
     0%  {-webkit-transform: rotate(0deg);}
-    100% {-webkit-transform: rotate(360deg);}   
+    100% {-webkit-transform: rotate(360deg);}
 }
 
 
