@@ -1,12 +1,13 @@
 const User = require('../models/user');
 const uniqid = require('uniqid');
 const MovieSession = require('../models/movieSession');
+const Bcrypt = require('bcrypt');
 
 module.exports.setBookedTicket = async (req, res, next) => {
     console.log(req.body)
-    const user = await User.findOne({ email: req.body.user.email, password: req.body.user.password });
+    const user = await User.findOne({ email: req.body.user.email});
     const session = await MovieSession.findOne({ _id: req.body.ticket.sessionID }).populate('movieID').populate('movieTheatreID');
-    if (user && checkPlaces(session, req.body.ticket.placeNumbers)) {
+    if (user && Bcrypt.compareSync(req.body.user.password, user.password) && checkPlaces(session, req.body.ticket.placeNumbers)) {
         console.log("Verified");
         try {
             bookedMovie = {
