@@ -15,7 +15,7 @@
       >Klicka här för att komma till alla filmer</router-link>
     </section>
     <section v-else-if="movies === null" class="loading-logo">
-      <h1 class="text-center spinner mt-5">
+      <h1 class="text-center spinner">
         <font-awesome-icon icon="spinner"/>
       </h1>
       <h1 class="text-center">Loading</h1>
@@ -30,7 +30,7 @@
             <figure class="images">
               <router-link
                 class="router-link"
-                :to="'/Movie?movieID='+ session.movieID"
+                :to="'/film?movieID='+ session.movieID"
                 exact-active-class="menu-item-active"
               >
                 <img
@@ -51,7 +51,7 @@
                 }).title}}
               </h5>
               <p>
-                <span>Tid: </span>
+                <span>tid:</span>
                 {{session.date.time}} |
                 <span>Lediga Platser:</span>
                 {{session.freePlaces}}
@@ -65,13 +65,12 @@
               <div class="flexbox buttons">
                 <router-link
                   class="router-link"
-                  :to="'/Movie?movieID='+ session.movieID+'&sessionID='+session._id"
+                  :to="'/film?movieID='+ session.movieID+'&sessionID='+session._id"
                   exact-active-class="menu-item-active"
                 >
                   <b-button>Film</b-button>
                 </router-link>
                   <b-button class="secound-button" @click="goToBooking(session)">Boka</b-button>
-
               </div>
             </div>
           </div>
@@ -89,6 +88,7 @@ export default {
   name: "Kalendarium",
   data() {
     return {
+      msg: "Welcome to Your Vue.js App",
       movies: null,
       sessions: null,
       theatres: null,
@@ -114,11 +114,16 @@ export default {
       if (this.movies === null) this.errorFromMongo = true;
     },
     goToBooking(session){
-      this.clickedMovieSession = session
+      const sessionAndMovieID = {
+        movieID: session.movieID,
+        sessionID: session._id,
+        redirect: true
+      }
       if(!this.$store.getters.isUserSignedIn){
          this.$store.commit('toggleLoggaInWindow');
+         this.$store.commit('setRoute', sessionAndMovieID)
       }else{
-        this.$router.push('/BokningSida?movieID='+session.movieID+'&sessionID='+session._id);
+        this.$router.push('/BokningSida?'+session.movieID+'&'+session._id);
       }
     },
     //moviesessions data
@@ -175,13 +180,7 @@ export default {
       return output;
     }
 
-  },
-  watch: {
-     '$store.state.loggaInButtonPressed': function() {
-        this.$router.push('/BokningSida?movieID='+this.clickedMovieSession.movieID+'&sessionID='+this.clickedMovieSession._id);
-    },
-  }
-
+  },   
 };
 </script>
 
@@ -214,7 +213,7 @@ export default {
 
 @-webkit-keyframes spin {
     0%  {-webkit-transform: rotate(0deg);}
-    100% {-webkit-transform: rotate(360deg);}
+    100% {-webkit-transform: rotate(360deg);}   
 }
 
 
@@ -288,3 +287,4 @@ span {
   }
 }
 </style>
+
