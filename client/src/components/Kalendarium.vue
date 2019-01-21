@@ -51,10 +51,11 @@
                 }).title}}
               </h5>
               <p>
-                <span>tid:</span>
+                <span>Tid: </span>
                 {{session.date.time}} |
+                <!-- MÅSTE FIXAS -->
                 <span>Lediga Platser:</span>
-                {{session.freePlaces}}
+                <!-- {{session.freePlaces}} -->
               </p>
               <p>
                 {{theatres.find((cur)=>{
