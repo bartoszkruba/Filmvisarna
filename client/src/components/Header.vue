@@ -86,11 +86,11 @@ export default {
     },
     async searchForMovies() {
       if(this.searchQuery){
-        const response = await api.searchMovies(this.searchQuery);
+        // const response = await api.searchMovies(this.searchQuery);
         if(this.searchQuery && this.searchQuery.trim() !== ''){
           this.$router.push(`/filmSida?searchQuery=${this.searchQuery.replace(' ', '_')}`);
         }
-      }else {
+      } else {
         this.$router.push(`/filmSida`);
 
       }
