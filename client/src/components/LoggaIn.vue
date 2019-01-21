@@ -126,6 +126,7 @@ export default {
         this.showErrorMessage = false;
         this.message = response.data.message;
         this.showSuccessMessage = true;
+        this.resetForm();
       } catch (error) {
         this.message = error.response.data.error;
         this.showSuccessMessage = false;
@@ -136,7 +137,6 @@ export default {
       this.showErrorMessage = true;
       this.showSuccessMessage = false;
     }
-
     },
     validatePassword(password,repeatPassword){
       return password === repeatPassword ? true : false;
