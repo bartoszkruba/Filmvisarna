@@ -18,7 +18,7 @@
           <figure class="images">
             <router-link
               class="router-link"
-              :to="'/Movie?movieID='+m._id"
+              :to="'/film?movieID='+m._id"
               exact-active-class="menu-item-active"
             >
               <img :src="require('../assets/'+m.images[1])" class="posterpic">
@@ -30,7 +30,7 @@
           <div class="flex-col">
             <router-link
               class="router-link"
-              :to="'/Movie?movieID='+m._id"
+              :to="'/film?movieID='+m._id"
               exact-active-class="menu-item-active"
             >
               <h2>{{m.title}}</h2>
@@ -80,7 +80,7 @@ export default {
         const response = await api.searchMovies(this.urlQuery.searchQuery.replace('_', ' '));
         this.movies = response.data.movies;
         if(this.movies.length === 1){
-          this.$router.push(`/Movie?movieID=${this.movies[0]._id}`);
+          this.$router.push(`/film?movieID=${this.movies[0]._id}`);
         }
       } else {
         const response = await api.getMovies();

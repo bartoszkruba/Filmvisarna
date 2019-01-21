@@ -170,21 +170,11 @@ export default {
   computed: {
     createTicket: function() {
       let ticket = {
-        orderID: this.bokningsnummer,
         sessionID: this.urlQuery.sessionID,
-        title: this.movie.title,
-        theatre: this.theatre.name,
-        totalTickets: this.antalBarn + this.antal + this.antalPensionar,
-        price: this.totalt,
-        time: this.session.date.time,
-        date: this.session.date.year +
-          "/" +
-          this.session.date.month +
-          "/" +
-          this.session.date.day,
         children: this.antalBarn,
         pensioner: this.antalPensionar,
-        adults: this.antal
+        adults: this.antal,
+        placeNumbers: ["A1", "A2", "A3"]
       };
       return ticket;
     },

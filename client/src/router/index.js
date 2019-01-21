@@ -50,7 +50,7 @@ export default new Router({
       component: Kalendarium
     },
     {
-      path: '/movie',
+      path: '/film',
       name: 'Movie',
       component: Movie
     }
