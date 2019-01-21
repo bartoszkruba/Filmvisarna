@@ -210,7 +210,7 @@ export default {
       if(!this.$store.getters.isUserSignedIn){
          this.$store.commit('toggleLoggaInWindow');
       }else{
-        this.$router.push('/BokningSida?'+this.urlQuery.movieID+'&sessionID'+this.sessionID);
+        this.$router.push('/BokningSida?movieID='+this.urlQuery.movieID+'&sessionID='+this.sessionID);
       }
     },
     starView(s, n) {
