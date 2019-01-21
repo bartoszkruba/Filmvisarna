@@ -121,6 +121,7 @@
           </div>
         </div>
       </div>
+      </div>
       <section class="chooseSeats" v-if="chooseSeats === true">
           <MovieSaloon />
       </section>
