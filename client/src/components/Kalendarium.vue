@@ -64,14 +64,7 @@
                 >
                   <b-button>Film</b-button>
                 </router-link>
-
-                <router-link
-                  class="router-link"
-                  :to="'/BokningSida?'+session.movieID + '&' + session._id"
-                  exact-active-class="menu-item-active"
-                >
-                  <b-button class="secound-button" v-if="$store.getters.isUserSignedIn">Boka</b-button>
-                </router-link>
+                  <b-button class="secound-button" @click="goToBooking(session)">Boka</b-button>
               </div>
             </div>
           </div>
@@ -93,7 +86,8 @@ export default {
       movies: null,
       sessions: null,
       theatres: null,
-      errorFromMongo: false
+      errorFromMongo: false,
+      clickedMovieSession: null,
     };
   },
   mounted() {
@@ -112,6 +106,14 @@ export default {
         this.movies = response.data.movies;
       } catch (error) {}
       if (this.movies === null) this.errorFromMongo = true;
+    },
+    goToBooking(session){
+      this.clickedMovieSession = session
+      if(!this.$store.getters.isUserSignedIn){
+         this.$store.commit('toggleLoggaInWindow');
+      }else{
+        this.$router.push('/BokningSida?'+session.movieID+'&'+session._id);
+      }
     },
     //moviesessions data
     async getSessions() {
@@ -167,6 +169,12 @@ export default {
       return output;
     }
 
+  },
+  watch: {
+     '$store.state.loggaInButtonPressed': function() {
+      console.log("knappen är tryckt redirekta till film");
+        this.$router.push('/BokningSida?'+this.clickedMovieSession.movieID+'&'+this.clickedMovieSession._id);
+    }, 
   }
    
 };
