@@ -212,7 +212,7 @@ export default {
          this.$store.commit('toggleLoggaInWindow');
          this.$store.commit('setRoute', sessionAndMovieID)
       }else{
-        this.$router.push('/BokningSida?'+this.movieID()+'&'+this.sessionID);
+        this.$router.push('/BokningSida?movieID='+this.movieID()+'&sessionID='+this.sessionID);
       }
     },
     starView(s, n) {
