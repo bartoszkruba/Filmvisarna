@@ -80,10 +80,8 @@ export default {
       this.showUserSettings = !this.showUserSettings;
     },
     editEmailClicked(clicked){
-      console.log(clicked);
       this.showEmailButton = !this.showEmailButton;
       if(clicked === 'undo') {
-        console.log(this.$refs.emailField);
         this.$refs.emailField.value ="fuck this";
       }
     },

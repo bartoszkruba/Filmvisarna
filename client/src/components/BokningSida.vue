@@ -98,7 +98,7 @@
 
                 </b-modal>
             </div>
-          
+
         </div>
       </section>
       <section v-else>
@@ -187,7 +187,7 @@ export default {
       };
       return ticket;
   },
-  
+
   },
   created(){
     this.pris=85;
@@ -336,7 +336,8 @@ export default {
           const response = await api.setTickets(this.createTicket, this.$store.getters.getCredentials);
           this.bokningsnummer = response.data.orderID;
           this.$store.commit('updateTickets' , response.data.bookedTickets);
-      },
+      }
+    }
   };
 </script>
 
