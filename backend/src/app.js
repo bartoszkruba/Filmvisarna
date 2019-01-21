@@ -35,7 +35,7 @@ const startServer = async () => {
     // Telling server to start listening on localhost:8081
     app.listen(startupConfig.port, () => {
 
-        resetEverything();
+        // resetEverything();
 
         // new MovieSession({
         //     movieID: '5c3897dba4b4065c06286187',
@@ -88,6 +88,33 @@ async function resetEverything() {
         users[f].save();
     }
 }
+
+function getLetter(row){
+    switch (row+1) {
+        case 1:
+            return "A"
+        case 2:
+            return "B"
+        case 3:
+            return "C"
+        case 4:
+            return "D"
+        case 5:
+            return "E"
+        case 6:
+            return "F"
+        case 7:
+            return "G"
+        case 8:
+            return "H"
+        case 9:
+            return "I"
+        case 10:
+            return "I"
+        default:
+        return "X"
+    }
+};
 
 //*************************************************************** */
 // !!!!! Calling this will fuck upp all passwords in Database !!!!
