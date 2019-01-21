@@ -1,30 +1,27 @@
 <template>
-  <main>
-    <section v-if="errorFromMongo">
-      <h1>Något blev fel!</h1>
-      <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
-      <ul>
-        <li>Antipiratbyrån har hackat oss</li>
-        <li>Vår hemsida har tekniskt strul</li>
-        <li>Du har klickat på en gammal länk</li>
-      </ul>
-      <router-link
-        class="router-link"
-        to="/moviesPage"
-        exact-active-class="menu-item-active"
-      >Klicka här för att komma till alla filmer</router-link>
-    </section>
+<main>
+  <section v-if="errorFromMongo">
+    <h1>Något blev fel!</h1>
+    <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
+    <ul>
+      <li>Antipiratbyrån har hackat oss</li>
+      <li>Vår hemsida har tekniskt strul</li>
+      <li>Du har klickat på en gammal länk</li>
+    </ul>
+    <router-link class="router-link" to="/moviesPage" exact-active-class="menu-item-active">Klicka här för att komma till alla filmer</router-link>
+  </section>
 
-    <section v-if="movie && session && theatre">
-      <div>
-        <img :src="require('../assets/'+this.movie.images[0])" class="img">
-        <div class="papillon">
-          <h1 class="title">{{movie.title}}</h1>
+  <section v-if="movie && session && theatre">
+    <div>
+      <img :src="require('../assets/'+this.movie.images[0])" class="img">
+      <div class="papillon">
+        <h1 class="title">{{movie.title}}</h1>
 
-          <div class="antal-bilijetter"></div>
-        </div>
+
+        <div class="antal-bilijetter"></div>
       </div>
-    </section>
+    </div>
+
     <div class="text">
       <div class="location">
         <h4>Salong: {{this.theatre.name}}</h4>
@@ -59,59 +56,34 @@
           <strong>Barn</strong>
         </p>
         <div class="antal">
-          <button
-            v-on:click="minus"
-            type="button"
-            class="btn btn-dark"
-            :disabled="this.antal === 0"
-          >-</button>
-          <h5 class="hej">{{antal}} st / {{pris}}kr per st</h5>
-          <button
-            v-on:click="plus"
-            type="button"
-            class="btn btn-dark"
-            :disabled="this.ledigaPlatserISal === 0"
-          >+</button>
+          <button v-on:click="minusBarn" type="button" class="btn btn-dark" :disabled="this.antalBarn === 0">-</button>
+          <h5 class="hej">{{antalBarn}} st / {{prisBarn}}kr per st</h5>
+          <button v-on:click="plusBarn" type="button" class="btn btn-dark" :disabled="this.ledigaPlatserISal === 0">+</button>
         </div>
-        <p>
-          <strong>Pensionär</strong>
-        </p>
-        <div class="antal">
-          <button
-            v-on:click="minusPensionar"
-            type="button"
-            class="btn btn-dark"
-            :disabled="this.antalPensionar === 0"
-          >-</button>
-          <h5 class="hej">{{antalPensionar}} st / {{prisPensionar}}kr per st</h5>
-          <button
-            v-on:click="plusPensionar"
-            type="button"
-            class="btn btn-dark"
-            :disabled="this.ledigaPlatserISal === 0"
-          >+</button>
-        </div>
+      </div>
+      <p class="ledigaPlatser">
+        <em>
+          <strong>OBS!</strong>
+          Lediga platser: {{this.ledigaPlatserISal}} av {{this.theatre.seats}}
+        </em>
+      </p>
+      <div class="kostnad" v-if="totalt>=65">
+        <h3>Kostnad</h3>
+        <p class="totalt">totalt: {{totalt}}kr</p>
+      </div>
+      <div class="slutför btn">
+        <div>
+          <b-btn v-on:click="visaFelMedellande" v-b-modal.modal1>Slutför bokning</b-btn>
+          <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
 
-        <div v-if="movie.ageLimit<15">
-          <p class="barn">
-            <strong>Barn</strong>
-          </p>
-          <div class="antal">
-            <button
-              v-on:click="minusBarn"
-              type="button"
-              class="btn btn-dark"
-              :disabled="this.antalBarn === 0"
-            >-</button>
-            <h5 class="hej">{{antalBarn}} st / {{prisBarn}}kr per st</h5>
-            <button
-              v-on:click="plusBarn"
-              type="button"
-              class="btn btn-dark"
-              :disabled="this.ledigaPlatserISal === 0"
-            >+</button>
-          </div>
         </div>
+        <!-- Modal Component -->
+        <b-modal id="modal1" v-if="totalt>=65" title="Bekräftelse" @ok="goHem" ok-only>
+          <p>Film: <strong> {{movie.title}}</strong></p>
+          <p>Datum: <strong>{{this.session.date.day+'/'+this.session.date.month+' '+this.session.date.year }}</strong> </p>
+          <p>Tid: <strong>{{this.session.date.time}}</strong></p>
+          <p>Salong: <strong>{{this.theatre.name}} </strong></p>
+
           <div class="Biljetter">
             <p>Biljetter:</p>
             <div class="vilkaBiljetter">
@@ -120,31 +92,24 @@
               <p v-if="antalBarn>0"><strong>{{antalBarn}} Barn</strong></p>
             </div>
           </div>
-        </div>
+          <p>Att betala: <strong>{{totalt}}kr</strong></p>
+          <p class="my-4">Din bokningsnummer: <strong>{{bokningsnummer}}</strong></p>
+          <p class="my-4"><strong>OBS!</strong>Du kan hämta ut dina biljetter senast 40min innan filmen börjar</p>
+          <p> betalningen sker vid kassan i biografen</p>
+
+        </b-modal>
       </div>
-      <section>
-          <MovieSaloon />
-    </section>
-    <!-- Modal Component -->
-                <b-modal id="modal1" v-if="totalt>=65" title="Bekräftelse" @ok="goHem" @cancel="cancelBokning" ok-only>
-                <p>Film: <strong> {{movie.title}}</strong></p>
-                <p>Datum: <strong>{{this.session.date.day+'/'+this.session.date.month+' '+this.session.date.year }}</strong> </p>
-                <p>Tid: <strong>{{this.session.date.time}}</strong></p>
-                <p>Salong: <strong>{{this.theatre.name}} </strong></p>
-                <div class="Biljetter">
-                  <p>Biljetter:</p>
-                  <div class="vilkaBiljetter">
-                    <p v-if="antal>0"><strong>{{antal}} Ordinarie</strong></p>
-                    <p v-if="antalPensionar>0"><strong>{{antalPensionar}} Pensionär</strong></p>
-                    <p v-if="antalBarn>0"><strong>{{antalBarn}} Barn</strong></p>
-                  </div>
-                </div>
-                <p>Att betala: <strong>{{totalt}}kr</strong></p>
-                <p class="my-4">Ditt bokningsnummer: <strong>{{bokningsnummer}}</strong></p>
-                <p class="my-4"><strong>OBS!</strong>Du kan hämta ut dina biljetter senast 40min innan filmen börjar</p>
-                <p>  betalningen sker vid kassan i biografen</p>
-                </b-modal>
-  </main>
+
+    </div>
+  </section>
+  <section v-else>
+    <h1 class="text-center spinner">
+      <font-awesome-icon icon="spinner" />
+    </h1>
+    <h1 class="text-center">Loading</h1>
+  </section>
+  <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
+</main>
 </template>
 
 <script>
@@ -157,7 +122,7 @@ let prisBarn = 65;
 let totalt = 0;
 
 import api from "@/services/Api.js";
-import MovieSaloon from "@/components/MovieTheatres/MovieSaloon";
+
 export default {
   name: "BokningSida",
   data() {
@@ -183,9 +148,6 @@ export default {
       urlQuery: {}
 
     };
-  },
-  components: {
-    MovieSaloon
   },
   mounted: function() {
     this.errorFromMongo = false;
@@ -409,22 +371,63 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.loading-logo {
+  height: 70vh;
+  opacity: 1;
+  animation: flickerAnimation 3s infinite;
+  overflow: hidden;
+}
+
+@keyframes flickerAnimation {
+
+  /* flame pulses */
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.spinner {
+  -webkit-animation: spin 3s infinite linear;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
 .modal-body p {
   margin: 0.8rem;
   text-align: start;
 }
+
 .Biljetter {
   display: flex;
 }
+
 .vilkaBiljetter p {
   margin: 0.3rem;
 }
+
 div .location {
   margin: 5vh 0;
   display: flex;
   justify-content: space-around;
   width: 45vw;
 }
+
 .ledigaPlatser {
   margin-top: 6vh;
 }
@@ -437,23 +440,28 @@ div .location {
   padding-top: 2vh;
   border-top: 0.0625rem solid rgba(94, 94, 94, 0.411);
 }
+
 .antal-bilijetter {
   display: flex;
   justify-content: center;
   margin: 3vh 0;
 }
+
 .bokning {
   margin: 3vh;
 }
+
 h4,
 h5,
 p,
 h1 {
   margin-top: 5vh;
 }
+
 .totalt {
   margin-top: 0.5vh;
 }
+
 .title {
   display: flex;
   flex-direction: column;
@@ -466,9 +474,11 @@ h1 {
   font-weight: bold;
   font-style: oblique;
 }
+
 h4 {
   margin: 0;
 }
+
 .barn {
   text-align: center;
 }
@@ -482,6 +492,7 @@ h4 {
   width: 100%;
   height: 100%;
 }
+
 img {
   width: 100%;
   box-shadow: 2px 2px 80px black;
@@ -492,18 +503,22 @@ img {
   display: flex;
   justify-content: space-around;
 }
+
 .slutför {
   margin: 6vh auto;
 }
+
 .text {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 3vh;
 }
+
 .hej {
   margin: 0 2vw;
 }
+
 div .hej {
   margin-top: 1vh;
   margin-bottom: 1vh;
@@ -515,31 +530,41 @@ div .hej {
   margin-top: 1vh;
   margin-bottom: 0;
 }
+
 div .vilkaBiljetter {
   margin-top: 1vh;
 }
+
 @media screen and (max-width: 416px) {
+
   .papillon {
     margin-top: -10vh;
   }
+
   .title {
     font-size: 5vw;
   }
+
   div .location h4 {
     font-size: 4vw;
   }
+
   div .location {
     width: 90vw;
   }
+
   div .text {
     margin-top: -3vh;
   }
+
   .ledigaPlatser em {
     font-size: 4vw;
   }
+
   .kostnad {
     width: 90vw;
   }
+
   .kostnad h3 {
     font-size: 6.5vw;
   }
