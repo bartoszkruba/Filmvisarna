@@ -155,7 +155,7 @@ export default {
         this.showErrorMessageSignIn = false;
         if(this.$store.getters.routeTo.redirect){
           console.log("gå till bokning")
-          this.$router.push('/BokningSida?'+this.$store.getters.routeTo.movieID+'&'+this.$store.getters.routeTo.sessionID);
+          this.$router.push('/BokningSida?movieID='+this.$store.getters.routeTo.movieID+'&sessionID='+this.$store.getters.routeTo.sessionID);
           this.$store.commit('setRoute', {movieID: '', sessionID: '' , redirect: false});
         }
         this.$store.commit('toggleLoggaInWindow');
