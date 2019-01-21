@@ -73,7 +73,7 @@
 
         </div>
         <!-- Modal Component -->
-        <b-modal id="modal1" v-if="totalt>=65" title="Bekräftelse" @ok="goHem" @cancel="cancelBokning" ok-only>
+        <b-modal id="modal1" v-if="totalt>=65" title="Bekräftelse" @ok="goHem" ok-only>
           <p>Film: <strong> {{movie.title}}</strong></p>
           <p>Datum: <strong>{{this.session.date.day+'/'+this.session.date.month+' '+this.session.date.year }}</strong> </p>
           <p>Tid: <strong>{{this.session.date.time}}</strong></p>
@@ -148,7 +148,7 @@ export default {
     this.getMovieByID();
     this.getSessionByID();
     if (!this.$store.getters.isUserSignedIn) {
-      this.$router.push('/moviesPage');
+      this.$router.push('/filmSida');
     }
   },
   watch: {
@@ -256,18 +256,8 @@ export default {
       if (this.theatre === null)
         this.errorFromMongo = true;
     },
-    getBokningsnummer() {
-      this.bokningsnummer = (Math.random() + 1);
-    },
     goHem() {
       this.$router.push("/");
-    },
-    cancelBokning() {
-      this.antal = 0;
-      this.antalPensionar = 0;
-      this.antalBarn = 0;
-      this.ledigaPlatserISal = this.session.freePlaces;
-      this.totalt = 0;
     },
     plus() {
       this.antal += 1;
