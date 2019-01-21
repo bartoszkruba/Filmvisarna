@@ -292,11 +292,14 @@ export default {
       this.movie = null;
       if (this.urlQuery.movieID) {
         try {
-          const response = await api.getMovies({ _id: this.movieID });
+          const response = await api.getMovies({
+            _id: this.urlQuery.movieID
+          });
           this.movie = response.data.movies[0];
         } catch (error) {}
       }
-      if (this.movie === null) this.errorFromMongo = true;
+      if (this.movie === null)
+        this.errorFromMongo = true;
     },
     async getSessions(){
       this.sessions = null;
