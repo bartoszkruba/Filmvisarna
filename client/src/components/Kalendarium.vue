@@ -179,7 +179,7 @@ export default {
   },
   watch: {
      '$store.state.loggaInButtonPressed': function() {
-        this.$router.push('/BokningSida?'+this.clickedMovieSession.movieID+'&'+this.clickedMovieSession._id);
+        this.$router.push('/BokningSida?movieID='+this.clickedMovieSession.movieID+'&sessionID='+this.clickedMovieSession._id);
     },
   }
 
