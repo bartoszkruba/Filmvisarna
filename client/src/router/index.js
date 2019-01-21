@@ -7,16 +7,15 @@ import Kalendarium from '@/components/Kalendarium'
 import MoviesPage from '@/components/MoviesPage'
 import Startsida from '@/components/Startsida'
 import Movie from '@/components/Movie'
-import LoggaIn from '@/components/LoggaIn'
 import MinSida from '@/components/MinSida'
-import Nothing from '@/components/nothing'
+import Nothing from '@/components/Nothing'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/adminSida',
+      path: '/adminpage',
       name: 'AdminPage',
       component: AdminPage
     },
@@ -36,7 +35,7 @@ export default new Router({
       component: BokningSida
     },
     {
-      path: '/filmSida',
+      path: '/moviesPage',
       name: 'MoviesPage',
       component: MoviesPage
     },
@@ -51,7 +50,7 @@ export default new Router({
       component: Kalendarium
     },
     {
-      path: '/film',
+      path: '/movie',
       name: 'Movie',
       component: Movie
     },

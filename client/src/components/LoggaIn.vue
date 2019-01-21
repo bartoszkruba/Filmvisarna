@@ -33,14 +33,14 @@
         placeholder="Repetera Lösenord"
         type="password"
       />
-      <b-alert
-      v-model="this.showErrorMessage"
-      variant="danger"
+      <b-alert 
+      v-model="this.showErrorMessage" 
+      variant="danger" 
       class="mt-3">{{this.message}}
       </b-alert>
-      <b-alert
-      v-model="this.showSuccessMessage"
-      variant="success"
+      <b-alert 
+      v-model="this.showSuccessMessage" 
+      variant="success" 
       class="mt-3">{{this.message}}
       </b-alert>
       <b-form-checkbox
@@ -49,31 +49,31 @@
         required
       >Jag har läst och förstår <b-link @click="LicenseAndAgreement">villkoren</b-link><br>för att bli medlem på filmvisarna
       </b-form-checkbox>
-      <b-button
-      variant="primary"
-      type="submit"
+      <b-button 
+      variant="primary" 
+      type="submit" 
       class="mt-3 btn-danger">Registrera
       </b-button>
     </b-form>
-
+    
     <b-form class="form-section sign-in" @submit="submitSignIn">
       <h3>Logga In</h3>
       <label for>E-Mail</label>
-      <b-input
-      class="mb-2 mr-sm-2 mb-sm-0"
+      <b-input 
+      class="mb-2 mr-sm-2 mb-sm-0" 
       v-model="signInForm.email"
       required placeholder="E-Mail"
       />
       <label for class="mt-3">Lösenord</label>
-      <b-input
-      class="mb-2 mr-sm-2 mb-sm-0"
-      type="password"
+      <b-input 
+      class="mb-2 mr-sm-2 mb-sm-0"  
+      type="password" 
       v-model="signInForm.password"
       required placeholder="Lösenord"
       />
-      <b-alert
-      v-model="this.showErrorMessageSignIn"
-      variant="danger"
+      <b-alert 
+      v-model="this.showErrorMessageSignIn" 
+      variant="danger" 
       class="mt-3">{{this.messageSignIn}}
       </b-alert>
       <b-button variant="primary" type="submit" class="mt-3 btn-danger">Logga In</b-button>
@@ -131,6 +131,7 @@ export default {
         this.message = error.response.data.error;
         this.showSuccessMessage = false;
         this.showErrorMessage = true;
+        console.log(error.response.data.error);
       }
     }else{
       this.message = 'Lösenorden matchar inte varandra';
@@ -150,17 +151,21 @@ export default {
       const response = await api.loginUser({user})
       if(response.data.validated){
         this.showErrorMessageSignIn = false;
+        if(this.$store.getters.routeTo.redirect){
+          console.log("gå till bokning")
+          this.$router.push('/BokningSida?movieID='+this.$store.getters.routeTo.movieID+'&sessionID='+this.$store.getters.routeTo.sessionID);
+          this.$store.commit('setRoute', {movieID: '', sessionID: '' , redirect: false});
+        }
         this.$store.commit('toggleLoggaInWindow');
-        this.$store.commit('loggaInButtonPressed');
         this.$store.commit('showMinaSidor');
         this.$store.commit('setLoggedInUser',response.data);
         if(response.data.admin){
           this.$store.commit('showAdminControls');
         }
-
+        
       }else{
         this.messageSignIn = "Email adressen och lösenordet matchade inte varandra eller finns inte registrerad, vänligen försök igen";
-        this.showErrorMessageSignIn = true;
+        this.showErrorMessageSignIn = true; 
       }
     },
     loggInWindowClosed(){

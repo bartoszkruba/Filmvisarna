@@ -1,21 +1,6 @@
 <template>
   <div class="main">
-     <section v-if="errorFromMongo" class="text-center mt-3">
-      <h1>Något blev fel!</h1>
-      <p>Länken som angavs fungar inte just nu. Det kan bero på något av följande</p>
-      <ul>
-        <li>Antipiratbyrån har hackat oss</li>
-        <li>Vår hemsida har tekniskt strul</li>
-        <li>Du har klickat på en gammal länk</li>
-      </ul>
-      <router-link
-        class="router-link"
-        to="/moviesPage"
-        exact-active-class="menu-item-active"
-      >Klicka här för att komma till alla filmer</router-link>
-    </section>
 
-    <section v-if="movies && sessions">
       <b-jumbotron class="white-text" style="background-image: url(http://le13emecri.com/wp-content/uploads/2014/01/rideau-rouge.jpg)">
         <template slot="header" class="white-text welcome-text">
           <h1 class="white-text welcome-text">Välkommen till Filmvisarna!</h1>
@@ -186,7 +171,6 @@
           <li>m.m.</li>
         </ul>
       </b-jumbotron>
-    </section>
   </div>
 </template>
 <script>
@@ -195,15 +179,12 @@ export default {
   //Hämta data från server
   data() {
     return {
-      movies: undefined,
+      movies: null,
       sessions: null,
       movieIndex: null,
-      errorFromMongo: false
-
     };
   },
   created() {
-    this.errorFromMongo = false;
     this.getMovies();
     this.getSessions();
   },
@@ -215,27 +196,12 @@ export default {
       this.sliding = false;
     },
     async getMovies() {
-      this.movies = null;
-      if (this.movieID !== null) {
-        try {
-          const response = await api.getMovies({ _id: this.movieID });
-          this.movies = response.data.movies;
-        } catch (error) {}
-      }
-      if (this.movies === null) this.errorFromMongo = true;
+      const response = await api.getMovies();
+      this.movies = response.data.movies;
     },
     async getSessions() {
-      this.sessions = null;
-      if (this.sessionID !== null) {
-        try {
-          const response = await api.getMovieSessions();
-          if (response.data.movie_sessions.length) {
-            this.sessions = response.data.movie_sessions;
-
-          }
-        } catch (error) {}
-        if (this.sessions === null) this.errorFromMongo = true;
-      }
+      const response = await api.getMovieSessions();
+      this.sessions = response.data.movie_sessions;
     },
     linkToMovePage(e) {
       return this.$router.push("/film?movieID=" + e.srcElement.attributes.value.value);
@@ -243,19 +209,21 @@ export default {
 
     goToBooking(movieIndex){
       this.movieIndex = movieIndex;
+      const session = this.sessions.find((cur)=>{ 
+                    return cur.movieID === this.movies[this.movieIndex]._id})._id
+      const sessionAndMovieID = {
+        movieID: this.movies[this.movieIndex]._id,
+        sessionID: session,
+        redirect: true
+      }
       if(!this.$store.getters.isUserSignedIn){
          this.$store.commit('toggleLoggaInWindow');
+         this.$store.commit('setRoute', sessionAndMovieID)
       }else{
-        this.$router.push('/BokningSida?movieID='+this.movies[movieIndex]._id+'&sessionID='+this.sessions.find((cur)=>{
+        this.$router.push('/BokningSida?movieID='+this.movies[movieIndex]._id+'&sessionID='+this.sessions.find((cur)=>{ 
                     return cur.movieID === this.movies[movieIndex]._id})._id);
-      }
+      }        
     },
-  },
-   watch: {
-     '$store.state.loggaInButtonPressed': function() {
-       this.$router.push('/BokningSida?movieID='+this.movies[this.movieIndex]._id+'&sessionID='+this.sessions.find((cur)=>{
-                    return cur.movieID === this.movies[this.movieIndex]._id})._id);
-    }
   }
 };
 </script>
@@ -287,10 +255,10 @@ export default {
 
 @-webkit-keyframes spin {
     0%  {-webkit-transform: rotate(0deg);}
-    100% {-webkit-transform: rotate(360deg);}
+    100% {-webkit-transform: rotate(360deg);}   
 }
 
-h1, p {
+h1 {
   text-align: center;
 }
 h2 {
@@ -335,7 +303,7 @@ ul{
 }
 
 @media only screen and (max-device-width: 560px) {
-
+  
   .welcome-text{
     font-size: 70%;
   }

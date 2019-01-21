@@ -24,7 +24,7 @@
 
 
 export default {
-  name: "Movie",
+  name: "Nothing",
   data() {
     return {
 

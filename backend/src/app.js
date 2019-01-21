@@ -17,6 +17,7 @@ const app = express();
 
 const startupConfig = require('./util/startupConfig');
 
+const uniqid = require('uniqid');
 
 // Telling Server to use cors package
 app.use(cors());
@@ -30,7 +31,7 @@ app.use(Router);
 // function for starting server
 const startServer = async () => {
     // Telling mongoose to connect to the MongoDB Atlas
-    await mongoose.connect('mongodb+srv://groupaccount:groupaccount1234@cluster0-ydy7f.mongodb.net/filmvisarna', { useNewUrlParser: true });
+    await mongoose.connect('mongodb+srv://groupaccount:groupaccount1234@cluster0-ydy7f.mongodb.net/filmvisarna', {useNewUrlParser: true});
     // Telling server to start listening on localhost:8081
     app.listen(startupConfig.port, () => {
 
@@ -50,69 +51,6 @@ const startServer = async () => {
         console.log(startupConfig.startupMessage);
     });
 }
-
-async function resetEverything() {
-    const MovieSession = require('./models/movieSession');
-    const MovieTheatre = require('./models/movieTheatre');
-    const User = require('./models/user');
-
-    const movieSessions = await MovieSession.find();
-
-    for(let k = 0; k < movieSessions.length; k++){
-
-        const theatreID = movieSessions[k].movieTheatreID;
-        const movieTheatre = await MovieTheatre.findOne({_id: theatreID});
-        let freePlaces = [];
-    
-        for(let i = 0; i < movieTheatre.seatsPerRow.length; i++){
-            for(let j = 0; j < movieTheatre.seatsPerRow[i]; j++){
-                const seat = getLetter(i) + (j+1) + "";
-                freePlaces.push({seatNumber: seat, booked: false});
-            }
-        }
-        movieSessions[k].places = freePlaces;
-        movieSessions[k].freePlaces = movieTheatre.seats;
-        movieSessions[k].FreePlaces = null;
-        movieSessions[k].Places = null;
-        movieSessions[k].save();
-    }
-
-    const users = await User.find();
-
-    for(let f = 0; f < users.length; f++){
-        users[f].bookedTickets = [];
-        users[f].save();
-    }
-    
-
-}
-
-function getLetter(row){
-    switch (row+1) {
-        case 1:
-            return "A"
-        case 2:
-            return "B"
-        case 3:
-            return "C"
-        case 4:
-            return "D"
-        case 5:
-            return "E"
-        case 6:
-            return "F"
-        case 7:
-            return "G"
-        case 8:
-            return "H"
-        case 9:
-            return "I"
-        case 10:
-            return "I"
-        default:
-        return "X"
-    }
-};
 
 // Starting server
 startServer();

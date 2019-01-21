@@ -9,7 +9,11 @@ export const store = new Vuex.Store({
         showLoggaInButton: true,
         showLoggaInWindow: false,
         showAdminButton: false,
-        loggaInButtonPressed: false,
+        routeToThis: {
+            redirect:false,
+            movieID: null,
+            sessionID: null
+        },
         loggedInUser: {
             name: '',
             id: '',
@@ -38,12 +42,14 @@ export const store = new Vuex.Store({
 
         isLoggaInButtonPressed: (state) => {
             return state.loggaInButtonPressed;
+        },
+
+        routeTo: (state) => {
+            return state.routeToThis;
         }
     },
 
     mutations: {
-
-
         showMinaSidor(state){
             state.showMinaSidorButton = !state.showMinaSidorButton;
             state.showLoggaInButton = !state.showLoggaInButton;
@@ -72,13 +78,18 @@ export const store = new Vuex.Store({
             state.loggedInUser.bookedTickets = tickets;
         },
 
-        toggleLoggaInWindow(state) {
+        toggleLoggaInWindow(state,) {
+            
             state.showLoggaInWindow = !state.showLoggaInWindow;
           },
-        
-        loggaInButtonPressed(state) {
-            state.loggaInButtonPressed = !state.loggaInButtonPressed;
-            console.log("loggin button pressed store");
-          }
+
+          setRoute(state,sessionAndMovieID){
+            console.log(sessionAndMovieID);
+            state.routeToThis = {
+                movieID: sessionAndMovieID.movieID,
+                sessionID: sessionAndMovieID.sessionID,
+                redirect: sessionAndMovieID.redirect
+            }
+          },
     }
 })
