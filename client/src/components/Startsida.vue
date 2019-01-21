@@ -245,19 +245,19 @@ export default {
 
     goToBooking(movieIndex){
       this.movieIndex = movieIndex;
+      const session = this.sessions.find((cur)=>{return cur.movieID === this.movies[this.movieIndex]._id})._id;
+                    console.log("session " + session);
+      const sessionAndMovieID = {
+        sessionID: session,
+        movieID: this.movies[this.movieIndex]._id
+      }
       if(!this.$store.getters.isUserSignedIn){
-         this.$store.commit('toggleLoggaInWindow');
+         this.$store.commit('toggleLoggaInWindow',sessionAndMovieID);
       }else{
         this.$router.push('/BokningSida?movieID='+this.movies[movieIndex]._id+'&sessionID='+this.sessions.find((cur)=>{
                     return cur.movieID === this.movies[movieIndex]._id})._id);
       }
     },
-  },
-   watch: {
-     '$store.state.loggaInButtonPressed': function() {
-       this.$router.push('/BokningSida?movieID='+this.movies[this.movieIndex]._id+'&sessionID='+this.sessions.find((cur)=>{
-                    return cur.movieID === this.movies[this.movieIndex]._id})._id);
-    }, 
   },
     '$route': function() {
       this.errorFromMongo = false;

@@ -10,6 +10,11 @@ export const store = new Vuex.Store({
         showLoggaInWindow: false,
         showAdminButton: false,
         loggaInButtonPressed: false,
+        redirect: false,
+        redirectToThis: {
+            movieID: null,
+            sessionID: null,
+        },
         loggedInUser: {
             name: '',
             id: '',
@@ -38,6 +43,10 @@ export const store = new Vuex.Store({
 
         isLoggaInButtonPressed: (state) => {
             return state.loggaInButtonPressed;
+        },
+
+        redirectTo: (state) => {
+            return state.redirectToThis;
         }
     },
 
@@ -72,13 +81,15 @@ export const store = new Vuex.Store({
             state.loggedInUser.bookedTickets = tickets;
         },
 
-        toggleLoggaInWindow(state) {
+        toggleLoggaInWindow(state,sessionAndMovieID) {
+            console.log(sessionAndMovieID.movieID)
             state.showLoggaInWindow = !state.showLoggaInWindow;
+            state.redirectToThis.movieID = sessionAndMovieID.movieID;
+            state.redirectToThis.sessionID = sessionAndMovieID.sessionID;
           },
         
         loggaInButtonPressed(state) {
             state.loggaInButtonPressed = !state.loggaInButtonPressed;
-            console.log("loggin button pressed store");
           }
     }
 })
