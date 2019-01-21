@@ -36,7 +36,6 @@ const startServer = async () => {
 
         // resetEverything();
 
-
         // new MovieSession({
         //     movieID: '5c3897dba4b4065c06286187',
         //     date: {
@@ -118,3 +117,21 @@ function getLetter(row){
 // Starting server
 startServer();
 
+
+
+
+
+//*************************************************************** */
+// !!!!! Calling this will fuck upp all passwords in Database !!!!
+async function hashPasswords(){
+    
+    const User = require('./models/user');
+    const Bcrypt = require('bcrypt');
+
+    const users = await User.find();
+    for(let i = 1; i < users.length; i++){
+        users[i].password = Bcrypt.hashSync(users[i].password, 10);
+        users[i].save();
+    }
+}
+// *******************************************************************
