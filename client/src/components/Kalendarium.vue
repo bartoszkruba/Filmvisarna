@@ -179,9 +179,8 @@ export default {
   },
   watch: {
      '$store.state.loggaInButtonPressed': function() {
-      console.log("knappen är tryckt redirekta till film");
         this.$router.push('/BokningSida?'+this.clickedMovieSession.movieID+'&'+this.clickedMovieSession._id);
-    }, 
+    },
   }
 
 };
@@ -216,7 +215,7 @@ export default {
 
 @-webkit-keyframes spin {
     0%  {-webkit-transform: rotate(0deg);}
-    100% {-webkit-transform: rotate(360deg);}   
+    100% {-webkit-transform: rotate(360deg);}
 }
 
 

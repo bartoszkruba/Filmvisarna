@@ -212,18 +212,16 @@ export default {
       if(!this.$store.getters.isUserSignedIn){
          this.$store.commit('toggleLoggaInWindow');
       }else{
-        this.$router.push('/BokningSida?'+this.movies[movieIndex]._id+'&'+this.sessions.find((cur)=>{ 
+        this.$router.push('/BokningSida?'+this.movies[movieIndex]._id+'&'+this.sessions.find((cur)=>{
                     return cur.movieID === this.movies[movieIndex]._id})._id);
-      }       
+      }
     },
   },
    watch: {
      '$store.state.loggaInButtonPressed': function() {
-      console.log("knappen är tryckt redirekta till film");
-      console.log(this.movieIndex);
        this.$router.push('/BokningSida?'+this.movies[this.movieIndex]._id+'&'+this.sessions.find((cur)=>{ 
                     return cur.movieID === this.movies[this.movieIndex]._id})._id);
-    }, 
+    },
 
   }
 };
@@ -256,7 +254,7 @@ export default {
 
 @-webkit-keyframes spin {
     0%  {-webkit-transform: rotate(0deg);}
-    100% {-webkit-transform: rotate(360deg);}   
+    100% {-webkit-transform: rotate(360deg);}
 }
 
 h1 {
