@@ -83,7 +83,7 @@
         <div>
           <b-btn v-on:click="visaFelMedellande" v-b-modal.modal1>Slutför bokning</b-btn>
           <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
-
+        </div>
         <div v-if="movie.ageLimit<15">
           <p class="barn">
             <strong>Barn</strong>
@@ -262,10 +262,12 @@ export default {
       let id = window.location.hash.substr(
         window.location.hash.indexOf("?") + 1
       );
-      id = id.split("&");
-      if (id.length === 2) {
-        this.movieID = id[0];
-        this.sessionID = id[1];
+      if(id){
+        id = id.split("&");
+        if (id.length === 2) {
+          this.movieID = id[0];
+          this.sessionID = id[1];
+        }
       }
     },
     getBokningsnummer() {
