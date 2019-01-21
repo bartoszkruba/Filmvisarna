@@ -202,10 +202,8 @@ export default {
 
     };
   },
-   mounted: function() {
-    this.errorFromMongo = false;
-   },
   created() {
+    this.errorFromMongo = false;
     this.getMovies();
     this.getSessions();
   },
@@ -216,7 +214,7 @@ export default {
     onSlideEnd(slide) {
       this.sliding = false;
     },
-    async getMovies() { 
+    async getMovies() {
       this.movies = null;
       if (this.movieID !== null) {
         try {
@@ -233,7 +231,7 @@ export default {
           const response = await api.getMovieSessions();
           if (response.data.movie_sessions.length) {
             this.sessions = response.data.movie_sessions;
-            
+
           }
         } catch (error) {}
         if (this.sessions === null) this.errorFromMongo = true;
@@ -259,9 +257,12 @@ export default {
       }
     },
   },
-    '$route': function() {
-      this.errorFromMongo = false;
+   watch: {
+     '$store.state.loggaInButtonPressed': function() {
+       this.$router.push('/BokningSida?movieID='+this.movies[this.movieIndex]._id+'&sessionID='+this.sessions.find((cur)=>{
+                    return cur.movieID === this.movies[this.movieIndex]._id})._id);
     }
+  }
 };
 </script>
 <style scoped>
