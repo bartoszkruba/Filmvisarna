@@ -59,7 +59,7 @@
               <div class="flexbox buttons">
                 <router-link
                   class="router-link"
-                  :to="'/Movie?movieID='+ session.movieID"
+                  :to="'/Movie?movieID='+ session.movieID+'&sessionID='+session._id"
                   exact-active-class="menu-item-active"
                 >
                   <b-button>Film</b-button>
