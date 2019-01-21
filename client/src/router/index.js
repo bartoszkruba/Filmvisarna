@@ -16,7 +16,7 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/adminSida',
+      path: '/adminpage',
       name: 'AdminPage',
       component: AdminPage
     },
@@ -36,7 +36,7 @@ export default new Router({
       component: BokningSida
     },
     {
-      path: '/filmSida',
+      path: '/moviesPage',
       name: 'MoviesPage',
       component: MoviesPage
     },
@@ -51,7 +51,7 @@ export default new Router({
       component: Kalendarium
     },
     {
-      path: '/film',
+      path: '/movie',
       name: 'Movie',
       component: Movie
     },

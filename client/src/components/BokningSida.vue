@@ -25,7 +25,7 @@
         </div>
       </div>
 
-      <div class="text" v-if="chooseSeats === false">
+      <div class="text">
         <div class="location">
           <h4>Salong: {{this.theatre.name}}</h4>
           <h4>|</h4>
@@ -68,21 +68,6 @@
             :disabled="this.ledigaPlatserISal === 0"
           >+</button>
         </div>
-      </div>
-      <p class="ledigaPlatser">
-        <em>
-          <strong>OBS!</strong>
-          Lediga platser: {{this.ledigaPlatserISal}} av {{this.theatre.seats}}
-        </em>
-      </p>
-      <div class="kostnad" v-if="totalt>=65">
-        <h3>Kostnad</h3>
-        <p class="totalt">totalt: {{totalt}}kr</p>
-      </div>
-      <div class="slutför btn">
-        <div>
-          <b-btn v-on:click="visaFelMedellande" v-b-modal.modal1>Slutför bokning</b-btn>
-          <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
 
         <div v-if="movie.ageLimit<15">
           <p class="barn">
@@ -121,10 +106,7 @@
           </div>
         </div>
       </div>
-      </div>
-      <section class="chooseSeats" v-if="chooseSeats === true">
           <MovieSaloon />
-      </section>
     </section>
   </main>
 </template>
@@ -169,7 +151,7 @@ export default {
   },
   mounted: function() {
     this.errorFromMongo = false;
-    this.getUrlQuery();
+    this.getIdFromUrl();
     this.getMovieByID();
     this.getSessionByID();
     if (!this.$store.getters.isUserSignedIn) {
@@ -179,7 +161,7 @@ export default {
   watch: {
     $route: function() {
       this.errorFromMongo = false;
-      this.getUrlQuery();
+      this.getIdFromUrl();
       this.getMovieByID();
       this.getSessionByID();
     }
@@ -203,8 +185,7 @@ export default {
           this.session.date.day,
         children: this.antalBarn,
         pensioner: this.antalPensionar,
-        adults: this.antal,
-        placeNumbers: ["A1", "A2", "A3"]
+        adults: this.antal
       };
       return ticket;
     }
@@ -274,6 +255,13 @@ export default {
     },
     goHem() {
       this.$router.push("/");
+    },
+    cancelBokning() {
+      this.antal = 0;
+      this.antalPensionar = 0;
+      this.antalBarn = 0;
+      this.ledigaPlatserISal = this.session.freePlaces;
+      this.totalt = 0;
     },
     plus() {
       this.antal += 1;
@@ -372,37 +360,11 @@ div .location {
   padding-top: 2vh;
   border-top: 0.0625rem solid rgba(94, 94, 94, 0.411);
 }
-
-.vilkaBiljetter p {
-  margin: 0.3rem;
-}
-
-div .location {
-  margin: 5vh 0;
-  display: flex;
-  justify-content: space-around;
-  width: 45vw;
-}
-
-.ledigaPlatser {
-  margin-top: 6vh;
-}
-
-.kostnad {
-  display: flex;
-  width: 40vw;
-  justify-content: space-between;
-  margin-top: 10vh;
-  padding-top: 2vh;
-  border-top: 0.0625rem solid rgba(94, 94, 94, 0.411);
-}
-
 .antal-bilijetter {
   display: flex;
   justify-content: center;
   margin: 3vh 0;
 }
-
 .bokning {
   margin: 3vh;
 }
@@ -412,7 +374,6 @@ p,
 h1 {
   margin-top: 5vh;
 }
-
 .totalt {
   margin-top: 0.5vh;
 }
@@ -428,11 +389,9 @@ h1 {
   font-weight: bold;
   font-style: oblique;
 }
-
 h4 {
   margin: 0;
 }
-
 .barn {
   text-align: center;
 }
@@ -465,7 +424,6 @@ img {
   align-items: center;
   margin-top: 3vh;
 }
-
 .hej {
   margin: 0 2vw;
 }
@@ -480,11 +438,9 @@ div .hej {
   margin-top: 1vh;
   margin-bottom: 0;
 }
-
 div .vilkaBiljetter {
   margin-top: 1vh;
 }
-
 @media screen and (max-width: 416px) {
   .papillon {
     margin-top: -10vh;
