@@ -234,16 +234,19 @@ export default {
           });
           this.movieSessions = response.data.movie_sessions;
           if(this.movieSessions.length > 0){
-            if(this.urlQuery.sessionID === undefined){
-              this.sessionID = this.movieSessions[0]._id;
-              this.targetSessionDisplay = `${this.getWeekdayString(this.movieSessions[0].date.year,this.movieSessions[0].date.month,this.movieSessions[0].date.day)} ${this.movieSessions[0].date.day}/${this.movieSessions[0].date.month} ${this.movieSessions[0].date.year} kl: ${this.movieSessions[0].date.time}`;
-            } else {
-              this.sessionID = this.urlQuery.sessionID;
-              let targetSession = this.movieSessions.find((cur)=>{
+            let targetSession = null;
+            if(this.urlQuery.sessionID){
+              targetSession = this.movieSessions.find((cur)=>{
                 return cur._id === this.urlQuery.sessionID
               });
+            }
+            if(targetSession){
+              this.sessionID = this.urlQuery.sessionID;
+              console.log(targetSession);
               this.targetSessionDisplay = `${this.getWeekdayString(targetSession.date.year,targetSession.date.month,targetSession.date.day)} ${targetSession.date.day}/${targetSession.date.month} ${targetSession.date.year} kl: ${targetSession.date.time}`;
-
+            } else {
+              this.sessionID = this.movieSessions[0]._id;
+              this.targetSessionDisplay = `${this.getWeekdayString(this.movieSessions[0].date.year,this.movieSessions[0].date.month,this.movieSessions[0].date.day)} ${this.movieSessions[0].date.day}/${this.movieSessions[0].date.month} ${this.movieSessions[0].date.year} kl: ${this.movieSessions[0].date.time}`;
             }
           }
         } catch (error) {
