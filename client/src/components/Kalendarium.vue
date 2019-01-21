@@ -55,7 +55,7 @@
                 {{session.date.time}} |
                 <!-- MÅSTE FIXAS -->
                 <span>Lediga Platser:</span>
-                <!-- {{session.freePlaces}} -->
+                {{session.freePlaces}}
               </p>
               <p>
                 {{theatres.find((cur)=>{

@@ -67,7 +67,7 @@ async function resetEverything() {
     
         for(let i = 0; i < movieTheatre.seatsPerRow.length; i++){
             for(let j = 0; j < movieTheatre.seatsPerRow[i]; j++){
-                const seat = getLetter(i) + (j+1) + ";"
+                const seat = getLetter(i) + (j+1) + "";
                 freePlaces.push({seatNumber: seat, booked: false});
             }
         }
