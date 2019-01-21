@@ -100,18 +100,14 @@
           
         </div>
       </section>
-</main>
-
-        <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
-      </div>
-    </section>
-    <section v-else>
+      <section v-else>
       <h1 class="text-center spinner">
         <font-awesome-icon icon="spinner"/>
       </h1>
       <h1 class="text-center">Loading</h1>
     </section>
-  </main>
+        <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
+</main>
 </template>
 
 <script>
@@ -396,8 +392,7 @@ export default {
           this.bokningsnummer = response.data.orderID;
           this.$store.commit('updateTickets' , response.data.bookedTickets);
       },
-  }
-};
+  };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
