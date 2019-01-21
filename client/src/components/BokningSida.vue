@@ -72,7 +72,6 @@
           <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
 
         </div>
-
         <!-- Modal Component -->
         <b-modal id="modal1" v-if="totalt>=65" title="Bekräftelse" @ok="goHem" @cancel="cancelBokning" ok-only>
           <p>Film: <strong> {{movie.title}}</strong></p>
