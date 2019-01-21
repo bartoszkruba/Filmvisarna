@@ -1,19 +1,11 @@
 <template>
   <section class="hello">
-    <!--<section>
-  <b-navbar type="dark" variant="danger" toggleable>
-    <b-navbar-toggle target="nav_dropdown_collapse"></b-navbar-toggle>
-    <b-collapse is-nav id="nav_dropdown_collapse">
-      <b-navbar-nav>
-        <b-nav-item href="#">Home</b-nav-item>
-        <b-nav-item href="#">Link</b-nav-item>
-      </b-navbar-nav>
-    </b-collapse>
-  </b-navbar>
-    </section>-->
+   
+
     <h1 class="text-center mt-3" v-if="movies && movies.length === 0">Inga Sökträffar :(</h1>
-    <div v-for="m in movies">
-      <div class="flexbox main-placing">
+   
+    <div class="container" v-for="m in movies">
+      <div class="flexbox">
         <div class="flex-mobil">
           <figure class="images">
             <router-link
@@ -27,7 +19,7 @@
 
           <div class="movietext">
 
-          <div class="flex-col">
+          <section class="flex-col">
             <router-link
               class="router-link"
               :to="'/Movie?movieID='+m._id"
@@ -43,11 +35,19 @@
                 <p class="destop-only">|</p>
                 <p>Ålder: {{m.ageLimit}} år</p>
               </div>
-            </div>
+              <router-link
+              class="router-link"
+              :to="'/Movie?movieID='+m._id"
+              exact-active-class="menu-item-active"
+            >
+               <b-button class="merinfo">Läs mer</b-button>
+            </router-link>
+             
+          </section>
           </div>
         </div>
       </div>
-      <hr>
+     
     </div>
     <div class="mt-5 loading-logo" v-if="movies === null">
       <h1 class="text-center spinner">
@@ -143,6 +143,11 @@ export default {
     100% {-webkit-transform: rotate(360deg);}
 }
 
+.container{
+background-color: rgba(0, 0, 0, 0.4);
+margin-top: 1rem;
+
+}
 
 .flexbox {
   display: flex;
@@ -154,12 +159,10 @@ export default {
 .flex-mobil {
   display: flex;
 }
-.main-placing {
-  margin: 1rem;
-}
 p {
   padding: 0.5rem;
   padding-left: 1rem;
+  color: white;
 }
 h2 {
   margin-left: 1rem;
@@ -167,16 +170,16 @@ h2 {
   color: black;
   font-weight: bold;
   font-size: 3rem;
+  color: white;
 }
 a:hover {
   text-decoration: none;
 }
-hr {
-  border-color: rgb(124, 123, 123);
-}
 .posterpic {
   width: 20vmin;
   box-shadow: 2px 2px 5px black;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 .images {
   margin: 0;
@@ -188,6 +191,9 @@ hr {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.merinfo{
+  margin-left: 1rem;
 }
 @media screen and (min-width: 501px) and (max-width: 1500px) {
   h2 {
@@ -235,5 +241,8 @@ hr {
   .destop-only {
     display: none;
   }
+  .merinfo{
+  display: none;
+}
 }
 </style>

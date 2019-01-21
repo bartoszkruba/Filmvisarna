@@ -377,6 +377,9 @@ export default {
   }
 }
 
+main{
+  background-color: white;
+}
 .modal-body p {
   margin: 0.8rem;
   text-align: start;

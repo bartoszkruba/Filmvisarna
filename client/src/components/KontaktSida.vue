@@ -71,14 +71,23 @@ export default {
  
 <!-- Add "scoped" attribute to limit CSS to this component only --> 
 <style scoped> 
+.main{
+  background-color: rgba(0, 0, 0, 0.4);
+  color: white;
+   margin-right: 15vw;
+  margin-left: 15vw;
+}
 h1{
   margin-top: 3vh;
   text-align: center;
 }
+p{
+  color: white;
+}
 .kontakta {
   width: 50vw;
   margin-top: 6vh;
-  margin-left: 20vw;
+  margin-left: 10vw;
 }
 .biograf {
   margin: 0;
@@ -87,5 +96,15 @@ h1{
 hr {
   border-color: rgb(185, 184, 184);
   margin-top: 3rem;
+}
+@media screen and (max-width: 500px) {
+.main{
+  margin: 0;
+}
+.kontakta{
+  width: 100vw;
+  margin: 0;
+}
+
 }
 </style> 

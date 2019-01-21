@@ -35,6 +35,11 @@ export default {
     flex-direction: column;
     /* background-color: black;
     color: white; */
+    background-image: url(http://www.milanticketsopera.com/themes/theater/images/img.jpg);
+  width: 100vw;
+  background-position: sticky;
+  background-size: 100% 100%;
+  overflow-x: hidden;
   }
   #app{
     flex: 1;

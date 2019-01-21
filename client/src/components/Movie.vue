@@ -2,7 +2,7 @@
 <template>
 <div class="Movie">
 
-  <b-jumbotron bg-variant="white">
+  <b-jumbotron class="backgr">
     <section v-if="errorFromMongo">
       <h1>Något blev fel!</h1>
       <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
@@ -334,6 +334,13 @@ export default {
     100% {-webkit-transform: rotate(360deg);}
 }
 
+.Movie{
+  color: white;
+}
+.backgr{
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
 .trailer-view {
   display: flex;
   flex-direction: column;
@@ -373,11 +380,11 @@ export default {
 .moviedescription {
   font-style: italic;
   font-size: 100%;
-  color: rgb(85, 85, 85);
+  color: rgb(194, 194, 194);
 }
 
 .movietitle {
-  color: rgb(55, 55, 55);
+  color: rgb(245, 245, 245);
   font-size: 200%;
   font-weight: bold;
 }
@@ -441,5 +448,8 @@ li {
     height: 20vmax;
     width: 30vmax;
   }
+ .backgr{
+   margin: 0;
+ }
 }
 </style>

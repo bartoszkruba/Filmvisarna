@@ -16,7 +16,7 @@
     </section>
 
     <section v-if="movies && sessions">
-      <b-jumbotron class="white-text" style="background-image: url(http://le13emecri.com/wp-content/uploads/2014/01/rideau-rouge.jpg)">
+      <b-jumbotron class="white-text backg-image first-jumbo" >
         <template slot="header" class="white-text welcome-text">
           <h1 class="white-text welcome-text">Välkommen till Filmvisarna!</h1>
         </template>
@@ -174,7 +174,7 @@
       </h1>
       <h1 class="text-center">Loading</h1>
     </div>
-    <b-jumbotron class="white-text" style="background-image: url(http://le13emecri.com/wp-content/uploads/2014/01/rideau-rouge.jpg)">
+    <b-jumbotron class="white-text backg-image sec-jumbo" >
         <template slot="header" class="white-text">Senaste nytt</template>
         <h1 class="white-text">Vi har nu öppnat, Välkomna</h1>
         <h2 class="white-text">På plats säljer vi:</h2>
@@ -295,6 +295,19 @@ export default {
     100% {-webkit-transform: rotate(360deg);}
 }
 
+.main{
+  background-color: white;
+}
+
+.sec-jumbo{
+  margin-bottom: 0;
+}
+.backg-image{
+  background-image: url(http://www.milanticketsopera.com/themes/theater/images/img.jpg);
+  width: 100vw;
+  background-size: cover;
+  }
+
 h1, p {
   text-align: center;
 }
@@ -362,6 +375,9 @@ ul{
   .poster {
     height: 90vmax;
     width: 100vmin;
+  }
+  .first-jumbo{
+    margin-bottom: 0;
   }
 }
 </style>

@@ -22,9 +22,8 @@
     </section>
 
     <section v-if="movies && sessions && theatres">
-      <b-jumbotron class="jumbo" header="Kalendarium" lead="Nedan kan du se kommande filmer"></b-jumbotron>
 
-      <section class="flex-col wrapping">
+      <section class="container wrapping">
         <section v-for="session in this.sessions">
           <div class="flexbox flex-mobil">
             <figure class="images">
@@ -69,14 +68,14 @@
                   :to="'/Movie?movieID='+ session.movieID+'&sessionID='+session._id"
                   exact-active-class="menu-item-active"
                 >
-                  <b-button>Film</b-button>
+                  <b-button class="merinfo">Läs mer</b-button>
                 </router-link>
                   <b-button class="secound-button" @click="goToBooking(session)">Boka</b-button>
 
               </div>
             </div>
           </div>
-          <hr>
+   <hr>
         </section>
       </section>
     </section>
@@ -219,6 +218,10 @@ export default {
     100% {-webkit-transform: rotate(360deg);}
 }
 
+.container{
+  background-color: rgba(0, 0, 0, 0.4);
+margin-top: 1rem;
+}
 
 .flexbox {
   display: flex;
@@ -228,40 +231,36 @@ export default {
   flex-direction: column;
   align-content: center;
   justify-content: center;
-}
-.wrapping{
-    margin-left: 1rem;
-}
-.jumbo {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-hr {
-  border-color: rgb(124, 123, 123);
+  
 }
 .posterpic {
   width: 15vmin;
   box-shadow: 2px 2px 5px black;
-}
-.images {
-  margin: 0;
+  margin-top: 1rem;
 }
 .text {
   margin-left: 1rem;
 }
-h4,
-h1 {
-  font-weight: bold;
+hr{
+  border: 0.5px solid rgb(97, 97, 97);
 }
+h4, h5{
+  font-weight: bold;
+  color: white;
+}
+
 p {
   font-size: 1rem;
+  color: white;
 }
 span {
   font-weight: 500;
+  color: white;
 }
 .secound-button {
   margin-left: 1rem;
 }
+
 
 @media screen and (max-width: 500px) {
   h1 {
@@ -276,7 +275,10 @@ span {
   .wrapping {
     justify-content: center;
     align-content: center;
-    text-align: center;
+    text-align: center; 
+  }
+  p{
+    font-size: 0.5rem;
   }
   .buttons {
     justify-content: center;
@@ -288,5 +290,6 @@ span {
   h4{
       margin-top: 0.5rem;
   }
+ 
 }
 </style>
