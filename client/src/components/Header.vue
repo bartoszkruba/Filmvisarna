@@ -85,9 +85,14 @@ export default {
       this.$router.push("/");
     },
     async searchForMovies() {
-      const response = await api.searchMovies(this.searchQuery);
-      if(this.searchQuery && this.searchQuery.trim() !== ''){
-        this.$router.push(`/moviesPage?${this.searchQuery.replace(' ', '_')}`);
+      if(this.searchQuery){
+        const response = await api.searchMovies(this.searchQuery);
+        if(this.searchQuery && this.searchQuery.trim() !== ''){
+          this.$router.push(`/moviesPage?searchQuery=${this.searchQuery.replace(' ', '_')}`);
+        }
+      }else {
+        this.$router.push(`/moviesPage`);
+
       }
       this.searchQuery = null;
     },

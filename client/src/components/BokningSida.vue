@@ -21,6 +21,7 @@
         <div class="papillon">
           <h1 class="title">{{movie.title}}</h1>
 
+
           <div class="antal-bilijetter"></div>
         </div>
       </div>
@@ -75,7 +76,7 @@
                  <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
 
         </div>
-        
+
                 <!-- Modal Component -->
                 <b-modal id="modal1" v-if="totalt>=65" title="Bekräftelse" @ok="goHem" @cancel="cancelBokning" ok-only>
                 <p>Film: <strong> {{movie.title}}</strong></p>
@@ -94,7 +95,7 @@
                 <p class="my-4">Din bokningsnummer: <strong>{{bokningsnummer}}</strong></p>
                 <p class="my-4"><strong>OBS!</strong>Du kan hämta ut dina biljetter senast 40min innan filmen börjar</p>
                 <p>  betalningen sker vid kassan i biografen</p>
-                
+
                 </b-modal>
             </div>
           
@@ -141,12 +142,14 @@ export default {
       movieID: null,
       sessionID: null,
       theatreID: null,
-      errorFromMongo: false
+      errorFromMongo: false,
+      urlQuery: {}
+
     };
   },
   mounted: function() {
     this.errorFromMongo = false;
-    this.getIdFromUrl();
+    this.getUrlQuery();
     this.getMovieByID();
     this.getSessionByID();
     if(!this.$store.getters.isUserSignedIn){
@@ -156,7 +159,7 @@ export default {
   watch: {
     $route: function() {
       this.errorFromMongo = false;
-      this.getIdFromUrl();
+      this.getUrlQuery();
       this.getMovieByID();
       this.getSessionByID();
     }
@@ -166,7 +169,7 @@ export default {
     createTicket: function() {
       let ticket = {
         orderID: this.bokningsnummer,
-        sessionID: this.sessionID,
+        sessionID: this.urlQuery.sessionID,
         title: this.movie.title,
         theatre: this.theatre.name,
         totalTickets: this.antalBarn + this.antal + this.antalPensionar,
@@ -196,22 +199,39 @@ export default {
     this.totalt=0;
   },
   methods: {
-    async getMovieByID() {
-      this.movie = null;
-      if (this.movieID !== null) {
-        try {
-          const response = await api.getMovies({ _id: this.movieID });
+    getUrlQuery() {
+      this.urlQuery = {};
+      let searchIndex = window.location.href.indexOf("?")+1;
+      let url = window.location.href;
+      let output = {};
+
+      if(searchIndex > 0) {
+        url = url.substr(searchIndex).split("&");
+        for(let i = 0; i < url.length; i++){
+          url[i] = url[i].split("=");
+          if(url[i][1].length > 0)
+            this.urlQuery[url[i][0]] = url[i][1];
+        }
+      }
+    },
+      async getMovieByID() {
+        this.movie = null;
+      if(this.urlQuery.movieID !== null){
+        try{
+          const response = await api.getMovies({_id: this.urlQuery.movieID});
           this.movie = response.data.movies[0];
         } catch (error) {}
       }
-      if (this.movie === null) this.errorFromMongo = true;
-    },
-    async getSessionByID() {
-      this.session = null;
-      if (this.sessionID !== null) {
-        try {
-          const response = await api.getMovieSessions({ _id: this.sessionID });
-          if (response.data.movie_sessions.length) {
+       if(this.movie === null)
+        this.errorFromMongo = true;
+      },
+      async getSessionByID() {
+        this.session = null;
+      if(this.urlQuery.sessionID !== null){
+        try{
+          const response = await api.getMovieSessions({_id: this.urlQuery.sessionID});
+          if(response.data.movie_sessions.length){
+
             this.session = response.data.movie_sessions[0];
             this.ledigaPlatserISal = this.session.freePlaces;
             this.theatreID = this.session.movieTheatreID;
@@ -232,89 +252,14 @@ export default {
             this.theatre = response.data.movie_theatres[0];
         } catch (error) {}
       }
-      if (this.theatre === null) this.errorFromMongo = true;
-    },
-    getIdFromUrl() {
-      this.movieID = null;
-      this.sessionID = null;
-      let id = window.location.hash.substr(
-        window.location.hash.indexOf("?") + 1
-      );
-      id = id.split("&");
-      if (id.length === 2) {
-        this.movieID = id[0];
-        this.sessionID = id[1];
-      }
-    },
-    getBokningsnummer() {
-      this.bokningsnummer = Math.random() + 1;
-    },
-    goHem() {
-      this.$router.push("/");
-    },
-    cancelBokning() {
-      this.antal = 0;
-      this.antalPensionar = 0;
-      this.antalBarn = 0;
-      this.ledigaPlatserISal = this.session.freePlaces;
-      this.totalt = 0;
-    },
-    plus() {
-      this.antal += 1;
-      this.totalt += 85;
-      this.visaTotal = true;
-      this.visaMedellande = false;
-      this.ledigaPlatserISal--;
-    },
-    minus() {
-      if (this.antal > 0) {
-        this.totalt -= 85;
-        this.antal -= 1;
-        this.ledigaPlatserISal++;
-      } else {
-        alert("Du kan inte välja mindre än en biljett ");
-      }
-    },
-    plusPensionar() {
-      this.totalt += 75;
-      this.antalPensionar += 1;
-      this.visaTotal = true;
-      this.visaMedellande = false;
-      this.ledigaPlatserISal--;
-    },
-    minusPensionar() {
-      if (this.antalPensionar > 0) {
-        this.totalt -= 75;
-        this.antalPensionar -= 1;
-        this.ledigaPlatserISal++;
-      } else {
-        alert("Du kan inte välja mindre än en biljett ");
-      }
-    },
-    plusBarn() {
-      this.totalt += 65;
-      this.antalBarn += 1;
-      this.visaTotal = true;
-      this.visaMedellande = false;
-      this.ledigaPlatserISal--;
-    },
-    minusBarn() {
-      if (this.antalBarn > 0) {
-        this.antalBarn -= 1;
-        this.totalt -= 65;
-        this.ledigaPlatserISal++;
-      } else {
-        alert("Du kan inte välja mindre än en biljett ");
-      }
-    },
-    visaFelMedellande() {
-      if (this.totalt == 0) {
-        this.visaMedellande = true;
-      } else {
-        this.bokaFilm();
-      }
-    },
-
+        if(this.theatre === null)
+         this.errorFromMongo = true;
+      },
+      getBokningsnummer(){
+          this.bokningsnummer=(Math.random()+1);
+      },
+      goHem(){
+          this.$router.push("/");
       },
       cancelBokning(){
           this.antal=0;
@@ -540,6 +485,7 @@ div .vilkaBiljetter {
   margin-top: 1vh;
 }
 @media screen and (max-width: 416px) {
+
   .papillon {
     margin-top: -10vh;
   }
