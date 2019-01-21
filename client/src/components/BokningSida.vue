@@ -334,12 +334,15 @@ export default {
       // Hämta salong om det finns ID
       if (this.theatreID !== null) {
         try {
-          const response = await api.getTheatres({ _id: this.theatreID });
+          const response = await api.getTheatres({
+            _id: this.theatreID
+          });
           if (response.data.movie_theatres.length)
             this.theatre = response.data.movie_theatres[0];
         } catch (error) {}
       }
-      if (this.theatre === null) this.errorFromMongo = true;
+      if (this.theatre === null)
+        this.errorFromMongo = true;
     },
     getIdFromUrl() {
       this.movieID = null;
