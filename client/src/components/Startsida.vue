@@ -153,6 +153,12 @@
         </b-carousel>
       </div>
     </div>
+    <div v-else class="loading-logo">
+      <h1 class="text-center spinner">
+        <font-awesome-icon icon="spinner"/>
+      </h1>
+      <h1 class="text-center">Loading</h1>
+    </div>
     <b-jumbotron class="white-text" style="background-image: url(http://le13emecri.com/wp-content/uploads/2014/01/rideau-rouge.jpg)">
         <template slot="header" class="white-text">Senaste nytt</template>
         <h1 class="white-text">Vi har nu öppnat, Välkomna</h1>
@@ -222,6 +228,36 @@ export default {
 };
 </script>
 <style scoped>
+
+.loading-logo {
+  height: 70vh;
+  opacity: 1;
+  animation: flickerAnimation 3s infinite;
+  overflow: hidden;
+}
+
+@keyframes flickerAnimation {
+  /* flame pulses */
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.spinner{
+  -webkit-animation: spin 3s infinite linear;
+}
+
+@-webkit-keyframes spin {
+    0%  {-webkit-transform: rotate(0deg);}
+    100% {-webkit-transform: rotate(360deg);}   
+}
+
 h1 {
   text-align: center;
 }
