@@ -28,11 +28,10 @@
         <h4>|</h4>
         <h4>Tid: {{this.session.date.day+'/'+this.session.date.month+' '+this.session.date.year +' '+ this.session.date.time}}</h4>
 
-        <b-dropdown id="ddown-buttons" text="Ändra visningsdatum: " variant="danger" class="m-2">
-          <b-dropdown-item-button v-on:click="changeSession" v-for="session in sessions" :value="session._id" :key="session._id">{{getWeekdayString(session.date.year,session.date.month,session.date.day).slice(0,-3)}} {{session.date.day + '/' + session.date.month + ' ' + session.date.year + ' ' + session.date.time }} </b-dropdown-item-button>
-        </b-dropdown>
-
       </div>
+      <b-dropdown id="ddown-buttons" text="Ändra visningsdatum: " variant="danger" class="m-2">
+        <b-dropdown-item-button v-on:click="changeSession" v-for="session in sessions" :value="session._id" :key="session._id">{{getWeekdayString(session.date.year,session.date.month,session.date.day).slice(0,-3)}} {{session.date.day + '/' + session.date.month + ' ' + session.date.year + ' ' + session.date.time }} </b-dropdown-item-button>
+      </b-dropdown>
 
       <h4>Antal biljetter:</h4>
       <p>
