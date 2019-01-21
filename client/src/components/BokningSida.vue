@@ -67,15 +67,16 @@
           Lediga platser: {{this.ledigaPlatserISal}} av {{this.theatre.seats}}
         </em>
       </p>
+      <section class="movieTheatre mt-5">
+      <MovieSaloon :theatreID="theatreID" :sessionID="sessionID"></MovieSaloon>
+      </section>
       <div class="kostnad" v-if="totalt>=65">
         <h3>Kostnad</h3>
         <p class="totalt">totalt: {{totalt}}kr</p>
       </div>
       <div class="slutför btn">
-        <div>
           <b-btn v-on:click="visaFelMedellande" v-b-modal.modal1>Slutför bokning</b-btn>
           <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
-
         </div>
         <!-- Modal Component -->
         <b-modal id="modal1" v-if="totalt>=65" title="Bekräftelse" @ok="goHem" ok-only>
@@ -96,11 +97,9 @@
           <p class="my-4">Din bokningsnummer: <strong>{{bokningsnummer}}</strong></p>
           <p class="my-4"><strong>OBS!</strong>Du kan hämta ut dina biljetter senast 40min innan filmen börjar</p>
           <p> betalningen sker vid kassan i biografen</p>
-
         </b-modal>
       </div>
 
-    </div>
   </section>
   <section v-else>
     <h1 class="text-center spinner">
@@ -108,7 +107,6 @@
     </h1>
     <h1 class="text-center">Loading</h1>
   </section>
-  <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
 </main>
 </template>
 
@@ -122,7 +120,7 @@ let prisBarn = 65;
 let totalt = 0;
 
 import api from "@/services/Api.js";
-
+import MovieSaloon from "@/components/MovieTheatres/MovieSaloon";
 export default {
   name: "BokningSida",
   data() {
@@ -148,6 +146,9 @@ export default {
       urlQuery: {}
 
     };
+  },
+  components: {
+    MovieSaloon
   },
   mounted: function() {
     this.errorFromMongo = false;
