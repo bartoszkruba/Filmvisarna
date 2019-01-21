@@ -36,10 +36,8 @@ export default {
     MovieSeat
   },
   mounted: async function() {
-    const response = await api.getTheatres({ _id: "5c3dae361a418e28df53e67a" });
-    const sessionSeats = await api.getMovieSessions({
-      _id: "5c4042698cf2136b74961eb1"
-    });
+    const response = await api.getTheatres({ _id: "5c3dae99ff9618296e20da87" });
+    const sessionSeats = await api.getMovieSessions({_id: "5c4042698cf2136b74961eb1"});
     console.log(sessionSeats.data.movie_sessions[0].freePlaces);
     this.freePlaces = sessionSeats.data.movie_sessions[0].freePlaces;
     this.seatsPerRow = response.data.movie_theatres[0].seatsPerRow;
