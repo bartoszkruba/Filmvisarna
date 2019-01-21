@@ -55,7 +55,39 @@ const startServer = async () => {
 // Starting server
 startServer();
 
+async function resetEverything() {
+    const MovieSession = require('./models/movieSession');
+    const MovieTheatre = require('./models/movieTheatre');
+    const User = require('./models/user');
 
+    const movieSessions = await MovieSession.find();
+
+    for(let k = 0; k < movieSessions.length; k++){
+
+        const theatreID = movieSessions[k].movieTheatreID;
+        const movieTheatre = await MovieTheatre.findOne({_id: theatreID});
+        let freePlaces = [];
+    
+        for(let i = 0; i < movieTheatre.seatsPerRow.length; i++){
+            for(let j = 0; j < movieTheatre.seatsPerRow[i]; j++){
+                const seat = getLetter(i) + (j+1) + "";
+                freePlaces.push({seatNumber: seat, booked: false});
+            }
+        }
+        movieSessions[k].places = freePlaces;
+        movieSessions[k].freePlaces = movieTheatre.seats;
+        movieSessions[k].FreePlaces = null;
+        movieSessions[k].Places = null;
+        movieSessions[k].save();
+    }
+
+    const users = await User.find();
+
+    for(let f = 0; f < users.length; f++){
+        users[f].bookedTickets = [];
+        users[f].save();
+    }
+}
 
 //*************************************************************** */
 // !!!!! Calling this will fuck upp all passwords in Database !!!!
