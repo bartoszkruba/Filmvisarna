@@ -4,7 +4,6 @@ const MovieSession = require('../models/movieSession');
 const Bcrypt = require('bcrypt');
 
 module.exports.setBookedTicket = async (req, res, next) => {
-    console.log(req.body)
     const user = await User.findOne({ email: req.body.user.email});
     const session = await MovieSession.findOne({ _id: req.body.ticket.sessionID }).populate('movieID').populate('movieTheatreID');
     if (user && Bcrypt.compareSync(req.body.user.password, user.password) && checkPlaces(session, req.body.ticket.placeNumbers)) {
@@ -38,6 +37,7 @@ module.exports.setBookedTicket = async (req, res, next) => {
                     orderID: bookedMovie.orderID
                 });
                 session.freePlaces -= bookedMovie.totalTickets;
+                SetupPlacesOnSession(session, req.body.ticket.placeNumbers);
                 session.save();
             } else {
                 res.status(400).send({
@@ -56,5 +56,26 @@ module.exports.setBookedTicket = async (req, res, next) => {
             validated: false,
             message: 'användaren finns inte i databasen'
         });
+    }
+}
+
+function checkPlaces(session, places) {
+    for (let i = 0; i < places.length; i++) {
+        placeNumber = places[i];
+        const sessionPlace = session.places.find(cur => {
+            return cur.seatNumber === placeNumber;
+        });
+        if (!sessionPlace || sessionPlace.booked) return false;
+    }
+    return true;
+}
+
+function SetupPlacesOnSession(session, places) {
+    for (let i = 0; i < places.length; i++) {
+        for (let j = 0; j < session.places.length; j++) {
+            if (session.places[j].seatNumber === places[i]) {
+                session.places[j].booked = true;
+            }
+        }
     }
 }

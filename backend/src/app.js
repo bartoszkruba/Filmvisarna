@@ -35,7 +35,7 @@ const startServer = async () => {
     // Telling server to start listening on localhost:8081
     app.listen(startupConfig.port, () => {
 
-        // resetEverything();
+        resetEverything();
 
         // new MovieSession({
         //     movieID: '5c3897dba4b4065c06286187',
@@ -54,8 +54,6 @@ const startServer = async () => {
 
 // Starting server
 startServer();
-
-
 
 
 
