@@ -30,7 +30,7 @@
                 <figure class="imgbox">
                   <router-link
                     class="router-link"
-                    :to="'/Movie?'+this.movies[0]._id"
+                    :to="'/Movie?movieID='+this.movies[0]._id"
                     exact-active-class="menu-item-active"
                   >
                     <img class="poster" :src="require('../assets/'+this.movies[0].images[1])">
@@ -38,7 +38,7 @@
                   <h3>{{movies[0].title}}</h3>
                   <router-link
                     class="router-link"
-                    :to="'/Movie?'+this.movies[0]._id"
+                    :to="'/Movie?movieID='+this.movies[0]._id"
                     exact-active-class="menu-item-active"
                   >
                     <b-button>Läs mer</b-button>
@@ -50,7 +50,7 @@
                 <figure class="imgbox">
                   <router-link
                     class="router-link"
-                    :to="'/Movie?'+this.movies[1]._id"
+                    :to="'/Movie?movieID='+this.movies[1]._id"
                     exact-active-class="menu-item-active"
                   >
                     <img class="poster" :src="require('../assets/'+this.movies[1].images[1])">
@@ -58,7 +58,7 @@
                   <h3>{{movies[1].title}}</h3>
                   <router-link
                     class="router-link"
-                    :to="'/Movie?'+this.movies[1]._id"
+                    :to="'/Movie?movieID='+this.movies[1]._id"
                     exact-active-class="menu-item-active"
                   >
                     <b-button>Läs mer</b-button>
@@ -70,7 +70,7 @@
                 <figure class="imgbox">
                   <router-link
                     class="router-link"
-                    :to="'/Movie?'+this.movies[2]._id"
+                    :to="'/Movie?movieID'+this.movies[2]._id"
                     exact-active-class="menu-item-active"
                   >
                     <img class="poster" :src="require('../assets/'+this.movies[2].images[1])">
@@ -78,7 +78,7 @@
                   <h3>{{movies[2].title}}</h3>
                   <router-link
                     class="router-link"
-                    :to="'/Movie?'+this.movies[2]._id"
+                    :to="'/Movie?movieID='+this.movies[2]._id"
                     exact-active-class="menu-item-active"
                   >
                     <b-button>Läs mer</b-button>
@@ -114,7 +114,7 @@
             </ul>
             <router-link
               class="router-link"
-              :to="'/Movie?'+this.movies[0]._id"
+              :to="'/Movie?movieID='+this.movies[0]._id"
               exact-active-class="menu-item-active"
             >
               <b-button>Läs mer</b-button>
@@ -136,7 +136,7 @@
             </ul>
             <router-link
               class="router-link"
-              :to="'/Movie?'+this.movies[1]._id"
+              :to="'/Movie?movieID='+this.movies[1]._id"
               exact-active-class="menu-item-active"
             >
               <b-button>Läs mer</b-button>
@@ -158,7 +158,7 @@
             </ul>
             <router-link
               class="router-link"
-              :to="'/Movie?'+this.movies[2]._id"
+              :to="'/Movie?movieID='+this.movies[2]._id"
               exact-active-class="menu-item-active"
             >
               <b-button>Läs mer</b-button>
@@ -240,7 +240,7 @@ export default {
       }
     },
     linkToMovePage(e) {
-      return this.$router.push("/Movie?" + e.srcElement.attributes.value.value);
+      return this.$router.push("/Movie?movieID=" + e.srcElement.attributes.value.value);
     },
 
     goToBooking(movieIndex){
@@ -248,15 +248,13 @@ export default {
       if(!this.$store.getters.isUserSignedIn){
          this.$store.commit('toggleLoggaInWindow');
       }else{
-        this.$router.push('/BokningSida?'+this.movies[movieIndex]._id+'&'+this.sessions.find((cur)=>{ 
+        this.$router.push('/BokningSida?'+this.movies[movieIndex]._id+'&'+this.sessions.find((cur)=>{
                     return cur.movieID === this.movies[movieIndex]._id})._id);
-      }       
+      }
     },
   },
    watch: {
      '$store.state.loggaInButtonPressed': function() {
-      console.log("knappen är tryckt redirekta till film");
-      console.log(this.movieIndex);
        this.$router.push('/BokningSida?'+this.movies[this.movieIndex]._id+'&'+this.sessions.find((cur)=>{ 
                     return cur.movieID === this.movies[this.movieIndex]._id})._id);
     }, 
@@ -294,7 +292,7 @@ export default {
 
 @-webkit-keyframes spin {
     0%  {-webkit-transform: rotate(0deg);}
-    100% {-webkit-transform: rotate(360deg);}   
+    100% {-webkit-transform: rotate(360deg);}
 }
 
 h1, p {
@@ -342,7 +340,7 @@ ul{
 }
 
 @media only screen and (max-device-width: 560px) {
-  
+
   .welcome-text{
     font-size: 70%;
   }

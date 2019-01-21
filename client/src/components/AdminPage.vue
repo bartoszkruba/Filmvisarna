@@ -641,7 +641,6 @@ export default {
       delete this.movieSession.date.hour;
       delete this.movieSession.date.minute;
       const response = await api.addMovieSession(this.movieSession , userCredentials);
-      console.log(response);
     }
   }
 };

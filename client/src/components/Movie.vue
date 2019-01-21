@@ -1,4 +1,3 @@
-<!-- INTE KOPPLAD MOT DATABAS -->
 
 <template>
 <div class="Movie">
@@ -144,6 +143,7 @@ export default {
       sessionID: null,
       targetSessionDisplay: null,
       loggaInButtonPressed: this.$store.state.loggaInButtonPressed,
+      urlQuery: {}
     };
   },
   methods: {
@@ -210,7 +210,7 @@ export default {
       if(!this.$store.getters.isUserSignedIn){
          this.$store.commit('toggleLoggaInWindow');
       }else{
-        this.$router.push('/BokningSida?'+this.movieID()+'&'+this.sessionID);
+        this.$router.push('/BokningSida?'+this.urlQuery.movieID+'&sessionID'+this.sessionID);
       }
     },
     starView(s, n) {
@@ -221,10 +221,10 @@ export default {
     },
     async getMovieByID() {
       this.aMovie = null;
-      if (this.movieID() !== null) {
+      if (this.urlQuery.movieID !== undefined) {
         try {
           const response = await api.getMovies({
-            _id: this.movieID()
+            _id: this.urlQuery.movieID
           });
           if (response.data.movies.length > 0)
             this.aMovie = response.data.movies[0];
@@ -237,15 +237,26 @@ export default {
     },
     async getMovieSessions(){
       this.movieSessions = null;
-      if (this.movieID() !== null) {
+      if (this.urlQuery.movieID !== undefined) {
         try {
           const response = await api.getMovieSessions({
-            movieID: this.movieID()
+            movieID: this.urlQuery.movieID
           });
           this.movieSessions = response.data.movie_sessions;
           if(this.movieSessions.length > 0){
-            this.sessionID = this.movieSessions[0]._id;
-            this.targetSessionDisplay = `${this.getWeekdayString(this.movieSessions[0].date.year,this.movieSessions[0].date.month,this.movieSessions[0].date.day)} ${this.movieSessions[0].date.day}/${this.movieSessions[0].date.month} ${this.movieSessions[0].date.year} kl: ${this.movieSessions[0].date.time}`;
+            let targetSession = null;
+            if(this.urlQuery.sessionID){
+              targetSession = this.movieSessions.find((cur)=>{
+                return cur._id === this.urlQuery.sessionID
+              });
+            }
+            if(targetSession){
+              this.sessionID = this.urlQuery.sessionID;
+              this.targetSessionDisplay = `${this.getWeekdayString(targetSession.date.year,targetSession.date.month,targetSession.date.day)} ${targetSession.date.day}/${targetSession.date.month} ${targetSession.date.year} kl: ${targetSession.date.time}`;
+            } else {
+              this.sessionID = this.movieSessions[0]._id;
+              this.targetSessionDisplay = `${this.getWeekdayString(this.movieSessions[0].date.year,this.movieSessions[0].date.month,this.movieSessions[0].date.day)} ${this.movieSessions[0].date.day}/${this.movieSessions[0].date.month} ${this.movieSessions[0].date.year} kl: ${this.movieSessions[0].date.time}`;
+            }
           }
         } catch (error) {
         }
@@ -253,25 +264,36 @@ export default {
       if(this.movieSessions === null)
         this.errorFromMongo = true
     },
-    movieID() {
-      if (window.location.hash.indexOf("?") > 0)
-        return window.location.hash.substr(window.location.hash.indexOf("?") + 1);
-      return null;
+    getUrlQuery() {
+      this.urlQuery = {};
+      let searchIndex = window.location.href.indexOf("?")+1;
+      let url = window.location.href;
+      let output = {};
+
+      if(searchIndex > 0) {
+        url = url.substr(searchIndex).split("&");
+        for(let i = 0; i < url.length; i++){
+          url[i] = url[i].split("=");
+          if(url[i][1].length > 0)
+            this.urlQuery[url[i][0]] = url[i][1];
+        }
+      }
     }
   },
   mounted: function() {
+    this.getUrlQuery();
     this.getMovieByID();
     this.getMovieSessions();
   },
   watch: {
     '$route': function() {
+      this.getUrlQuery();
       this.getMovieByID();
       this.getMovieSessions();
     },
      '$store.state.loggaInButtonPressed': function() {
-      console.log("knappen är tryckt redirekta till film");
-        this.$router.push('/BokningSida?'+this.movieID()+'&'+this.sessionID);
-    }, 
+        this.$router.push('/BokningSida?movieID='+this.urlQuery.movieID+'&sessionID='+this.sessionID);
+    },
   }
 };
 </script>
@@ -308,7 +330,7 @@ export default {
 
 @-webkit-keyframes spin {
     0%  {-webkit-transform: rotate(0deg);}
-    100% {-webkit-transform: rotate(360deg);}   
+    100% {-webkit-transform: rotate(360deg);}
 }
 
 .trailer-view {

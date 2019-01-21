@@ -30,7 +30,7 @@
             <figure class="images">
               <router-link
                 class="router-link"
-                :to="'/Movie?'+ session.movieID"
+                :to="'/Movie?movieID='+ session.movieID"
                 exact-active-class="menu-item-active"
               >
                 <img
@@ -65,12 +65,13 @@
               <div class="flexbox buttons">
                 <router-link
                   class="router-link"
-                  :to="'/Movie?'+ session.movieID"
+                  :to="'/Movie?movieID='+ session.movieID+'&sessionID='+session._id"
                   exact-active-class="menu-item-active"
                 >
                   <b-button>Film</b-button>
                 </router-link>
                   <b-button class="secound-button" @click="goToBooking(session)">Boka</b-button>
+
               </div>
             </div>
           </div>
@@ -118,7 +119,7 @@ export default {
       if(!this.$store.getters.isUserSignedIn){
          this.$store.commit('toggleLoggaInWindow');
       }else{
-        this.$router.push('/BokningSida?'+session.movieID+'&'+session._id);
+        this.$router.push('/BokningSida?movieID='+session.movieID+'&sessionID='+session._id);
       }
     },
     //moviesessions data
@@ -178,11 +179,10 @@ export default {
   },
   watch: {
      '$store.state.loggaInButtonPressed': function() {
-      console.log("knappen är tryckt redirekta till film");
         this.$router.push('/BokningSida?'+this.clickedMovieSession.movieID+'&'+this.clickedMovieSession._id);
-    }, 
+    },
   }
-   
+
 };
 </script>
 
@@ -215,7 +215,7 @@ export default {
 
 @-webkit-keyframes spin {
     0%  {-webkit-transform: rotate(0deg);}
-    100% {-webkit-transform: rotate(360deg);}   
+    100% {-webkit-transform: rotate(360deg);}
 }
 
 
@@ -289,4 +289,3 @@ span {
   }
 }
 </style>
-
