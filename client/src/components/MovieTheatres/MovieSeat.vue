@@ -27,7 +27,7 @@ export default {
     margin: 1px;
     }
 
-    @media screen and (max-width: 1000px){
+    @media screen and (max-width: 1024px){
     .movie-seat {
     width: 3vw;
     height: 3vw;
@@ -35,8 +35,8 @@ export default {
     }
      @media screen and (max-width: 770px){
     .movie-seat {
-    width: 4vw;
-    height: 4vw;
+    width: 5vw;
+    height: 5vw;
     }
      }
       @media screen and (max-width: 570px){

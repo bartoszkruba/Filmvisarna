@@ -1,7 +1,7 @@
 
 <template>
   <section class="movie-saloon">
-    <section class="screen col-md-4 offset-md-4 col-8 offset-2">
+    <section class="screen">
       Bioduk
     </section>
     <section class="instruktions">
