@@ -24,7 +24,7 @@
             <figure class="images">
               <router-link
                 class="router-link"
-                :to="'/Movie?'+ session.movieID"
+                :to="'/Movie?movieID='+ session.movieID"
                 exact-active-class="menu-item-active"
               >
                 <img
@@ -59,7 +59,7 @@
               <div class="flexbox buttons">
                 <router-link
                   class="router-link"
-                  :to="'/Movie?'+ session.movieID"
+                  :to="'/Movie?movieID='+ session.movieID"
                   exact-active-class="menu-item-active"
                 >
                   <b-button>Film</b-button>
@@ -67,7 +67,7 @@
 
                 <router-link
                   class="router-link"
-                  :to="'/BokningSida?'+session.movieID + '&' + session._id"
+                  :to="'/BokningSida?movieID='+session.movieID + '&sessionID=' + session._id"
                   exact-active-class="menu-item-active"
                 >
                   <b-button class="secound-button">Boka</b-button>
@@ -168,7 +168,7 @@ export default {
     }
 
   }
-   
+
 };
 </script>
 
@@ -244,4 +244,3 @@ span {
   }
 }
 </style>
-

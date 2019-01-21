@@ -1,4 +1,3 @@
-<!-- INTE KOPPLAD MOT DATABAS -->
 
 <template>
 <div class="Movie">
@@ -137,7 +136,8 @@ export default {
       aMovie: null,
       movieSessions: null,
       sessionID: null,
-      targetSessionDisplay: null
+      targetSessionDisplay: null,
+      urlQuery: {}
     };
   },
   methods: {
@@ -201,7 +201,7 @@ export default {
       this.sessionID = e.target.value;
     },
     goToBooking(){
-      this.$router.push('/BokningSida?'+this.movieID()+'&'+this.sessionID);
+      this.$router.push('/BokningSida?movieID='+this.urlQuery.movieID+'&sessionID='+this.sessionID);
     },
     starView(s, n) {
       let starPut = "";
@@ -211,10 +211,10 @@ export default {
     },
     async getMovieByID() {
       this.aMovie = null;
-      if (this.movieID() !== null) {
+      if (this.urlQuery.movieID !== undefined) {
         try {
           const response = await api.getMovies({
-            _id: this.movieID()
+            _id: this.urlQuery.movieID
           });
           if (response.data.movies.length > 0)
             this.aMovie = response.data.movies[0];
@@ -227,15 +227,24 @@ export default {
     },
     async getMovieSessions(){
       this.movieSessions = null;
-      if (this.movieID() !== null) {
+      if (this.urlQuery.movieID !== undefined) {
         try {
           const response = await api.getMovieSessions({
-            movieID: this.movieID()
+            movieID: this.urlQuery.movieID
           });
           this.movieSessions = response.data.movie_sessions;
           if(this.movieSessions.length > 0){
-            this.sessionID = this.movieSessions[0]._id;
-            this.targetSessionDisplay = `${this.getWeekdayString(this.movieSessions[0].date.year,this.movieSessions[0].date.month,this.movieSessions[0].date.day)} ${this.movieSessions[0].date.day}/${this.movieSessions[0].date.month} ${this.movieSessions[0].date.year} kl: ${this.movieSessions[0].date.time}`;
+            if(this.urlQuery.sessionID === undefined){
+              this.sessionID = this.movieSessions[0]._id;
+              this.targetSessionDisplay = `${this.getWeekdayString(this.movieSessions[0].date.year,this.movieSessions[0].date.month,this.movieSessions[0].date.day)} ${this.movieSessions[0].date.day}/${this.movieSessions[0].date.month} ${this.movieSessions[0].date.year} kl: ${this.movieSessions[0].date.time}`;
+            } else {
+              this.sessionID = this.urlQuery.sessionID;
+              let targetSession = this.movieSessions.find((cur)=>{
+                return cur._id === this.urlQuery.sessionID
+              });
+              this.targetSessionDisplay = `${this.getWeekdayString(targetSession.date.year,targetSession.date.month,targetSession.date.day)} ${targetSession.date.day}/${targetSession.date.month} ${targetSession.date.year} kl: ${targetSession.date.time}`;
+
+            }
           }
         } catch (error) {
         }
@@ -243,18 +252,30 @@ export default {
       if(this.movieSessions === null)
         this.errorFromMongo = true
     },
-    movieID() {
-      if (window.location.hash.indexOf("?") > 0)
-        return window.location.hash.substr(window.location.hash.indexOf("?") + 1);
-      return null;
+    getUrlQuery() {
+      this.urlQuery = {};
+      let searchIndex = window.location.href.indexOf("?")+1;
+      let url = window.location.href;
+      let output = {};
+
+      if(searchIndex > 0) {
+        url = url.substr(searchIndex).split("&");
+        for(let i = 0; i < url.length; i++){
+          url[i] = url[i].split("=");
+          if(url[i][1].length > 0)
+            this.urlQuery[url[i][0]] = url[i][1];
+        }
+      }
     }
   },
   mounted: function() {
+    this.getUrlQuery();
     this.getMovieByID();
     this.getMovieSessions();
   },
   watch: {
     '$route': function() {
+      this.getUrlQuery();
       this.getMovieByID();
       this.getMovieSessions();
     }

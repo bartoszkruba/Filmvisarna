@@ -21,7 +21,7 @@
     <img :src="require('../assets/'+this.movie.images[0])" class="img">
         <div class="papillon">
           <h1 class="title">{{movie.title}}</h1>
-          
+
             <div class="antal-bilijetter">
 
             </div>
@@ -38,7 +38,7 @@
           <h4>
             Tid: {{this.session.date.day+'/'+this.session.date.month+' '+this.session.date.year +' '+ this.session.date.time}}
           </h4>
-        
+
        </div>
          <h4>Antal biljetter:</h4>
         <p><strong> Ordinarie</strong></p>
@@ -76,7 +76,7 @@
                 <b-btn v-on:click="visaFelMedellande" v-b-modal.modal1>Slutför bokning</b-btn>
 
         </div>
-        
+
                 <!-- Modal Component -->
                 <b-modal id="modal1" v-if="totalt>=65" title="Bekräftelse" @ok="goHem" @cancel="cancelBokning">
                 <p>Film: <strong> {{movie.title}}</strong></p>
@@ -96,7 +96,7 @@
                 <p class="my-4"><strong>OBS!</strong>Du kan hämta ut dina biljetter senast 40min innan filmen börjar</p>
                 <p>  betalningen sker vid kassan i biografen</p>
                 <p><em>Ångrar du köpet? trycka på 'Cancel'</em></p>
-                
+
                 </b-modal>
             </div>
 
@@ -140,30 +140,31 @@ export default {
         sessionID: null,
         theatreID: null,
         errorFromMongo: false,
+        urlQuery: {}
     };
 
   },
   mounted: function() {
     this.errorFromMongo = false;
-    this.getIdFromUrl();
+    this.getUrlQuery();
     this.getMovieByID();
     this.getSessionByID();
   },
   watch: {
     '$route': function() {
       this.errorFromMongo = false;
-      this.getIdFromUrl();
+      this.getUrlQuery();
       this.getMovieByID();
       this.getSessionByID();
     }
   },
 
   computed:{
-  
+
     createTicket: function() {
       let ticket = {
           orderID: this.bokningsnummer,
-          sessionID: this.sessionID,
+          sessionID: this.urlQuery.sessionID,
           title: this.movie.title,
           theatre: this.theatre.name,
           totalTickets: this.antalBarn + this.antal + this.antalPensionar,
@@ -187,11 +188,26 @@ export default {
     this.totalt=0;
   },
   methods: {
+    getUrlQuery() {
+      this.urlQuery = {};
+      let searchIndex = window.location.href.indexOf("?")+1;
+      let url = window.location.href;
+      let output = {};
+
+      if(searchIndex > 0) {
+        url = url.substr(searchIndex).split("&");
+        for(let i = 0; i < url.length; i++){
+          url[i] = url[i].split("=");
+          if(url[i][1].length > 0)
+            this.urlQuery[url[i][0]] = url[i][1];
+        }
+      }
+    },
       async getMovieByID() {
         this.movie = null;
-      if(this.movieID !== null){
+      if(this.urlQuery.movieID !== null){
         try{
-          const response = await api.getMovies({_id: this.movieID});
+          const response = await api.getMovies({_id: this.urlQuery.movieID});
           this.movie = response.data.movies[0];
         } catch(error){
         }
@@ -201,9 +217,9 @@ export default {
       },
       async getSessionByID() {
         this.session = null;
-      if(this.sessionID !== null){
+      if(this.urlQuery.sessionID !== null){
         try{
-          const response = await api.getMovieSessions({_id: this.sessionID});
+          const response = await api.getMovieSessions({_id: this.urlQuery.sessionID});
           if(response.data.movie_sessions.length){
             this.session = response.data.movie_sessions[0];
             this.ledigaPlatserISal = this.session.freePlaces
@@ -232,16 +248,6 @@ export default {
         if(this.theatre === null)
          this.errorFromMongo = true;
       },
-      getIdFromUrl(){
-        this.movieID = null;
-        this.sessionID = null;
-        let id = window.location.hash.substr(window.location.hash.indexOf("?")+1);
-        id = id.split("&");
-        if(id.length === 2){
-          this.movieID = id[0];
-          this.sessionID = id[1];
-        }
-        },
       getBokningsnummer(){
           this.bokningsnummer=(Math.random()+1);
       },
@@ -442,13 +448,13 @@ div .vilkaBiljetter {
 @media screen and (max-width: 416px) {
     .papillon{
       margin-top: -10vh;
-    
+
     }
     .title{
-      font-size: 5vw;  
+      font-size: 5vw;
     }
     div .location h4{
-        font-size: 4vw; 
+        font-size: 4vw;
     }
     div .location {
     width: 90vw;
