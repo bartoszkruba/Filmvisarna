@@ -27,9 +27,10 @@ module.exports.setBookedTicket = async (req, res, next) => {
                 pensioner: parseInt(req.body.ticket.pensioner),
                 totalTickets: parseInt(req.body.ticket.adults)
                     + parseInt(req.body.ticket.children)
-                    + parseInt(req.body.ticket.pensioner)
+                    + parseInt(req.body.ticket.pensioner),
+                placeNumbers: req.body.ticket.placeNumbers
             };
-            if (session.freePlaces - bookedMovie.totalTickets >= 0) {
+            if (session.freePlaces - bookedMovie.totalTickets >= 0 && bookedMovie.totalTickets === bookedMovie.placeNumbers.length) {
                 user.bookedTickets.push(bookedMovie);
                 user.save();
                 res.send({
