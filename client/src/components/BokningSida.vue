@@ -68,7 +68,7 @@
         </em>
       </p>
       <section class="movieTheatre mt-5">
-      <MovieSaloon :theatreID="theatreID" :sessionID="sessionID"></MovieSaloon>
+      <MovieSaloon :theatreID="theatreID" :sessionID="this.urlQuery.sessionID"></MovieSaloon>
       </section>
       <div class="kostnad" v-if="totalt>=65">
         <h3>Kostnad</h3>

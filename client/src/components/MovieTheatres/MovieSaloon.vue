@@ -25,6 +25,7 @@ import api from "@/services/Api.js";
 import MovieSeat from "@/components/MovieTheatres/MovieSeat";
 export default {
   name: "MovieSaloon",
+  props: ['theatreID','sessionID'],
   data() {
     return {
       seatsPerRow: null,
@@ -36,9 +37,8 @@ export default {
     MovieSeat
   },
   mounted: async function() {
-    const response = await api.getTheatres({ _id: "5c3dae99ff9618296e20da87" });
-    const sessionSeats = await api.getMovieSessions({_id: "5c4042698cf2136b74961eb1"});
-    console.log(sessionSeats.data.movie_sessions[0].freePlaces);
+    const response = await api.getTheatres({ _id: this.theatreID });
+    const sessionSeats = await api.getMovieSessions({_id: this.sessionID});
     this.freePlaces = sessionSeats.data.movie_sessions[0].freePlaces;
     this.seatsPerRow = response.data.movie_theatres[0].seatsPerRow;
     this.totalSeats = response.data.movie_theatres[0].seats;
