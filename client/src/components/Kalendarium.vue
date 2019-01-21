@@ -51,10 +51,11 @@
                 }).title}}
               </h5>
               <p>
-                <span>tid:</span>
+                <span>Tid: </span>
                 {{session.date.time}} |
+                <!-- MÅSTE FIXAS -->
                 <span>Lediga Platser:</span>
-                {{session.freePlaces}}
+                <!-- {{session.freePlaces}} -->
               </p>
               <p>
                 {{theatres.find((cur)=>{
@@ -179,7 +180,7 @@ export default {
   },
   watch: {
      '$store.state.loggaInButtonPressed': function() {
-        this.$router.push('/BokningSida?'+this.clickedMovieSession.movieID+'&'+this.clickedMovieSession._id);
+        this.$router.push('/BokningSida?movieID='+this.clickedMovieSession.movieID+'&sessionID='+this.clickedMovieSession._id);
     },
   }
 
