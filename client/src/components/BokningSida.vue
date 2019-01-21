@@ -73,7 +73,6 @@
             <div>
                 <b-btn v-on:click="visaFelMedellande" v-b-modal.modal1>Slutför bokning</b-btn>
                  <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
-
         </div>
         
                 <!-- Modal Component -->
