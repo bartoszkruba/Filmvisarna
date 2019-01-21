@@ -76,9 +76,9 @@ h1{
   text-align: center;
 }
 .kontakta {
-  width: 50vw;
-  margin-top: 6vh;
-  margin-left: 20vw;
+  width: 60vw;
+  margin: 6vh auto;
+  
 }
 .biograf {
   margin: 0;
@@ -87,5 +87,19 @@ h1{
 hr {
   border-color: rgb(185, 184, 184);
   margin-top: 3rem;
+}
+
+@media screen and (max-width: 414px) {
+  .kontakta {
+  width: 70vw;
+  margin: 4vh auto;
+  
+}
+}
+@media screen and (max-width: 320px) {
+  h3 {
+    font-size: 7vw;
+  }
+  
 }
 </style> 
