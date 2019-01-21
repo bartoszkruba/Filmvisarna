@@ -1,6 +1,6 @@
 <template>
   <section class="hello">
-    <section v-if="errorFromMongo">
+    <section v-if="errorFromMongo" class="text-center mt-3">
       <h1>Något blev fel!</h1>
       <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
       <ul>
@@ -13,6 +13,12 @@
         to="/moviesPage"
         exact-active-class="menu-item-active"
       >Klicka här för att komma till alla filmer</router-link>
+    </section>
+    <section v-else-if="movies === null" class="loading-logo">
+      <h1 class="text-center spinner">
+        <font-awesome-icon icon="spinner"/>
+      </h1>
+      <h1 class="text-center">Loading</h1>
     </section>
 
     <section v-if="movies && sessions && theatres">
@@ -174,6 +180,37 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+.loading-logo {
+  height: 70vh;
+  opacity: 1;
+  animation: flickerAnimation 3s infinite;
+  overflow: hidden;
+}
+
+@keyframes flickerAnimation {
+  /* flame pulses */
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.spinner{
+  -webkit-animation: spin 3s infinite linear;
+}
+
+@-webkit-keyframes spin {
+    0%  {-webkit-transform: rotate(0deg);}
+    100% {-webkit-transform: rotate(360deg);}   
+}
+
+
 .flexbox {
   display: flex;
 }
