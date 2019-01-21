@@ -248,14 +248,14 @@ export default {
       if(!this.$store.getters.isUserSignedIn){
          this.$store.commit('toggleLoggaInWindow');
       }else{
-        this.$router.push('/BokningSida?'+this.movies[movieIndex]._id+'&'+this.sessions.find((cur)=>{
+        this.$router.push('/BokningSida?movieID='+this.movies[movieIndex]._id+'&sessionID='+this.sessions.find((cur)=>{
                     return cur.movieID === this.movies[movieIndex]._id})._id);
       }
     },
   },
    watch: {
      '$store.state.loggaInButtonPressed': function() {
-       this.$router.push('/BokningSida?'+this.movies[this.movieIndex]._id+'&'+this.sessions.find((cur)=>{ 
+       this.$router.push('/BokningSida?movieID='+this.movies[this.movieIndex]._id+'&sessionID='+this.sessions.find((cur)=>{
                     return cur.movieID === this.movies[this.movieIndex]._id})._id);
     }, 
   },

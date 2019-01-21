@@ -3,9 +3,10 @@ const uniqid = require('uniqid');
 const MovieSession = require('../models/movieSession');
 
 module.exports.setBookedTicket = async (req, res, next) => {
+    console.log("chuj");
     const user = await User.findOne({ email: req.body.user.email, password: req.body.user.password });
     const session = await MovieSession.findOne({ _id: req.body.ticket.sessionID }).populate('movieID').populate('movieTheatreID');
-    if (user) {
+    if (user && checkPlaces(session, req.body.ticket.placeNumbers)) {
         try {
             bookedMovie = {
                 orderID: uniqid(),
@@ -51,7 +52,18 @@ module.exports.setBookedTicket = async (req, res, next) => {
     } else {
         res.send({
             validated: false,
-            message: 'användaren finns inte i databasen'
+            message: 'användaren finns inte i databasen eller platsen är redan bokad'
         });
     }
+}
+
+function checkPlaces(session, places){
+    for(let i = 0; i > places.length; i++){
+        placeNumber = places[i];
+        sessionPlace = session.freePlaces.find(cur => {
+            return cur.seatNumber === placeNumber;
+        });
+        if(!sessionPlace) return false;
+    }
+    return true;
 }
