@@ -15,7 +15,7 @@
       >Klicka här för att komma till alla filmer</router-link>
     </section>
     <section v-else-if="movies === null" class="loading-logo">
-      <h1 class="text-center spinner">
+      <h1 class="text-center spinner mt-5">
         <font-awesome-icon icon="spinner"/>
       </h1>
       <h1 class="text-center">Loading</h1>
