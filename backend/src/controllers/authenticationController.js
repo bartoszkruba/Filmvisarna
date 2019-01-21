@@ -43,7 +43,7 @@ module.exports.postValidate = async (req, res, next) => {
 
 module.exports.getBookedTickets = async (req, res, next) => {
     const user = await User.findOne({ email: req.body.user.email});
-    if (user&& Bcrypt.compareSync(req.body.user.password, user.password)) {
+    if (user && Bcrypt.compareSync(req.body.user.password, user.password)) {
         res.send({
             bookedTickets: user.bookedTickets,
         })

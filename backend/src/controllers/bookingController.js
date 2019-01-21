@@ -52,6 +52,7 @@ module.exports.setBookedTicket = async (req, res, next) => {
             });
         }
     } else {
+        console.log("Not Verified");
         res.send({
             validated: false,
             message: 'användaren finns inte i databasen'
