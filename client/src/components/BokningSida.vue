@@ -180,7 +180,8 @@ export default {
       sessionID: null,
       theatreID: null,
       errorFromMongo: false,
-      chooseSeats: false
+      urlQuery: {}
+
     };
   },
   components: {
@@ -188,17 +189,17 @@ export default {
   },
   mounted: function() {
     this.errorFromMongo = false;
-    this.getIdFromUrl();
+    this.getUrlQuery();
     this.getMovieByID();
     this.getSessions();
     if (!this.$store.getters.isUserSignedIn) {
-      this.$router.push("/moviesPage");
+      this.$router.push('/filmSida');
     }
   },
   watch: {
-    $route: function() {
+    '$route': function() {
       this.errorFromMongo = false;
-      this.getIdFromUrl();
+      this.getUrlQuery();
       this.getMovieByID();
       this.getSessions();
     }
@@ -207,25 +208,15 @@ export default {
   computed: {
     createTicket: function() {
       let ticket = {
-        orderID: this.bokningsnummer,
-        sessionID: this.sessionID,
-        title: this.movie.title,
-        theatre: this.theatre.name,
-        totalTickets: this.antalBarn + this.antal + this.antalPensionar,
-        price: this.totalt,
-        time: this.session.date.time,
-        date:
-          this.session.date.year +
-          "/" +
-          this.session.date.month +
-          "/" +
-          this.session.date.day,
+        sessionID: this.urlQuery.sessionID,
         children: this.antalBarn,
         pensioner: this.antalPensionar,
-        adults: this.antal
+        adults: this.antal,
+        placeNumbers: ["A1", "A2", "A3"]
       };
       return ticket;
-    }
+    },
+
   },
   created() {
     this.pris = 85;
@@ -344,30 +335,8 @@ export default {
       if (this.theatre === null)
         this.errorFromMongo = true;
     },
-    getIdFromUrl() {
-      this.movieID = null;
-      this.sessionID = null;
-      let id = window.location.hash.substr(
-        window.location.hash.indexOf("?") + 1
-      );
-      id = id.split("&");
-      if (id.length === 2) {
-        this.movieID = id[0];
-        this.sessionID = id[1];
-      }
-    },
-    getBokningsnummer() {
-      this.bokningsnummer = Math.random() + 1;
-    },
     goHem() {
       this.$router.push("/");
-    },
-    cancelBokning() {
-      this.antal = 0;
-      this.antalPensionar = 0;
-      this.antalBarn = 0;
-      this.ledigaPlatserISal = this.session.freePlaces;
-      this.totalt = 0;
     },
     plus() {
       this.antal += 1;
@@ -382,8 +351,9 @@ export default {
         this.antal -= 1;
         this.ledigaPlatserISal++;
       } else {
-        alert("Du kan inte välja mindre än en biljett ");
+        alert('Du kan inte välja mindre än en biljett ')
       }
+
     },
     plusPensionar() {
       this.totalt += 75;
@@ -391,18 +361,20 @@ export default {
       this.visaTotal = true;
       this.visaMedellande = false;
       this.ledigaPlatserISal--;
+
     },
     minusPensionar() {
       if (this.antalPensionar > 0) {
-        this.totalt -= 75;
+        this.totalt -= 75
         this.antalPensionar -= 1;
         this.ledigaPlatserISal++;
       } else {
-        alert("Du kan inte välja mindre än en biljett ");
+        alert('Du kan inte välja mindre än en biljett ')
       }
+
     },
     plusBarn() {
-      this.totalt += 65;
+      this.totalt += 65
       this.antalBarn += 1;
       this.visaTotal = true;
       this.visaMedellande = false;
@@ -414,23 +386,22 @@ export default {
         this.totalt -= 65;
         this.ledigaPlatserISal++;
       } else {
-        alert("Du kan inte välja mindre än en biljett ");
+        alert('Du kan inte välja mindre än en biljett ')
       }
+
     },
     visaFelMedellande() {
       if (this.totalt == 0) {
         this.visaMedellande = true;
       } else {
-        this.chooseSeats = true;
+        this.bokaFilm();
       }
     },
+
     async bokaFilm() {
-      const response = await api.setTickets(
-        this.createTicket,
-        this.$store.getters.getCredentials
-      );
+      const response = await api.setTickets(this.createTicket, this.$store.getters.getCredentials);
       this.bokningsnummer = response.data.orderID;
-      this.$store.commit("updateTickets", response.data.bookedTickets);
+      this.$store.commit('updateTickets', response.data.bookedTickets);
     }
   }
 };
