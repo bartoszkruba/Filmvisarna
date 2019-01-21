@@ -18,7 +18,7 @@
 
     <div class="kontakta">
       <h3>Öppettider</h3>
-      <p>Öppet måndag - fredag 11:00-21:00, lördag - söndag 10:00-21:00</p>
+      <p>Öppet måndag - fredag 11:00-23:45, lördag - söndag 10:00-23:45</p>
       <p>Julafton stängt</p>
       <p>Nyårsafton 10:00-15:00</p>
       <p>Nyårsdagen 11:00-17:00</p>
@@ -55,8 +55,8 @@
       <p>Storagatan, 213 56 Malmö</p>
     </div>
   </div>
-</template> 
- 
+</template>
+
 <script>
 import api from "@/services/Api.js";
 
@@ -67,18 +67,18 @@ export default {
   },
   methods: {}
 };
-</script> 
- 
-<!-- Add "scoped" attribute to limit CSS to this component only --> 
-<style scoped> 
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
 h1{
   margin-top: 3vh;
   text-align: center;
 }
 .kontakta {
-  width: 50vw;
-  margin-top: 6vh;
-  margin-left: 20vw;
+  width: 60vw;
+  margin: 6vh auto;
+  
 }
 .biograf {
   margin: 0;
@@ -87,5 +87,18 @@ h1{
 hr {
   border-color: rgb(185, 184, 184);
   margin-top: 3rem;
+}
+@media screen and (max-width: 414px) {
+  .kontakta {
+  width: 70vw;
+  margin: 4vh auto;
+  
+}
+}
+@media screen and (max-width: 320px) {
+  h3 {
+    font-size: 7vw;
+  }
+  
 }
 </style> 

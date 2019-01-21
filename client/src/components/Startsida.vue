@@ -15,7 +15,7 @@
                 <figure class="imgbox">
                   <router-link
                     class="router-link"
-                    :to="'/Movie?'+this.movies[0]._id"
+                    :to="'/film?movieID='+this.movies[0]._id"
                     exact-active-class="menu-item-active"
                   >
                     <img class="poster" :src="require('../assets/'+this.movies[0].images[1])">
@@ -23,7 +23,7 @@
                   <h3>{{movies[0].title}}</h3>
                   <router-link
                     class="router-link"
-                    :to="'/Movie?'+this.movies[0]._id"
+                    :to="'/film?movieID='+this.movies[0]._id"
                     exact-active-class="menu-item-active"
                   >
                     <b-button>Läs mer</b-button>
@@ -35,7 +35,7 @@
                 <figure class="imgbox">
                   <router-link
                     class="router-link"
-                    :to="'/Movie?'+this.movies[1]._id"
+                    :to="'/film?movieID='+this.movies[1]._id"
                     exact-active-class="menu-item-active"
                   >
                     <img class="poster" :src="require('../assets/'+this.movies[1].images[1])">
@@ -43,7 +43,7 @@
                   <h3>{{movies[1].title}}</h3>
                   <router-link
                     class="router-link"
-                    :to="'/Movie?'+this.movies[1]._id"
+                    :to="'/film?movieID='+this.movies[1]._id"
                     exact-active-class="menu-item-active"
                   >
                     <b-button>Läs mer</b-button>
@@ -55,7 +55,7 @@
                 <figure class="imgbox">
                   <router-link
                     class="router-link"
-                    :to="'/Movie?'+this.movies[2]._id"
+                    :to="'/film?movieID'+this.movies[2]._id"
                     exact-active-class="menu-item-active"
                   >
                     <img class="poster" :src="require('../assets/'+this.movies[2].images[1])">
@@ -63,7 +63,7 @@
                   <h3>{{movies[2].title}}</h3>
                   <router-link
                     class="router-link"
-                    :to="'/Movie?'+this.movies[2]._id"
+                    :to="'/film?movieID='+this.movies[2]._id"
                     exact-active-class="menu-item-active"
                   >
                     <b-button>Läs mer</b-button>
@@ -99,7 +99,7 @@
             </ul>
             <router-link
               class="router-link"
-              :to="'/Movie?'+this.movies[0]._id"
+              :to="'/film?movieID='+this.movies[0]._id"
               exact-active-class="menu-item-active"
             >
               <b-button>Läs mer</b-button>
@@ -121,7 +121,7 @@
             </ul>
             <router-link
               class="router-link"
-              :to="'/Movie?'+this.movies[1]._id"
+              :to="'/film?movieID='+this.movies[1]._id"
               exact-active-class="menu-item-active"
             >
               <b-button>Läs mer</b-button>
@@ -143,7 +143,7 @@
             </ul>
             <router-link
               class="router-link"
-              :to="'/Movie?'+this.movies[2]._id"
+              :to="'/film?movieID='+this.movies[2]._id"
               exact-active-class="menu-item-active"
             >
               <b-button>Läs mer</b-button>
@@ -204,7 +204,7 @@ export default {
       this.sessions = response.data.movie_sessions;
     },
     linkToMovePage(e) {
-      return this.$router.push("/Movie?" + e.srcElement.attributes.value.value);
+      return this.$router.push("/film?movieID=" + e.srcElement.attributes.value.value);
     },
 
     goToBooking(movieIndex){

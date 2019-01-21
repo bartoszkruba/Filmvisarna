@@ -38,12 +38,13 @@
           <div v-if="movieSessions.length">
 
           <!-- <router-link class="router-link" :to="'/BokningSida?'+aMovie._id" exact-active-class="menu-item-active"> -->
+          <div class="knappar">
             <b-btn v-on:click="goToBooking" variant="danger">Boka biljetter</b-btn>
           <!-- </router-link> -->
 
-            <b-dropdown id="ddown-buttons" text="Ändra visningsdatum: " variant="danger" class="m-2">
+            <b-dropdown id="ddown-buttons" text="Ändra visningsdatum: " variant="danger" class="visningsdatum">
               <b-dropdown-item-button v-on:click="changeSession" v-for="session in this.movieSessions" :value="session._id" :key="session._id">{{getWeekdayString(session.date.year,session.date.month,session.date.day).slice(0,-3)}} {{session.date.day + '/' + session.date.month + ' ' + session.date.year + ' ' + session.date.time }}</b-dropdown-item-button>
-            </b-dropdown>
+            </b-dropdown></div>
             <h3><br>
               Vald visning: {{targetSessionDisplay}}
             </h3>
@@ -314,6 +315,9 @@ export default {
 .movieheader_text {
   flex: 5;
 }
+.visningsdatum{
+    margin-left: 1vw;
+  }
 
 .moviedescription {
   font-style: italic;
@@ -325,6 +329,9 @@ export default {
   color: rgb(55, 55, 55);
   font-size: 200%;
   font-weight: bold;
+}
+.knappar{
+  margin-top: 6vh;
 }
 
 li {
@@ -357,6 +364,9 @@ li {
 }
 
 @media screen and (min-width: 768px) {
+  .m-2{
+    margin: 0;
+  }
   .moviedescription {
     font-size: 150%;
   }
@@ -385,6 +395,23 @@ li {
   .videoplayer {
     height: 20vmax;
     width: 30vmax;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .visningsdatum{
+    margin-top: 1vh;
+  }
+  .movietitle{
+    text-align: center;
+  }
+}
+@media screen and (max-width: 414px) and (min-width: 321px) {
+  .movietitle{
+    text-align: center;
+  }
+  .visningsdatum{
+    margin-left: 2vw;
   }
 }
 </style>

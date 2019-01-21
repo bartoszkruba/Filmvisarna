@@ -30,7 +30,7 @@
             <figure class="images">
               <router-link
                 class="router-link"
-                :to="'/Movie?'+ session.movieID"
+                :to="'/film?movieID='+ session.movieID"
                 exact-active-class="menu-item-active"
               >
                 <img
@@ -65,7 +65,7 @@
               <div class="flexbox buttons">
                 <router-link
                   class="router-link"
-                  :to="'/Movie?'+ session.movieID"
+                  :to="'/film?movieID='+ session.movieID+'&sessionID='+session._id"
                   exact-active-class="menu-item-active"
                 >
                   <b-button>Film</b-button>
