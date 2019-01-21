@@ -18,7 +18,7 @@
           <figure class="images">
             <router-link
               class="router-link"
-              :to="'/Movie?'+m._id"
+              :to="'/film?movieID='+m._id"
               exact-active-class="menu-item-active"
             >
               <img :src="require('../assets/'+m.images[1])" class="posterpic">
@@ -26,14 +26,15 @@
           </figure>
 
           <div class="movietext">
-            <div class="flex-col">
-              <router-link
-                class="router-link"
-                :to="'/Movie?'+m._id"
-                exact-active-class="menu-item-active"
-              >
-                <h2>{{m.title}}</h2>
-              </router-link>
+
+          <div class="flex-col">
+            <router-link
+              class="router-link"
+              :to="'/film?movieID='+m._id"
+              exact-active-class="menu-item-active"
+            >
+              <h2>{{m.title}}</h2>
+            </router-link>
 
               <div class="flexbox ptaggar info-direction">
                 <p>Längd: {{parseInt(m.length/60)}} timmar och {{m.length%60}} minuter</p>
@@ -64,39 +65,51 @@ export default {
   name: "MoviesPage",
   data() {
     return {
-      msg: "Welcome to Your Vue.js App",
-      movies: null
+      movies: null,
+      urlQuery: {}
     };
   },
-  created() {
-    this.getMovies();
-  },
-  mounted() {
+  mounted(){
+    this.getUrlQuery();
     this.getMovies();
   },
   methods: {
     async getMovies() {
-      if (window.location.hash.indexOf("?") > 0) {
-        const response = await api.searchMovies(
-          window.location.hash
-            .substr(window.location.hash.indexOf("?") + 1)
-            .replace("_", " ")
-        );
+
+      if(this.urlQuery.searchQuery){
+        const response = await api.searchMovies(this.urlQuery.searchQuery.replace('_', ' '));
         this.movies = response.data.movies;
-        if (this.movies.length === 1) {
-          this.$router.push(`/Movie?${this.movies[0]._id}`);
+        if(this.movies.length === 1){
+          this.$router.push(`/film?movieID=${this.movies[0]._id}`);
         }
       } else {
         const response = await api.getMovies();
         this.movies = response.data.movies;
       }
+    },
+    getUrlQuery() {
+      this.urlQuery = {};
+      let url = window.location.href;
+      url = url.substr(url.lastIndexOf("#"));
+      let searchIndex = url.indexOf("?")+1;
+      let output = {};
+
+      if(searchIndex > 0) {
+        url = url.substr(searchIndex).split("&");
+        for(let i = 0; i < url.length; i++){
+          url[i] = url[i].split("=");
+          if(url[i][1].length > 0)
+            this.urlQuery[url[i][0]] = url[i][1];
+        }
+      }
     }
   },
-  watch: {
-    $route(to, from) {
-      this.getMovies();
+  watch:{
+    $route (to, from){
+        this.getUrlQuery();
+        this.getMovies();
     }
-  }
+}
 };
 </script>
 
@@ -127,7 +140,7 @@ export default {
 
 @-webkit-keyframes spin {
     0%  {-webkit-transform: rotate(0deg);}
-    100% {-webkit-transform: rotate(360deg);}   
+    100% {-webkit-transform: rotate(360deg);}
 }
 
 
@@ -224,4 +237,3 @@ hr {
   }
 }
 </style>
-
