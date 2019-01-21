@@ -9,6 +9,7 @@ import Startsida from '@/components/Startsida'
 import Movie from '@/components/Movie'
 import LoggaIn from '@/components/LoggaIn'
 import MinSida from '@/components/MinSida'
+import MovieSaloon from "@/components/MovieTheatres/MovieSaloon";
 
 Vue.use(Router)
 
@@ -53,6 +54,11 @@ export default new Router({
       path: '/movie',
       name: 'Movie',
       component: Movie
+    },
+    {
+      path: '/movieSaloon',
+      name: 'MovieSaloon',
+      component: MovieSaloon
     }
 
   ]

@@ -32,7 +32,7 @@ movieSessionSchema = new Schema({
         ref: 'MovieTheatre'
     },
     freePlaces: {
-        type: Number,
+        type: Array,
         required: true
     }
 });
