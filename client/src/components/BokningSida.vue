@@ -203,7 +203,8 @@ export default {
           this.session.date.day,
         children: this.antalBarn,
         pensioner: this.antalPensionar,
-        adults: this.antal
+        adults: this.antal,
+        placeNumbers: ["A1", "A2", "A3"]
       };
       return ticket;
     }
@@ -273,13 +274,6 @@ export default {
     },
     goHem() {
       this.$router.push("/");
-    },
-    cancelBokning() {
-      this.antal = 0;
-      this.antalPensionar = 0;
-      this.antalBarn = 0;
-      this.ledigaPlatserISal = this.session.freePlaces;
-      this.totalt = 0;
     },
     plus() {
       this.antal += 1;

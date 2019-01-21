@@ -53,9 +53,8 @@
               <p>
                 <span>Tid: </span>
                 {{session.date.time}} |
-                <!-- MÅSTE FIXAS -->
                 <span>Lediga Platser:</span>
-                <!-- {{session.freePlaces}} -->
+                {{session.freePlaces}}
               </p>
               <p>
                 {{theatres.find((cur)=>{
@@ -90,7 +89,6 @@ export default {
   name: "Kalendarium",
   data() {
     return {
-      msg: "Welcome to Your Vue.js App",
       movies: null,
       sessions: null,
       theatres: null,
