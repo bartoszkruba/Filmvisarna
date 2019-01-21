@@ -71,7 +71,10 @@ async function resetEverything() {
                 freePlaces.push({seatNumber: seat, booked: false});
             }
         }
-        movieSessions[k].freePlaces = freePlaces;
+        movieSessions[k].places = freePlaces;
+        movieSessions[k].freePlaces = movieTheatre.seats;
+        movieSessions[k].FreePlaces = null;
+        movieSessions[k].Places = null;
         movieSessions[k].save();
     }
 
