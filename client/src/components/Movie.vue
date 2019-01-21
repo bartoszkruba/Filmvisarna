@@ -252,7 +252,6 @@ export default {
             }
             if(targetSession){
               this.sessionID = this.urlQuery.sessionID;
-              console.log(targetSession);
               this.targetSessionDisplay = `${this.getWeekdayString(targetSession.date.year,targetSession.date.month,targetSession.date.day)} ${targetSession.date.day}/${targetSession.date.month} ${targetSession.date.year} kl: ${targetSession.date.time}`;
             } else {
               this.sessionID = this.movieSessions[0]._id;
@@ -293,7 +292,6 @@ export default {
       this.getMovieSessions();
     },
      '$store.state.loggaInButtonPressed': function() {
-      console.log("knappen är tryckt redirekta till film");
         this.$router.push('/BokningSida?movieID='+this.urlQuery.movieID+'&sessionID='+this.sessionID);
     },
   }
