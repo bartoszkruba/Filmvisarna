@@ -43,17 +43,17 @@
          <h4>Antal biljetter:</h4>
         <p><strong> Ordinarie</strong></p>
         <div class="antal">
-          <button v-on:click="minus" type="button" class="btn btn-dark">-</button>
+          <button v-on:click="minus" type="button" class="btn btn-dark" :disabled="this.antal === 0">-</button>
           <h5 class="hej">{{antal}} st / {{pris}}kr per st</h5>
-          <button v-on:click="plus" type="button" class="btn btn-dark">+</button>
+          <button v-on:click="plus" type="button" class="btn btn-dark" :disabled="this.ledigaPlatserISal === 0">+</button>
         </div>
         <p>
           <strong>Pensionär</strong>
         </p>
         <div class="antal">
-          <button v-on:click="minusPensionar" type="button" class="btn btn-dark">-</button>
+          <button v-on:click="minusPensionar" type="button" class="btn btn-dark" :disabled="this.antalPensionar === 0">-</button>
           <h5 class="hej">{{antalPensionar}} st / {{prisPensionar}}kr per st</h5>
-          <button v-on:click="plusPensionar" type="button" class="btn btn-dark">+</button>
+          <button v-on:click="plusPensionar" type="button" class="btn btn-dark" :disabled="this.ledigaPlatserISal === 0">+</button>
         </div>
 
         <div v-if="movie.ageLimit<15">
@@ -61,9 +61,9 @@
             <strong>Barn</strong>
           </p>
           <div class="antal">
-            <button v-on:click="minusBarn" type="button" class="btn btn-dark">-</button>
+            <button v-on:click="minusBarn" type="button" class="btn btn-dark" :disabled="this.antalBarn === 0">-</button>
             <h5 class="hej">{{antalBarn}} st / {{prisBarn}}kr per st</h5>
-            <button v-on:click="plusBarn" type="button" class="btn btn-dark">+</button>
+            <button v-on:click="plusBarn" type="button" class="btn btn-dark" :disabled="this.ledigaPlatserISal === 0">+</button>
           </div>
         </div>
         <p class="ledigaPlatser"> <em> <strong>OBS!</strong> Lediga platser: {{this.ledigaPlatserISal}} av {{this.theatre.seats}}</em></p>
@@ -74,11 +74,12 @@
         <div class="slutför btn">
             <div>
                 <b-btn v-on:click="visaFelMedellande" v-b-modal.modal1>Slutför bokning</b-btn>
+                 <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
 
         </div>
         
                 <!-- Modal Component -->
-                <b-modal id="modal1" v-if="totalt>=65" title="Bekräftelse" @ok="goHem" @cancel="cancelBokning">
+                <b-modal id="modal1" v-if="totalt>=65" title="Bekräftelse" @ok="goHem" @cancel="cancelBokning" ok-only>
                 <p>Film: <strong> {{movie.title}}</strong></p>
                 <p>Datum: <strong>{{this.session.date.day+'/'+this.session.date.month+' '+this.session.date.year }}</strong> </p>
                 <p>Tid: <strong>{{this.session.date.time}}</strong></p>
@@ -95,14 +96,11 @@
                 <p class="my-4">Din bokningsnummer: <strong>{{bokningsnummer}}</strong></p>
                 <p class="my-4"><strong>OBS!</strong>Du kan hämta ut dina biljetter senast 40min innan filmen börjar</p>
                 <p>  betalningen sker vid kassan i biografen</p>
-                <p><em>Ångrar du köpet? trycka på 'Cancel'</em></p>
                 
                 </b-modal>
             </div>
-
-           <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
+          
         </div>
-    </div>
       </section>
 </main>
 
@@ -148,6 +146,9 @@ export default {
     this.getIdFromUrl();
     this.getMovieByID();
     this.getSessionByID();
+    if(!this.$store.getters.isUserSignedIn){
+      this.$router.push('/moviesPage');
+    }
   },
   watch: {
     '$route': function() {
@@ -175,7 +176,8 @@ export default {
           adults: this.antal,
       }
       return ticket;
-  }
+  },
+  
   },
   created(){
     this.pris=85;
@@ -323,7 +325,6 @@ export default {
      async bokaFilm(){
           const response = await api.setTickets(this.createTicket, this.$store.getters.getCredentials);
           this.bokningsnummer = response.data.orderID;
-          console.log(response.data.bookedTickets);
           this.$store.commit('updateTickets' , response.data.bookedTickets);
       },
   }

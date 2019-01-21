@@ -28,14 +28,7 @@
                   >
                     <b-button>Läs mer</b-button>
                   </router-link>
-                  <router-link
-                    class="router-link"
-                    :to="'/BokningSida?'+this.movies[0]._id + '&' + this.sessions.find((cur)=>{ 
-                    return cur.movieID === movies[0]._id})._id"
-                    exact-active-class="menu-item-active"
-                  >
-                    <b-button>Snabb boka</b-button>
-                  </router-link>
+                    <b-button v-on:click="goToBooking(0)">Snabb boka</b-button>
                 </figure>
               </b-col>
               <b-col>
@@ -55,14 +48,7 @@
                   >
                     <b-button>Läs mer</b-button>
                   </router-link>
-                  <router-link
-                    class="router-link"
-                    :to="'/BokningSida?'+this.movies[1]._id + '&' + this.sessions.find((cur)=>{ 
-                    return cur.movieID === movies[1]._id})._id"
-                    exact-active-class="menu-item-active"
-                  >
-                    <b-button>Snabb boka</b-button>
-                  </router-link>
+                   <b-button v-on:click="goToBooking(1)">Snabb boka</b-button>
                 </figure>
               </b-col>
               <b-col>
@@ -82,14 +68,7 @@
                   >
                     <b-button>Läs mer</b-button>
                   </router-link>
-                  <router-link
-                    class="router-link"
-                    :to="'/BokningSida?'+this.movies[2]._id + '&' + this.sessions.find((cur)=>{ 
-                    return cur.movieID === movies[2]._id})._id"
-                    exact-active-class="menu-item-active"
-                  >
-                    <b-button>Snabb boka</b-button>
-                  </router-link>
+                    <b-button v-on:click="goToBooking(2)">Snabb boka</b-button>
                 </figure>
               </b-col>
             </b-row>
@@ -125,14 +104,7 @@
             >
               <b-button>Läs mer</b-button>
             </router-link>
-            <router-link
-              class="router-link"
-              :to="'/BokningSida?'+this.movies[0]._id + '&' + this.sessions.find((cur)=>{ 
-                    return cur.movieID === movies[0]._id})._id"
-              exact-active-class="menu-item-active"
-            >
-              <b-button>Snabb boka</b-button>
-            </router-link>
+              <b-button v-on:click="goToBooking(0)">Snabb boka</b-button>
           </b-carousel-slide>
           <b-carousel-slide>
             <img
@@ -154,14 +126,7 @@
             >
               <b-button>Läs mer</b-button>
             </router-link>
-            <router-link
-              class="router-link"
-              :to="'/BokningSida?'+this.movies[1]._id + '&' + this.sessions.find((cur)=>{ 
-                    return cur.movieID === movies[1]._id})._id"
-              exact-active-class="menu-item-active"
-            >
-              <b-button>Snabb boka</b-button>
-            </router-link>
+              <b-button v-on:click="goToBooking(1)">Snabb boka</b-button>
           </b-carousel-slide>
           <b-carousel-slide>
             <img
@@ -183,14 +148,7 @@
             >
               <b-button>Läs mer</b-button>
             </router-link>
-            <router-link
-              class="router-link"
-              :to="'/BokningSida?'+this.movies[2]._id + '&' + this.sessions.find((cur)=>{ 
-                    return cur.movieID === movies[2]._id})._id"
-              exact-active-class="menu-item-active"
-            >
-              <b-button>Snabb boka</b-button>
-            </router-link>
+              <b-button v-on:click="goToBooking(2)">Snabb boka</b-button>
           </b-carousel-slide>
         </b-carousel>
       </div>
@@ -222,7 +180,8 @@ export default {
   data() {
     return {
       movies: null,
-      sessions: null
+      sessions: null,
+      movieIndex: null,
     };
   },
   created() {
@@ -246,7 +205,25 @@ export default {
     },
     linkToMovePage(e) {
       return this.$router.push("/Movie?" + e.srcElement.attributes.value.value);
-    }
+    },
+
+    goToBooking(movieIndex){
+      this.movieIndex = movieIndex;
+      if(!this.$store.getters.isUserSignedIn){
+         this.$store.commit('toggleLoggaInWindow');
+      }else{
+        this.$router.push('/BokningSida?'+this.movies[movieIndex]._id+'&'+this.sessions.find((cur)=>{ 
+                    return cur.movieID === this.movies[movieIndex]._id})._id);
+      }       
+    },
+  },
+   watch: {
+     '$store.state.loggaInButtonPressed': function() {
+      console.log("knappen är tryckt redirekta till film");
+      console.log(this.movieIndex);
+       this.$router.push('/BokningSida?'+this.movies[this.movieIndex]._id+'&'+this.sessions.find((cur)=>{ 
+                    return cur.movieID === this.movies[this.movieIndex]._id})._id);
+    }, 
   }
 };
 </script>

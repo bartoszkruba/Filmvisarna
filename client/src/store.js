@@ -7,7 +7,9 @@ export const store = new Vuex.Store({
     state: {
         showMinaSidorButton: false,
         showLoggaInButton: true,
+        showLoggaInWindow: false,
         showAdminButton: false,
+        loggaInButtonPressed: false,
         loggedInUser: {
             name: '',
             id: '',
@@ -25,10 +27,23 @@ export const store = new Vuex.Store({
                 password: state.loggedInUser.password
             }
             return credentials;
+        },
+
+        isUserSignedIn: (state) => {
+            if(state.loggedInUser.name) {
+                return true;
+            }
+            return false;
+        },
+
+        isLoggaInButtonPressed: (state) => {
+            return state.loggaInButtonPressed;
         }
     },
 
     mutations: {
+
+
         showMinaSidor(state){
             state.showMinaSidorButton = !state.showMinaSidorButton;
             state.showLoggaInButton = !state.showLoggaInButton;
@@ -55,6 +70,15 @@ export const store = new Vuex.Store({
 
         updateTickets(state, tickets){
             state.loggedInUser.bookedTickets = tickets;
-        }
+        },
+
+        toggleLoggaInWindow(state) {
+            state.showLoggaInWindow = !state.showLoggaInWindow;
+          },
+        
+        loggaInButtonPressed(state) {
+            state.loggaInButtonPressed = !state.loggaInButtonPressed;
+            console.log("loggin button pressed store");
+          }
     }
 })

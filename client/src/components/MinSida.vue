@@ -2,9 +2,6 @@
   <section>
     <b-jumbotron class="jumbotron">
       <h1>{{this.$store.state.loggedInUser.name}}</h1>
-      <b-link @click="displayUserSettings">
-        <font-awesome-icon class="mr-2" icon="pen"/>Uppdatera Medlemsprofil
-      </b-link>
     </b-jumbotron>
     <section class="order-history">
       <h1>Orderhistorik</h1>
@@ -101,7 +98,7 @@ export default {
   },
   mounted: async function() {
     if (!this.$store.state.loggedInUser.name) {
-      this.$router.push("/LoggaIn");
+      this.$router.push("/");
     } else {
       const response = await api.getTickets(this.$store.getters.getCredentials);
       this.$store.commit("updateTickets", response.data.bookedTickets);
