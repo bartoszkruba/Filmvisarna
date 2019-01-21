@@ -11,7 +11,7 @@
     </b-collapse>
   </b-navbar>
     </section>-->
-    <h1 class="text-center mt-3" v-if="movies && movies.length === 0">Inga Sökträffar :(  </h1>
+    <h1 class="text-center mt-3" v-if="movies && movies.length === 0">Inga Sökträffar :(</h1>
     <div v-for="m in movies">
       <div class="flexbox main-placing">
         <div class="flex-mobil">
@@ -26,6 +26,7 @@
           </figure>
 
           <div class="movietext">
+
           <div class="flex-col">
             <router-link
               class="router-link"
@@ -35,18 +36,24 @@
               <h2>{{m.title}}</h2>
             </router-link>
 
-            <div class="flexbox ptaggar info-direction">
-              <p>Längd: {{parseInt(m.length/60)}} timmar och {{m.length%60}} minuter</p>
-              <p class="destop-only">|</p>
-              <p>Genre: {{m.genre}}</p>
-              <p class="destop-only">|</p>
-              <p>Ålder: {{m.ageLimit}} år</p>
+              <div class="flexbox ptaggar info-direction">
+                <p>Längd: {{parseInt(m.length/60)}} timmar och {{m.length%60}} minuter</p>
+                <p class="destop-only">|</p>
+                <p>Genre: {{m.genre}}</p>
+                <p class="destop-only">|</p>
+                <p>Ålder: {{m.ageLimit}} år</p>
+              </div>
             </div>
-          </div>
           </div>
         </div>
       </div>
       <hr>
+    </div>
+    <div class="mt-5 loading-logo" v-if="movies === null">
+      <h1 class="text-center spinner">
+        <font-awesome-icon icon="spinner"/>
+      </h1>
+      <h1 class="text-center">Loading</h1>
     </div>
   </section>
 </template>
@@ -72,14 +79,14 @@ export default {
   },
   methods: {
     async getMovies() {
+
       if(this.urlQuery.searchQuery !== undefined){
-        console.log("HELLO");
         const response = await api.searchMovies(this.urlQuery.searchQuery.replace('_', ' '));
         this.movies = response.data.movies;
         if(this.movies.length === 1){
           this.$router.push(`/Movie?movieID=${this.movies[0]._id}`);
         }
-      }else{
+      } else {
         const response = await api.getMovies();
         this.movies = response.data.movies;
       }
@@ -111,6 +118,35 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.loading-logo {
+  opacity: 1;
+  animation: flickerAnimation 3s infinite;
+  overflow: hidden;
+}
+
+@keyframes flickerAnimation {
+  /* flame pulses */
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.spinner{
+  -webkit-animation: spin 3s infinite linear;
+}
+
+@-webkit-keyframes spin {
+    0%  {-webkit-transform: rotate(0deg);}
+    100% {-webkit-transform: rotate(360deg);}   
+}
+
+
 .flexbox {
   display: flex;
 }
@@ -151,7 +187,7 @@ hr {
 .info-direction {
   flex-direction: row;
 }
-.movietext{
+.movietext {
   display: flex;
   align-items: center;
   justify-content: center;

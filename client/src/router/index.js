@@ -25,11 +25,6 @@ export default new Router({
       component: KontaktSida
     },
     {
-      path: '/LoggaIn',
-      name: 'LoggaIn',
-      component: LoggaIn
-    },
-    {
       path: '/MinSida',
       name: 'MinSida',
       component: MinSida

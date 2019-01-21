@@ -12,7 +12,6 @@
         <li>Du har klickat på en gammal länk</li>
       </ul>
       <router-link class="router-link" to="/moviesPage" exact-active-class="menu-item-active">Klicka här för att komma till alla filmer</router-link>
-
     </section>
 
     <section v-if="aMovie && movieSessions">
@@ -119,6 +118,12 @@
 
 
     </section>
+    <section v-else class="loading-logo">
+      <h1 class="text-center spinner">
+        <font-awesome-icon icon="spinner"/>
+      </h1>
+      <h1 class="text-center">Loading</h1>
+    </section>
   </b-jumbotron>
 </div>
 </template>
@@ -137,6 +142,7 @@ export default {
       movieSessions: null,
       sessionID: null,
       targetSessionDisplay: null,
+      loggaInButtonPressed: this.$store.state.loggaInButtonPressed,
       urlQuery: {}
     };
   },
@@ -201,7 +207,11 @@ export default {
       this.sessionID = e.target.value;
     },
     goToBooking(){
-      this.$router.push('/BokningSida?movieID='+this.urlQuery.movieID+'&sessionID='+this.sessionID);
+      if(!this.$store.getters.isUserSignedIn){
+         this.$store.commit('toggleLoggaInWindow');
+      }else{
+        this.$router.push('/BokningSida?'+this.movieID()+'&'+this.sessionID);
+      }
     },
     starView(s, n) {
       let starPut = "";
@@ -281,7 +291,11 @@ export default {
       this.getUrlQuery();
       this.getMovieByID();
       this.getMovieSessions();
-    }
+    },
+     '$store.state.loggaInButtonPressed': function() {
+      console.log("knappen är tryckt redirekta till film");
+        this.$router.push('/BokningSida?'+this.movieID()+'&'+this.sessionID);
+    }, 
   }
 };
 </script>
@@ -290,6 +304,35 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
+}
+
+.loading-logo {
+  height: 70vh;
+  opacity: 1;
+  animation: flickerAnimation 3s infinite;
+  overflow: hidden;
+}
+
+@keyframes flickerAnimation {
+  /* flame pulses */
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.spinner{
+  -webkit-animation: spin 3s infinite linear;
+}
+
+@-webkit-keyframes spin {
+    0%  {-webkit-transform: rotate(0deg);}
+    100% {-webkit-transform: rotate(360deg);}   
 }
 
 .trailer-view {

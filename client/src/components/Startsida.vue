@@ -28,14 +28,7 @@
                   >
                     <b-button>Läs mer</b-button>
                   </router-link>
-                  <router-link
-                    class="router-link"
-                    :to="'/BokningSida?movieID='+this.movies[0]._id + '&sessionID=' + this.sessions.find((cur)=>{
-                    return cur.movieID === movies[0]._id})._id"
-                    exact-active-class="menu-item-active"
-                  >
-                    <b-button>Snabb boka</b-button>
-                  </router-link>
+                    <b-button v-on:click="goToBooking(0)">Snabb boka</b-button>
                 </figure>
               </b-col>
               <b-col>
@@ -55,14 +48,7 @@
                   >
                     <b-button>Läs mer</b-button>
                   </router-link>
-                  <router-link
-                    class="router-link"
-                    :to="'/BokningSida?movieID='+this.movies[1]._id + '&sessionID=' + this.sessions.find((cur)=>{
-                    return cur.movieID === movies[1]._id})._id"
-                    exact-active-class="menu-item-active"
-                  >
-                    <b-button>Snabb boka</b-button>
-                  </router-link>
+                   <b-button v-on:click="goToBooking(1)">Snabb boka</b-button>
                 </figure>
               </b-col>
               <b-col>
@@ -82,14 +68,7 @@
                   >
                     <b-button>Läs mer</b-button>
                   </router-link>
-                  <router-link
-                    class="router-link"
-                    :to="'/BokningSida?movieID='+this.movies[2]._id + '&sessionID=' + this.sessions.find((cur)=>{
-                    return cur.movieID === movies[2]._id})._id"
-                    exact-active-class="menu-item-active"
-                  >
-                    <b-button>Snabb boka</b-button>
-                  </router-link>
+                    <b-button v-on:click="goToBooking(2)">Snabb boka</b-button>
                 </figure>
               </b-col>
             </b-row>
@@ -125,14 +104,7 @@
             >
               <b-button>Läs mer</b-button>
             </router-link>
-            <router-link
-              class="router-link"
-              :to="'/BokningSida?movieID'+this.movies[0]._id + '&sessionID=' + this.sessions.find((cur)=>{
-                    return cur.movieID === movies[0]._id})._id"
-              exact-active-class="menu-item-active"
-            >
-              <b-button>Snabb boka</b-button>
-            </router-link>
+              <b-button v-on:click="goToBooking(0)">Snabb boka</b-button>
           </b-carousel-slide>
           <b-carousel-slide>
             <img
@@ -154,14 +126,7 @@
             >
               <b-button>Läs mer</b-button>
             </router-link>
-            <router-link
-              class="router-link"
-              :to="'/BokningSida?movieID='+this.movies[1]._id + '&sessionID=' + this.sessions.find((cur)=>{
-                    return cur.movieID === movies[1]._id})._id"
-              exact-active-class="menu-item-active"
-            >
-              <b-button>Snabb boka</b-button>
-            </router-link>
+              <b-button v-on:click="goToBooking(1)">Snabb boka</b-button>
           </b-carousel-slide>
           <b-carousel-slide>
             <img
@@ -183,17 +148,16 @@
             >
               <b-button>Läs mer</b-button>
             </router-link>
-            <router-link
-              class="router-link"
-              :to="'/BokningSida?movieID='+this.movies[2]._id + '&sessionID=' + this.sessions.find((cur)=>{
-                    return cur.movieID === movies[2]._id})._id"
-              exact-active-class="menu-item-active"
-            >
-              <b-button>Snabb boka</b-button>
-            </router-link>
+              <b-button v-on:click="goToBooking(2)">Snabb boka</b-button>
           </b-carousel-slide>
         </b-carousel>
       </div>
+    </div>
+    <div v-else class="loading-logo">
+      <h1 class="text-center spinner">
+        <font-awesome-icon icon="spinner"/>
+      </h1>
+      <h1 class="text-center">Loading</h1>
     </div>
     <b-jumbotron class="white-text" style="background-image: url(http://le13emecri.com/wp-content/uploads/2014/01/rideau-rouge.jpg)">
         <template slot="header" class="white-text">Senaste nytt</template>
@@ -216,7 +180,8 @@ export default {
   data() {
     return {
       movies: null,
-      sessions: null
+      sessions: null,
+      movieIndex: null,
     };
   },
   created() {
@@ -240,11 +205,60 @@ export default {
     },
     linkToMovePage(e) {
       return this.$router.push("/Movie?movieID=" + e.srcElement.attributes.value.value);
-    }
+    },
+
+    goToBooking(movieIndex){
+      this.movieIndex = movieIndex;
+      if(!this.$store.getters.isUserSignedIn){
+         this.$store.commit('toggleLoggaInWindow');
+      }else{
+        this.$router.push('/BokningSida?'+this.movies[movieIndex]._id+'&'+this.sessions.find((cur)=>{ 
+                    return cur.movieID === this.movies[movieIndex]._id})._id);
+      }       
+    },
+  },
+   watch: {
+     '$store.state.loggaInButtonPressed': function() {
+      console.log("knappen är tryckt redirekta till film");
+      console.log(this.movieIndex);
+       this.$router.push('/BokningSida?'+this.movies[this.movieIndex]._id+'&'+this.sessions.find((cur)=>{ 
+                    return cur.movieID === this.movies[this.movieIndex]._id})._id);
+    }, 
+
   }
 };
 </script>
 <style scoped>
+
+.loading-logo {
+  height: 70vh;
+  opacity: 1;
+  animation: flickerAnimation 3s infinite;
+  overflow: hidden;
+}
+
+@keyframes flickerAnimation {
+  /* flame pulses */
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.spinner{
+  -webkit-animation: spin 3s infinite linear;
+}
+
+@-webkit-keyframes spin {
+    0%  {-webkit-transform: rotate(0deg);}
+    100% {-webkit-transform: rotate(360deg);}   
+}
+
 h1 {
   text-align: center;
 }

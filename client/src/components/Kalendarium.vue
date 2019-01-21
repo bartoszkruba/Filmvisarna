@@ -1,6 +1,6 @@
 <template>
   <section class="hello">
-    <section v-if="errorFromMongo">
+    <section v-if="errorFromMongo" class="text-center mt-3">
       <h1>Något blev fel!</h1>
       <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
       <ul>
@@ -13,6 +13,12 @@
         to="/moviesPage"
         exact-active-class="menu-item-active"
       >Klicka här för att komma till alla filmer</router-link>
+    </section>
+    <section v-else-if="movies === null" class="loading-logo">
+      <h1 class="text-center spinner mt-5">
+        <font-awesome-icon icon="spinner"/>
+      </h1>
+      <h1 class="text-center">Loading</h1>
     </section>
 
     <section v-if="movies && sessions && theatres">
@@ -64,14 +70,8 @@
                 >
                   <b-button>Film</b-button>
                 </router-link>
+                  <b-button class="secound-button" @click="goToBooking(session)">Boka</b-button>
 
-                <router-link
-                  class="router-link"
-                  :to="'/BokningSida?movieID='+session.movieID + '&sessionID=' + session._id"
-                  exact-active-class="menu-item-active"
-                >
-                  <b-button class="secound-button">Boka</b-button>
-                </router-link>
               </div>
             </div>
           </div>
@@ -93,7 +93,8 @@ export default {
       movies: null,
       sessions: null,
       theatres: null,
-      errorFromMongo: false
+      errorFromMongo: false,
+      clickedMovieSession: null,
     };
   },
   mounted() {
@@ -112,6 +113,14 @@ export default {
         this.movies = response.data.movies;
       } catch (error) {}
       if (this.movies === null) this.errorFromMongo = true;
+    },
+    goToBooking(session){
+      this.clickedMovieSession = session
+      if(!this.$store.getters.isUserSignedIn){
+         this.$store.commit('toggleLoggaInWindow');
+      }else{
+        this.$router.push('/BokningSida?movieID='+session.movieID+'&sessionID='+session._id);
+      }
     },
     //moviesessions data
     async getSessions() {
@@ -167,6 +176,12 @@ export default {
       return output;
     }
 
+  },
+  watch: {
+     '$store.state.loggaInButtonPressed': function() {
+      console.log("knappen är tryckt redirekta till film");
+        this.$router.push('/BokningSida?'+this.clickedMovieSession.movieID+'&'+this.clickedMovieSession._id);
+    }, 
   }
 
 };
@@ -174,6 +189,37 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+.loading-logo {
+  height: 70vh;
+  opacity: 1;
+  animation: flickerAnimation 3s infinite;
+  overflow: hidden;
+}
+
+@keyframes flickerAnimation {
+  /* flame pulses */
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.spinner{
+  -webkit-animation: spin 3s infinite linear;
+}
+
+@-webkit-keyframes spin {
+    0%  {-webkit-transform: rotate(0deg);}
+    100% {-webkit-transform: rotate(360deg);}   
+}
+
+
 .flexbox {
   display: flex;
 }
