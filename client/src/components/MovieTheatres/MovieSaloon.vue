@@ -12,11 +12,12 @@
       <template v-for="(rows,index) in seatsPerRow">
         <section class="rows">
         <template v-for="(seat, index2) in seatsPerRow[index]">
-          <MovieSeat v-bind:id="freePlaces[(count(index)+index2)].seatNumber"></MovieSeat>
+          <MovieSeat class="movieSeat" :myId="freePlaces[(count(index)+index2)].seatNumber" :seatBooked="freePlaces[(count(index)+index2)].booked"></MovieSeat>
         </template>
         </section>
       </template>
     </section>
+    <p>{{mySeats}}</p>
   </section>
 </template>
 
@@ -25,12 +26,12 @@ import api from "@/services/Api.js";
 import MovieSeat from "@/components/MovieTheatres/MovieSeat";
 export default {
   name: "MovieSaloon",
-  props: ['theatreID','sessionID'],
+  props: ['theatreID','sessionID','mySeats'],
   data() {
     return {
       seatsPerRow: null,
       totalSeats: null,
-      freePlaces: null
+      freePlaces: null,
     };
   },
   components: {
@@ -51,7 +52,7 @@ export default {
         output += this.seatsPerRow[i];
       }
       return output;
-    }
+    },
   }
 };
 </script>

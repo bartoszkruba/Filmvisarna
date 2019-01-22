@@ -1,6 +1,6 @@
 
 <template>
-  <div class="movie-seat"></div>
+  <div @click="seatClicked" class="movie-seat" v-bind:id="myId" v-bind:class="{ isBooked: seatBooked}"></div>
 </template>
 
 <script>
@@ -8,9 +8,15 @@ import api from "@/services/Api.js";
 
 export default {
   name: "MovieSeat",
+  props:['myId','seatBooked'],
   data() {
     return{
 
+    }
+  },
+  methods: {
+    seatClicked(e){
+      console.log(e.target.id);
     }
   }
 };
@@ -26,6 +32,22 @@ export default {
     display: inline-block;
     margin: 1px;
     }
+     .myBooking {
+    background-color: yellow !important;
+  }
+
+  .movieSeat:hover {
+    background-color: yellow !important;
+  }
+
+  .isBooked {
+    background-color: red !important;
+    
+  } 
+  .isBooked:hover {
+    background-color: red !important;
+    
+  } 
 
     @media screen and (max-width: 1024px){
     .movie-seat {

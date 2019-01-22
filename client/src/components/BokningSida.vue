@@ -68,7 +68,7 @@
         </em>
       </p>
       <section class="movieTheatre mt-5">
-      <MovieSaloon :theatreID="theatreID" :sessionID="this.urlQuery.sessionID"></MovieSaloon>
+      <MovieSaloon :theatreID="theatreID" :sessionID="this.urlQuery.sessionID" :mySeats="totalSeats"></MovieSaloon>
       </section>
       <div class="kostnad" v-if="totalt>=65">
         <h3>Kostnad</h3>
@@ -179,6 +179,9 @@ export default {
       };
       return ticket;
     },
+    totalSeats: function(){
+       return (this.antalBarn + this.antalPensionar + this.antal);
+    }
 
   },
   created() {
