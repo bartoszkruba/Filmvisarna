@@ -1,11 +1,13 @@
 <template>
   <div class="main">
-
-      <b-jumbotron class="white-text" style="background-image: url(http://le13emecri.com/wp-content/uploads/2014/01/rideau-rouge.jpg)">
-        <template slot="header" class="white-text welcome-text">
-          <h1 class="white-text welcome-text">Välkommen till Filmvisarna!</h1>
-        </template>
-      </b-jumbotron>
+    <b-jumbotron
+      class="white-text"
+      style="background-image: url(http://le13emecri.com/wp-content/uploads/2014/01/rideau-rouge.jpg)"
+    >
+      <template slot="header" class="white-text welcome-text">
+        <h1 class="white-text welcome-text">Välkommen till Filmvisarna!</h1>
+      </template>
+    </b-jumbotron>
     <div v-if="movies && sessions">
       <div class="box">
         <div>
@@ -28,7 +30,7 @@
                   >
                     <b-button>Läs mer</b-button>
                   </router-link>
-                    <b-button v-on:click="goToBooking(0)">Snabb boka</b-button>
+                  <b-button v-on:click="goToBooking(0)">Snabb boka</b-button>
                 </figure>
               </b-col>
               <b-col>
@@ -48,7 +50,7 @@
                   >
                     <b-button>Läs mer</b-button>
                   </router-link>
-                   <b-button v-on:click="goToBooking(1)">Snabb boka</b-button>
+                  <b-button v-on:click="goToBooking(1)">Snabb boka</b-button>
                 </figure>
               </b-col>
               <b-col>
@@ -68,13 +70,12 @@
                   >
                     <b-button>Läs mer</b-button>
                   </router-link>
-                    <b-button v-on:click="goToBooking(2)">Snabb boka</b-button>
-                  </figure>
-                </b-col>
-              </b-row>
-            </b-container>
-          </div>
-
+                  <b-button v-on:click="goToBooking(2)">Snabb boka</b-button>
+                </figure>
+              </b-col>
+            </b-row>
+          </b-container>
+        </div>
         <b-carousel
           id="carousel1"
           controls
@@ -104,7 +105,7 @@
             >
               <b-button>Läs mer</b-button>
             </router-link>
-              <b-button v-on:click="goToBooking(0)">Snabb boka</b-button>
+            <b-button v-on:click="goToBooking(0)">Snabb boka</b-button>
           </b-carousel-slide>
           <b-carousel-slide>
             <img
@@ -126,7 +127,7 @@
             >
               <b-button>Läs mer</b-button>
             </router-link>
-              <b-button v-on:click="goToBooking(1)">Snabb boka</b-button>
+            <b-button v-on:click="goToBooking(1)">Snabb boka</b-button>
           </b-carousel-slide>
           <b-carousel-slide>
             <img
@@ -148,32 +149,32 @@
             >
               <b-button>Läs mer</b-button>
             </router-link>
-              <b-button v-on:click="goToBooking(2)">Snabb boka</b-button>
-            </b-carousel-slide>
-          </b-carousel>
-        </div>
+            <b-button v-on:click="goToBooking(2)">Snabb boka</b-button>
+          </b-carousel-slide>
+        </b-carousel>
       </div>
-      <div v-else class="loading-logo">
-        <h1 class="text-center spinner">
-          <font-awesome-icon icon="spinner"/>
-        </h1>
-        <h1 class="text-center">Loading</h1>
-      </div>
-      <b-jumbotron
-        class="white-text"
-        style="background-image: url(http://le13emecri.com/wp-content/uploads/2014/01/rideau-rouge.jpg)"
-      >
-        <template slot="header" class="white-text">Senaste nytt</template>
-        <h1 class="white-text">Vi har nu öppnat, Välkomna</h1>
-        <h2 class="white-text">På plats säljer vi:</h2>
-        <ul class="white-text">
-          <li>Popcorn,</li>
-          <li>Läsk,</li>
-          <li>Chips,</li>
-          <li>Godis,</li>
-          <li>m.m.</li>
-        </ul>
-      </b-jumbotron>
+    </div>
+    <div v-else class="loading-logo">
+      <h1 class="text-center spinner">
+        <font-awesome-icon icon="spinner"/>
+      </h1>
+      <h1 class="text-center">Loading</h1>
+    </div>
+    <b-jumbotron
+      class="white-text"
+      style="background-image: url(http://le13emecri.com/wp-content/uploads/2014/01/rideau-rouge.jpg)"
+    >
+      <template slot="header" class="white-text">Senaste nytt</template>
+      <h1 class="white-text">Vi har nu öppnat, Välkomna</h1>
+      <h2 class="white-text">På plats säljer vi:</h2>
+      <ul class="white-text">
+        <li>Popcorn,</li>
+        <li>Läsk,</li>
+        <li>Chips,</li>
+        <li>Godis,</li>
+        <li>m.m.</li>
+      </ul>
+    </b-jumbotron>
   </div>
 </template>
 <script>
@@ -184,12 +185,11 @@ export default {
     return {
       movies: null,
       sessions: null,
-      movieIndex: null,
+      movieIndex: null
     };
   },
   created() {
     this.getMovies();
-    this.getSessions();
   },
   methods: {
     onSlideStart(slide) {
@@ -201,31 +201,51 @@ export default {
     async getMovies() {
       const response = await api.getMovies();
       this.movies = response.data.movies;
+      await this.getSessions();
+      let moviesToShow = [];
+
+      for (let i = 0; i < 3; i++) {
+        moviesToShow.push(
+          this.movies.find(cur => {
+            return cur._id === this.sessions[i].movieID;
+          })
+        );
+      }
+      this.movies = moviesToShow;
     },
     async getSessions() {
       const response = await api.getMovieSessions();
       this.sessions = response.data.movie_sessions;
     },
     linkToMovePage(e) {
-      return this.$router.push("/film?movieID=" + e.srcElement.attributes.value.value);
+      return this.$router.push(
+        "/film?movieID=" + e.srcElement.attributes.value.value
+      );
     },
     goToBooking(movieIndex) {
       this.movieIndex = movieIndex;
-      const session = this.sessions.find((cur)=>{
-                    return cur.movieID === this.movies[this.movieIndex]._id})._id
+      const session = this.sessions.find(cur => {
+        return cur.movieID === this.movies[this.movieIndex]._id;
+      })._id;
       const sessionAndMovieID = {
         movieID: this.movies[this.movieIndex]._id,
         sessionID: session,
         redirect: true
+      };
+      if (!this.$store.getters.isUserSignedIn) {
+        this.$store.commit("toggleLoggaInWindow");
+        this.$store.commit("setRoute", sessionAndMovieID);
+      } else {
+        this.$router.push(
+          "/BokningSida?movieID=" +
+            this.movies[movieIndex]._id +
+            "&sessionID=" +
+            this.sessions.find(cur => {
+              return cur.movieID === this.movies[movieIndex]._id;
+            })._id
+        );
       }
-      if(!this.$store.getters.isUserSignedIn){
-         this.$store.commit('toggleLoggaInWindow');
-         this.$store.commit('setRoute', sessionAndMovieID)
-      }else{
-        this.$router.push('/BokningSida?movieID='+this.movies[movieIndex]._id+'&sessionID='+this.sessions.find((cur)=>{
-                    return cur.movieID === this.movies[movieIndex]._id})._id);
-      }
-    },
+    }
   }
 };
 </script>
@@ -255,8 +275,12 @@ export default {
 }
 
 @-webkit-keyframes spin {
-    0%  {-webkit-transform: rotate(0deg);}
-    100% {-webkit-transform: rotate(360deg);}
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 h1 {
@@ -302,10 +326,13 @@ ul {
 .welcome-text {
   font-size: 130%;
 }
+.jumbotron {
+  border-radius: 0;
+  margin-bottom: 0;
+}
 
 @media only screen and (max-device-width: 560px) {
-
-  .welcome-text{
+  .welcome-text {
     font-size: 70%;
   }
 
@@ -326,6 +353,9 @@ ul {
   .poster {
     height: 90vmax;
     width: 100vmin;
+  }
+  .jumbotron {
+    margin-bottom: 0;
   }
 }
 </style>
