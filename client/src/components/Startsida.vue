@@ -238,7 +238,7 @@ export default {
       }
     },
     linkToMovePage(e) {
-      return this.$router.push("/Movie?movieID=" + e.srcElement.attributes.value.value);
+      return this.$router.push("/film?movieID=" + e.srcElement.attributes.value.value);
     },
 
     goToBooking(movieIndex){

@@ -8,7 +8,7 @@
       <li>Vår hemsida har tekniskt strul</li>
       <li>Du har klickat på en gammal länk</li>
     </ul>
-    <router-link class="router-link" to="/moviesPage" exact-active-class="menu-item-active">Klicka här för att komma till alla filmer</router-link>
+    <router-link class="router-link" to="/filmSida" exact-active-class="menu-item-active">Klicka här för att komma till alla filmer</router-link>
   </section>
 
   <section v-if="movie && session && theatre">
