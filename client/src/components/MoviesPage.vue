@@ -89,14 +89,11 @@ export default {
     this.getUrlQuery();
     this.getMovies();
   },
-  mounted() {
-    this.getMovies();
-  },
   methods: {
     async getMovies() {
       this.movies = null;
 
-        try{ 
+        try{
           if(this.urlQuery.searchQuery){
             const response = await api.searchMovies(this.urlQuery.searchQuery.replace('_', ' '));
             this.movies = response.data.movies;
