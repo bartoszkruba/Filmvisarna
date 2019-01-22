@@ -18,7 +18,6 @@ module.exports.postAddMoviePolicy = async (req, res, next) => {
         director: Joi.string().required(),
         actors: Joi.array().min(1).required(),
         description: Joi.string().required(),
-        images: Joi.array().min(1).required(),
         youtubeTrailers: Joi.array().min(1).required(),
         reviews: Joi.array().min(1).required(),
     };

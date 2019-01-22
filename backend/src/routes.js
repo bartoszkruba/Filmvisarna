@@ -16,12 +16,10 @@ const authenticationPolicy = require('./policies/authenticationPolicy');
 
 const bookingController = require('./controllers/bookingController');
 
-const imagesController = require('./controllers/imagesController');
-
 const multer = require('multer');
 const upload = multer({dest: 'public/'});
 
-Router.post('/addMovie', moviesPolicy.postAddMoviePolicy, moviesController.postAddMovie, upload.single('image'), imagesController.postImage);
+Router.post('/addMovie',moviesController.authenticateAdmin, upload.array('image'),  moviesPolicy.postAddMoviePolicy, moviesController.postAddMovie);
 
 Router.post('/searchMovies', moviesController.searchMovies);
 // Creating routes for different URLs
@@ -46,6 +44,15 @@ Router.post('/register', authenticationPolicy.postRegister, authenticationContro
 Router.post('/login', authenticationController.postValidate);
 Router.post('/getTickets', authenticationController.getBookedTickets);
 Router.post('/setTickets', bookingController.setBookedTicket);
+
+Router.post('/uploadimage', upload.fields([
+    {name: "image1"},
+    {name: "image2"}
+]), (req, res, next) =>{
+    console.log(req.body);
+    // console.log(req.files);
+});
+
 
 // Exporting Router
 module.exports = Router;

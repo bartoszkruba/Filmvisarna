@@ -408,7 +408,8 @@
     </div>
     <div class="text-center">
       <p>{{loadingMessage}}</p>
-      <input type="file" @change="onFileChanged">
+      <input type="file" @change="onFileChanged1">
+      <input type="file" @change="onFileChanged2">
       <button @click="onUpload">Upload!</button>
     </div>
   </div>
@@ -463,7 +464,8 @@ export default {
         movieTheatreName: null
       },
 
-      selectedFile: null,
+      selectedFile1: null,
+      selectedFile2: null,
       loadingMessage: "Ready To Load Madafaka"
     };
   },
@@ -472,14 +474,17 @@ export default {
     this.getMovieTheatres();
   },
   methods: {
-    onFileChanged (event){
-      this.selectedFile = event.target.files[0];
+    onFileChanged1 (event){
+      this.selectedFile1 = event.target.files[0];
     },
-
+    onFileChanged2 (event){
+      this.selectedFile2 = event.target.files[0];
+    },
     onUpload(){
-      const formData = new FormData()
-      formData.append('image', this.selectedFile, this.selectedFile.name)
-      api.uploadImage(formData, {
+      const images = new FormData()
+      images.append('image1', this.selectedFile1);
+      images.append('image2', this.selectedFile2);
+      api.uploadImage(images, {
         onUploadProgress: progressEvent => {
         this.loadingMessage = progressEvent.loaded / progressEvent.total;
     }

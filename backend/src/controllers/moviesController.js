@@ -18,13 +18,16 @@ module.exports.getMovies = async (req, res, next) => {
 
 // controller for adding new movies to the DB
 module.exports.postAddMovie = async (req, res, next) => {
+    console.log(req.files);
+    let movie = req.body.movie;
+    // await new Movie().save(movie);
+}
+
+module.exports.authenticateAdmin = async (req, res, next) => {
     try {
         const user = await User.findOne({ email: req.body.user.email});
         if (user && Bcrypt.compareSync(req.body.user.password, user.password) && user.admin) {
-            await new Movie(req.body.movie).save();
-            res.send({
-                message: 'Movie added'
-            });
+            next();
         }else{
             res.status(400).send({
                 error: 'You are not authorized'
