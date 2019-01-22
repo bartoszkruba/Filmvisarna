@@ -35,7 +35,7 @@ export default new Router({
       component: BokningSida
     },
     {
-      path: '/filmer',
+      path: '/filmSida',
       name: 'MoviesPage',
       component: MoviesPage
     },
