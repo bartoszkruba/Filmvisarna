@@ -8,7 +8,7 @@
       <li>Vår hemsida har tekniskt strul</li>
       <li>Du har klickat på en gammal länk</li>
     </ul>
-    <router-link class="router-link" to="/moviesPage" exact-active-class="menu-item-active">Klicka här för att komma till alla filmer</router-link>
+    <router-link class="router-link" to="/filmSida" exact-active-class="menu-item-active">Klicka här för att komma till alla filmer</router-link>
   </section>
 
   <section v-if="movie && session && theatre">
@@ -233,11 +233,11 @@ export default {
       let searchIndex = url.indexOf("?")+1;
       let output = {};
 
-      if (searchIndex > 0) {
+      if(searchIndex > 0) {
         url = url.substr(searchIndex).split("&");
-        for (let i = 0; i < url.length; i++) {
+        for(let i = 0; i < url.length; i++){
           url[i] = url[i].split("=");
-          if (url[i][1].length > 0)
+          if(url[i][1].length > 0)
             this.urlQuery[url[i][0]] = url[i][1];
         }
       }

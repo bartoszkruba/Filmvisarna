@@ -17,8 +17,6 @@ const app = express();
 
 const startupConfig = require('./util/startupConfig');
 
-const uniqid = require('uniqid');
-
 // Telling Server to use cors package
 app.use(cors());
 // Telling server to use body-parser package with json configuration

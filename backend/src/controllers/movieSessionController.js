@@ -3,7 +3,7 @@ const MovieTheatre = require('../models/movieTheatre');
 
 module.exports.postMovieSessions = async (req, res, next) => {
     try {
-        const movieSessions = await MovieSession.find(req.body.query);
+        let movieSessions = await MovieSession.find(req.body.query);
         movieSessions.sort((a, b) => {
             const firstSessionDate = a.date.year.toString()
                 + a.date.month.toString().padStart(2, '0')
@@ -14,10 +14,21 @@ module.exports.postMovieSessions = async (req, res, next) => {
                 + b.date.day.toString().padStart(2, '0')
                 + b.date.time.replace(':', '');
             return firstSessionDate > secondSessionDate ? 1 : -1;
+        });
+
+        movieSessions = movieSessions.filter(cur => {
+            const dateString = cur.date.year.toString()
+                + cur.date.month.toString().padStart(2, '0')
+                + cur.date.day.toString().padStart(2, '0')
+                + cur.date.time.replace(':', '');
+
+            return dateString > getDateString();
         })
+
         res.send({
             movie_sessions: movieSessions
         })
+
     } catch (error) {
         res.send({
             movie_sessions: [],
@@ -34,4 +45,12 @@ module.exports.postAddMovieSession = async (req, res, next) => {
         movieTheatreID: req.body.movieSession.movieTheatreID
     }).save();
     res.send();
+}
+
+
+function getDateString() {
+    let date = new Date();
+
+    let string = `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, 0)}${date.getDate().toString().padStart(2, 0)}${date.getHours().toString().padStart(2, 0)}${date.getMinutes().toString().padStart(2, 0)}`
+    return string
 }

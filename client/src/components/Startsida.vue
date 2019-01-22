@@ -55,7 +55,7 @@
                 <figure class="imgbox">
                   <router-link
                     class="router-link"
-                    :to="'/film?movieID'+this.movies[2]._id"
+                    :to="'/film?movieID='+this.movies[2]._id"
                     exact-active-class="menu-item-active"
                   >
                     <img class="poster" :src="require('../assets/'+this.movies[2].images[1])">
@@ -69,11 +69,11 @@
                     <b-button>Läs mer</b-button>
                   </router-link>
                     <b-button v-on:click="goToBooking(2)">Snabb boka</b-button>
-                </figure>
-              </b-col>
-            </b-row>
-          </b-container>
-        </div>
+                  </figure>
+                </b-col>
+              </b-row>
+            </b-container>
+          </div>
 
         <b-carousel
           id="carousel1"
@@ -149,17 +149,20 @@
               <b-button>Läs mer</b-button>
             </router-link>
               <b-button v-on:click="goToBooking(2)">Snabb boka</b-button>
-          </b-carousel-slide>
-        </b-carousel>
+            </b-carousel-slide>
+          </b-carousel>
+        </div>
       </div>
-    </div>
-    <div v-else class="loading-logo">
-      <h1 class="text-center spinner">
-        <font-awesome-icon icon="spinner"/>
-      </h1>
-      <h1 class="text-center">Loading</h1>
-    </div>
-    <b-jumbotron class="white-text" style="background-image: url(http://le13emecri.com/wp-content/uploads/2014/01/rideau-rouge.jpg)">
+      <div v-else class="loading-logo">
+        <h1 class="text-center spinner">
+          <font-awesome-icon icon="spinner"/>
+        </h1>
+        <h1 class="text-center">Loading</h1>
+      </div>
+      <b-jumbotron
+        class="white-text"
+        style="background-image: url(http://le13emecri.com/wp-content/uploads/2014/01/rideau-rouge.jpg)"
+      >
         <template slot="header" class="white-text">Senaste nytt</template>
         <h1 class="white-text">Vi har nu öppnat, Välkomna</h1>
         <h2 class="white-text">På plats säljer vi:</h2>
@@ -206,10 +209,9 @@ export default {
     linkToMovePage(e) {
       return this.$router.push("/film?movieID=" + e.srcElement.attributes.value.value);
     },
-
-    goToBooking(movieIndex){
+    goToBooking(movieIndex) {
       this.movieIndex = movieIndex;
-      const session = this.sessions.find((cur)=>{ 
+      const session = this.sessions.find((cur)=>{
                     return cur.movieID === this.movies[this.movieIndex]._id})._id
       const sessionAndMovieID = {
         movieID: this.movies[this.movieIndex]._id,
@@ -220,15 +222,14 @@ export default {
          this.$store.commit('toggleLoggaInWindow');
          this.$store.commit('setRoute', sessionAndMovieID)
       }else{
-        this.$router.push('/BokningSida?movieID='+this.movies[movieIndex]._id+'&sessionID='+this.sessions.find((cur)=>{ 
+        this.$router.push('/BokningSida?movieID='+this.movies[movieIndex]._id+'&sessionID='+this.sessions.find((cur)=>{
                     return cur.movieID === this.movies[movieIndex]._id})._id);
-      }        
+      }
     },
   }
 };
 </script>
 <style scoped>
-
 .loading-logo {
   height: 70vh;
   opacity: 1;
@@ -249,13 +250,13 @@ export default {
   }
 }
 
-.spinner{
+.spinner {
   -webkit-animation: spin 3s infinite linear;
 }
 
 @-webkit-keyframes spin {
     0%  {-webkit-transform: rotate(0deg);}
-    100% {-webkit-transform: rotate(360deg);}   
+    100% {-webkit-transform: rotate(360deg);}
 }
 
 h1 {
@@ -271,7 +272,7 @@ li {
   text-align: center;
   list-style-type: none;
 }
-ul{
+ul {
   margin: 0;
   padding: 0;
 }
@@ -293,17 +294,17 @@ ul{
   padding-top: 2vh;
 }
 
-.white-text{
+.white-text {
   color: white;
   text-shadow: 20px 20px 20px 20px black;
 }
 
-.welcome-text{
+.welcome-text {
   font-size: 130%;
 }
 
 @media only screen and (max-device-width: 560px) {
-  
+
   .welcome-text{
     font-size: 70%;
   }

@@ -10,7 +10,7 @@
       </ul>
       <router-link
         class="router-link"
-        to="/moviesPage"
+        to="/filmsida"
         exact-active-class="menu-item-active"
       >Klicka här för att komma till alla filmer</router-link>
     </section>
@@ -30,7 +30,7 @@
             <figure class="images">
               <router-link
                 class="router-link"
-                :to="'/film?movieID='+ session.movieID"
+                :to="'/film?movieID='+ session.movieID+'&sessionID='+session._id"
                 exact-active-class="menu-item-active"
               >
                 <img
@@ -180,7 +180,7 @@ export default {
       return output;
     }
 
-  },   
+  },
 };
 </script>
 
@@ -213,7 +213,7 @@ export default {
 
 @-webkit-keyframes spin {
     0%  {-webkit-transform: rotate(0deg);}
-    100% {-webkit-transform: rotate(360deg);}   
+    100% {-webkit-transform: rotate(360deg);}
 }
 
 
@@ -287,4 +287,3 @@ span {
   }
 }
 </style>
-

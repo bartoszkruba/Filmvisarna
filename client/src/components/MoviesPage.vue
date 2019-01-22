@@ -11,6 +11,19 @@
     </b-collapse>
   </b-navbar>
     </section>-->
+    <section v-if="errorFromMongo" class="text-center mt-3">
+    <h1>Något blev fel!</h1>
+    <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
+    <ul>
+      <li>Antipiratbyrån har hackat oss</li>
+      <li>Vår hemsida har tekniskt strul</li>
+      <li>Du har klickat på en gammal länk</li>
+    </ul>
+    <router-link class="router-link" to="/" exact-active-class="menu-item-active">Klicka här för att komma till start sidan</router-link>
+  </section>
+
+    <section v-if="movies">
+
     <h1 class="text-center mt-3" v-if="movies && movies.length === 0">Inga Sökträffar :(</h1>
     <div v-for="m in movies">
       <div class="flexbox main-placing">
@@ -18,7 +31,7 @@
           <figure class="images">
             <router-link
               class="router-link"
-              :to="'/Movie?'+m._id"
+              :to="'/film?movieID='+m._id"
               exact-active-class="menu-item-active"
             >
               <img :src="require('../assets/'+m.images[1])" class="posterpic">
@@ -29,7 +42,7 @@
             <div class="flex-col">
               <router-link
                 class="router-link"
-                :to="'/Movie?'+m._id"
+                :to="'/film?movieID='+m._id"
                 exact-active-class="menu-item-active"
               >
                 <h2>{{m.title}}</h2>
@@ -54,6 +67,7 @@
       </h1>
       <h1 class="text-center">Loading</h1>
     </div>
+    </section>
   </section>
 </template>
 
@@ -64,11 +78,15 @@ export default {
   name: "MoviesPage",
   data() {
     return {
-      msg: "Welcome to Your Vue.js App",
-      movies: null
+      movies: undefined,
+      urlQuery: {},
+      errorFromMongo: false
+
     };
   },
-  created() {
+  mounted(){
+    this.errorFromMongo = false;
+    this.getUrlQuery();
     this.getMovies();
   },
   mounted() {
@@ -76,25 +94,52 @@ export default {
   },
   methods: {
     async getMovies() {
-      if (window.location.hash.indexOf("?") > 0) {
-        const response = await api.searchMovies(
-          window.location.hash
-            .substr(window.location.hash.indexOf("?") + 1)
-            .replace("_", " ")
-        );
-        this.movies = response.data.movies;
-        if (this.movies.length === 1) {
-          this.$router.push(`/Movie?${this.movies[0]._id}`);
+      this.movies = null;
+      
+        try{ 
+          if(this.urlQuery.searchQuery){
+            const response = await api.searchMovies(this.urlQuery.searchQuery.replace('_', ' '));
+            this.movies = response.data.movies;
+            if(this.movies.length === 1){
+              this.$router.push(`/film?movieID=${this.movies[0]._id}`);
+            }
+          } 
+          else {
+            const response = await api.getMovies();
+            this.movies = response.data.movies;
+          }
+
+        }catch(error){
+          
         }
-      } else {
-        const response = await api.getMovies();
-        this.movies = response.data.movies;
+       
+        
+      if (this.movies === null) 
+        this.errorFromMongo = true;
+
+    },
+    getUrlQuery() {
+      this.urlQuery = {};
+      let url = window.location.href;
+      url = url.substr(url.lastIndexOf("#"));
+      let searchIndex = url.indexOf("?")+1;
+      let output = {};
+
+      if(searchIndex > 0) {
+        url = url.substr(searchIndex).split("&");
+        for(let i = 0; i < url.length; i++){
+          url[i] = url[i].split("=");
+          if(url[i][1].length > 0)
+            this.urlQuery[url[i][0]] = url[i][1];
+        }
       }
     }
   },
-  watch: {
-    $route(to, from) {
-      this.getMovies();
+  watch:{
+    '$route': function() {
+      this.errorFromMongo = false;
+      this.getUrlQuery();
+        this.getMovies();
     }
   }
 };
@@ -127,7 +172,7 @@ export default {
 
 @-webkit-keyframes spin {
     0%  {-webkit-transform: rotate(0deg);}
-    100% {-webkit-transform: rotate(360deg);}   
+    100% {-webkit-transform: rotate(360deg);}
 }
 
 
@@ -224,4 +269,3 @@ hr {
   }
 }
 </style>
-
