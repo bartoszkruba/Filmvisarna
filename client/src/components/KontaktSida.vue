@@ -75,6 +75,15 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.main{
+  color: white;
+  background-color: rgba(2, 2, 2, 0.4);
+  margin-left: 20vw;
+  margin-right: 20vw;
+}
+p{
+  color: white;
+}
 h1{
   margin-top: 3vh;
   text-align: center;
@@ -82,6 +91,7 @@ h1{
 .kontakta {
   width: 60vw;
   margin: 6vh auto;
+  
   
 }
 .biograf {
