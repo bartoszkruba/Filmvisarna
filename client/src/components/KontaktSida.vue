@@ -31,6 +31,10 @@
         <p>Storagatan, 213 56 Malmö</p>
         <p>Telefon 05-17 17 00 00</p>
       </div>
+      <h3>Bild</h3>
+      <p>Våra salonger visar filmen i högsta möjliga bildkvalitet.</p>
+      <h3>Ljud</h3>
+      <p>Vi har 7.1 ljud i alla våra biografer.</p>
     </div>
 
     <div class="kontakta">

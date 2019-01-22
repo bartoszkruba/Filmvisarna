@@ -103,9 +103,6 @@ export default {
     this.getUrlQuery();
     this.getMovies();
   },
-  mounted() {
-    this.getMovies();
-  },
   methods: {
     async getMovies() {
       this.movies = null;
