@@ -12,61 +12,76 @@
   </b-navbar>
     </section>-->
     <section v-if="errorFromMongo" class="text-center mt-3">
-    <h1>Något blev fel!</h1>
-    <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
-    <ul>
-      <li>Antipiratbyrån har hackat oss</li>
-      <li>Vår hemsida har tekniskt strul</li>
-      <li>Du har klickat på en gammal länk</li>
-    </ul>
-    <router-link class="router-link" to="/" exact-active-class="menu-item-active">Klicka här för att komma till start sidan</router-link>
-  </section>
+      <h1>Något blev fel!</h1>
+      <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
+      <ul>
+        <li>Antipiratbyrån har hackat oss</li>
+        <li>Vår hemsida har tekniskt strul</li>
+        <li>Du har klickat på en gammal länk</li>
+      </ul>
+      <router-link
+        class="router-link"
+        to="/"
+        exact-active-class="menu-item-active"
+      >Klicka här för att komma till start sidan</router-link>
+    </section>
 
     <section v-if="movies">
-
-    <h1 class="text-center mt-3" v-if="movies && movies.length === 0">Inga Sökträffar :(</h1>
-    <div v-for="m in movies">
-      <div class="flexbox main-placing">
-        <div class="flex-mobil">
-          <figure class="images">
-            <router-link
-              class="router-link"
-              :to="'/film?movieID='+m._id"
-              exact-active-class="menu-item-active"
-            >
-              <img :src="m.imagesLinks.poster" class="posterpic">
-            </router-link>
-          </figure>
-
-          <div class="movietext">
-            <div class="flex-col">
+      <h1 class="text-center mt-3" v-if="movies && movies.length === 0">Inga Sökträffar :(</h1>
+      
+      <section class="main">
+      <div v-for="m in movies">
+        <div class="flexbox main-placing">
+          <div class="flex-mobil">
+            <figure class="images">
               <router-link
                 class="router-link"
                 :to="'/film?movieID='+m._id"
                 exact-active-class="menu-item-active"
               >
-                <h2>{{m.title}}</h2>
+                <img :src="m.imagesLinks.poster" class="posterpic">
               </router-link>
+            </figure>
 
-              <div class="flexbox ptaggar info-direction">
-                <p>Längd: {{parseInt(m.length/60)}} timmar och {{m.length%60}} minuter</p>
-                <p class="destop-only">|</p>
-                <p>Genre: {{m.genre}}</p>
-                <p class="destop-only">|</p>
-                <p>Ålder: {{m.ageLimit}} år</p>
+            <div class="movietext">
+              <div class="flex-col">
+                <router-link
+                  class="router-link"
+                  :to="'/film?movieID='+m._id"
+                  exact-active-class="menu-item-active"
+                >
+                  <h2>{{m.title}}</h2>
+                </router-link>
+
+                <div class="flexbox ptaggar info-direction">
+                  <p>Längd: {{parseInt(m.length/60)}} timmar och {{m.length%60}} minuter</p>
+                  <p class="destop-only">|</p>
+                  <p>Genre: {{m.genre}}</p>
+                  <p class="destop-only">|</p>
+                  <p>Ålder: {{m.ageLimit}} år</p>
+
+                  
+                </div>
+                <router-link
+                    class="router-link"
+                    :to="'/film?movieID='+m._id"
+                    exact-active-class="menu-item-active"
+                  >
+                    <b-button class="info-btn">Läs mer</b-button>
+                  </router-link>
               </div>
             </div>
           </div>
         </div>
+        <hr>
       </div>
-      <hr>
-    </div>
-    <div class="mt-5 loading-logo" v-if="movies === null">
-      <h1 class="text-center spinner">
-        <font-awesome-icon icon="spinner"/>
-      </h1>
-      <h1 class="text-center">Loading</h1>
-    </div>
+      </section>
+      <div class="mt-5 loading-logo" v-if="movies === null">
+        <h1 class="text-center spinner">
+          <font-awesome-icon icon="spinner"/>
+        </h1>
+        <h1 class="text-center">Loading</h1>
+      </div>
     </section>
   </section>
 </template>
@@ -81,10 +96,9 @@ export default {
       movies: undefined,
       urlQuery: {},
       errorFromMongo: false
-
     };
   },
-  mounted(){
+  mounted() {
     this.errorFromMongo = false;
     this.getUrlQuery();
     this.getMovies();
@@ -93,50 +107,44 @@ export default {
     async getMovies() {
       this.movies = null;
 
-        try{
-          if(this.urlQuery.searchQuery){
-            const response = await api.searchMovies(this.urlQuery.searchQuery.replace('_', ' '));
-            this.movies = response.data.movies;
-            if(this.movies.length === 1){
-              this.$router.push(`/film?movieID=${this.movies[0]._id}`);
-            }
+      try {
+        if (this.urlQuery.searchQuery) {
+          const response = await api.searchMovies(
+            this.urlQuery.searchQuery.replace("_", " ")
+          );
+          this.movies = response.data.movies;
+          if (this.movies.length === 1) {
+            this.$router.push(`/film?movieID=${this.movies[0]._id}`);
           }
-          else {
-            const response = await api.getMovies();
-            this.movies = response.data.movies;
-          }
-
-        }catch(error){
-
+        } else {
+          const response = await api.getMovies();
+          this.movies = response.data.movies;
         }
+      } catch (error) {}
 
-
-      if (this.movies === null)
-        this.errorFromMongo = true;
-
+      if (this.movies === null) this.errorFromMongo = true;
     },
     getUrlQuery() {
       this.urlQuery = {};
       let url = window.location.href;
       url = url.substr(url.lastIndexOf("#"));
-      let searchIndex = url.indexOf("?")+1;
+      let searchIndex = url.indexOf("?") + 1;
       let output = {};
 
-      if(searchIndex > 0) {
+      if (searchIndex > 0) {
         url = url.substr(searchIndex).split("&");
-        for(let i = 0; i < url.length; i++){
+        for (let i = 0; i < url.length; i++) {
           url[i] = url[i].split("=");
-          if(url[i][1].length > 0)
-            this.urlQuery[url[i][0]] = url[i][1];
+          if (url[i][1].length > 0) this.urlQuery[url[i][0]] = url[i][1];
         }
       }
     }
   },
-  watch:{
-    '$route': function() {
+  watch: {
+    $route: function() {
       this.errorFromMongo = false;
       this.getUrlQuery();
-        this.getMovies();
+      this.getMovies();
     }
   }
 };
@@ -163,16 +171,23 @@ export default {
   }
 }
 
-.spinner{
+.spinner {
   -webkit-animation: spin 3s infinite linear;
 }
 
 @-webkit-keyframes spin {
-    0%  {-webkit-transform: rotate(0deg);}
-    100% {-webkit-transform: rotate(360deg);}
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
-
+.main{
+  margin-left: 20vw;
+  margin-right: 20vw;
+}
 .flexbox {
   display: flex;
 }
@@ -187,6 +202,7 @@ export default {
   margin: 1rem;
 }
 p {
+  font-size: 1rem;
   padding: 0.5rem;
   padding-left: 1rem;
 }
@@ -195,7 +211,7 @@ h2 {
   margin-bottom: 0;
   color: black;
   font-weight: bold;
-  font-size: 3rem;
+  font-size: 2.5rem;
 }
 a:hover {
   text-decoration: none;
@@ -218,7 +234,15 @@ hr {
   align-items: center;
   justify-content: center;
 }
-@media screen and (min-width: 501px) and (max-width: 1500px) {
+.info-btn{
+  margin-left: 1rem;
+  margin-top: 1rem;
+}
+@media screen and (min-width: 501px) and (max-width: 800px) {
+  .main{
+    margin-left: 10vw;
+    margin-right: 10vw;
+  }
   h2 {
     font-size: 2rem;
   }
@@ -237,6 +261,10 @@ hr {
 }
 
 @media screen and (max-width: 500px) {
+  .main{
+    margin-left: 0;
+    margin-right: 0;
+  }
   h2 {
     font-size: 1.5rem;
     margin-top: 0.8rem;
@@ -262,6 +290,9 @@ hr {
     text-align: center;
   }
   .destop-only {
+    display: none;
+  }
+  .info-btn{
     display: none;
   }
 }
