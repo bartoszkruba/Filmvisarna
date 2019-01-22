@@ -19,7 +19,10 @@ const bookingController = require('./controllers/bookingController');
 const multer = require('multer');
 const upload = multer({dest: 'public/'});
 
-Router.post('/addMovie', moviesPolicy.postAddMoviePolicy, moviesController.authenticateAdmin, upload.array('image'), moviesController.postAddMovie);
+Router.post('/addMovie', upload.fields([
+    {name: "poster"},
+    {name: "background"}
+]), moviesPolicy.postAddMoviePolicy, moviesController.authenticateAdmin, moviesController.postAddMovie);
 
 Router.post('/searchMovies', moviesController.searchMovies);
 // Creating routes for different URLs
@@ -49,7 +52,7 @@ Router.post('/uploadimage', upload.fields([
     {name: "poster"},
     {name: "background"}
 ]), (req, res, next) =>{
-    console.log(req.body.title);
+    console.log(req.body);
     console.log(req.files);
 });
 

@@ -424,7 +424,6 @@ export default {
       description: null,
       actors: [],
       productionCountries: [],
-      images: [],
       trailers: [],
       actor: null,
       country: null,
@@ -589,23 +588,26 @@ export default {
       ) {
 
         const request = new FormData()
-        images.append('poster', this.posterImage);
-        images.append('background', this.backgroundImage);
-        images.append('title', this.title);
-        images.append('productionCountries', this.productionCountries);
-        images.append('productionYear', parseInt(this.productionYear));
-        images.append('length', parseInt(this.length));
-        images.append('genre', this.genre);
-        images.append('distributor', this.distributor);
-        images.append('language', this.language);
-        images.append('subtitles', this.subtitles);
-        images.append('director', this.director);
-        images.append('ageLimit', parseInt(this.ageLimit));
-        images.append('actors', this.actors);
-        images.append('description', this.description);
-        images.append('youtubeTrailers', this.trailers);
-        images.append('reviews', this.reviews);
-        images.append('user', this.$store.getters.getCredentials);
+        request.append('poster', this.posterImage);
+        request.append('background', this.backgroundImage);
+        request.append('title', this.title);
+        request.append('productionCountries', this.productionCountries);
+        request.append('productionYear', parseInt(this.productionYear));
+        request.append('length', parseInt(this.length));
+        request.append('genre', this.genre);
+        request.append('distributor', this.distributor);
+        request.append('language', this.language);
+        request.append('subtitles', this.subtitles);
+        request.append('director', this.director);
+        request.append('ageLimit', parseInt(this.ageLimit));
+        request.append('actors', this.actors);
+        request.append('description', this.description);
+        request.append('youtubeTrailers', this.trailers);
+        request.append('reviews', this.reviews);
+        request.append('email', this.$store.getters.getCredentials.email);
+        request.append('password', this.$store.getters.getCredentials.password);
+
+        console.log(request);
 
         const movie = {
           title: this.title,
