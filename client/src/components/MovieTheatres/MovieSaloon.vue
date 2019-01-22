@@ -12,7 +12,7 @@
       <template v-for="(rows,index) in seatsPerRow">
         <section class="rows">
         <template v-for="(seat, index2) in seatsPerRow[index]">
-          <MovieSeat class="movieSeat" :myId="freePlaces[(count(index)+index2)].seatNumber" :seatBooked="freePlaces[(count(index)+index2)].booked"></MovieSeat>
+          <MovieSeat class="movieSeat" @setChoosenSeats="setChoosenSeats" :myId="freePlaces[(count(index)+index2)].seatNumber" :seatBooked="freePlaces[(count(index)+index2)].booked"></MovieSeat>
         </template>
         </section>
       </template>
@@ -32,6 +32,7 @@ export default {
       seatsPerRow: null,
       totalSeats: null,
       freePlaces: null,
+      choosenSeats: [],
     };
   },
   components: {
@@ -53,6 +54,17 @@ export default {
       }
       return output;
     },
+
+    //Sets the choosen seats
+    setChoosenSeats(seatsChoosen){
+      //If choosen seats is already in array and it comes as an input again, 
+      //remove it from array because user undid his choise
+      if(this.choosenSeats.includes(seatsChoosen)){
+        this.choosenSeats.splice(this.choosenSeats.indexOf(seatsChoosen),1);
+      }else{ //otherwise add it to the array
+      this.choosenSeats.push(seatsChoosen);
+      }
+    }
   }
 };
 </script>

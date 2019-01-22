@@ -1,6 +1,6 @@
 
 <template>
-  <div @click="seatClicked" class="movie-seat" v-bind:id="myId" v-bind:class="{ isBooked: seatBooked}"></div>
+  <div @click="seatClicked" class="movie-seat" v-bind:id="myId" v-bind:class="{ isBooked: seatBooked, myBooking: choosenSeat}"></div>
 </template>
 
 <script>
@@ -11,12 +11,18 @@ export default {
   props:['myId','seatBooked'],
   data() {
     return{
-
+      choosenSeat: false,
     }
   },
   methods: {
     seatClicked(e){
-      console.log(e.target.id);
+      if(e.target.className.includes("isBooked")){
+          console.log("Stolen är upptagen");
+      }
+      else{
+        this.choosenSeat = !this.choosenSeat;
+        this.$emit('setChoosenSeats',e.target.id);
+      }
     }
   }
 };
