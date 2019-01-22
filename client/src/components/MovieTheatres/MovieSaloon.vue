@@ -72,9 +72,9 @@ export default {
         } else {
           console.log("du får inte välja fler säten");
         }
-        
+
       }
-      this.$emit('checkAllSeatsChoosen',this.moreSeats);
+      this.$emit('checkAllSeatsChoosen',this.moreSeats, this.choosenSeats);
       console.log(this.choosenSeats);
     }
   },

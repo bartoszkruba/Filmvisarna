@@ -1,3 +1,8 @@
+<!-- backlog for bokning -->
+<!-- minus fuckar upp allt, varje minus måste resetta allt -->
+<!-- lägg till tre biljetter, välj två platser, ta bort en biljett, boka??? -->
+<!-- try catch på bokaFilm, fel om backend inte svarar -->
+
 <template>
   <main>
     <section v-if="errorFromMongo">
@@ -206,6 +211,7 @@ export default {
       errorFromMongo: false,
       urlQuery: {},
       allSeatsSelected: false,
+      choosenSeats: []
     };
   },
   components: {
@@ -236,7 +242,7 @@ export default {
         children: this.antalBarn,
         pensioner: this.antalPensionar,
         adults: this.antal,
-        placeNumbers: ["A1", "A2", "A3"]
+        placeNumbers: this.choosenSeats
       };
       return ticket;
     },
@@ -414,9 +420,10 @@ export default {
       }
     },
 
-    checkAllSeatsChoosen(moreSeats){
+    checkAllSeatsChoosen(moreSeats, choosenSeats){
       this.allSeatsSelected = !moreSeats;
-      console.log(moreSeats);
+      this.choosenSeats = choosenSeats;
+      console.log("Bokningen har " + choosenSeats.length);
     },
 
     visaFelMedellande() {
