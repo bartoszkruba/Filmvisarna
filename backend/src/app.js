@@ -22,7 +22,7 @@ const startupConfig = require('./util/startupConfig');
 // Telling Server to use cors package
 app.use(cors());
 // Telling server to use body-parser package with json configuration
-app.use(bodyParser.json());
+app.use(bodyParser());
 
 // Telling server to use morgan
 app.use(morgan('combined'));

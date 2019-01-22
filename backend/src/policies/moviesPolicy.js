@@ -3,6 +3,7 @@ const Movie = require('../models/movie');
 const User = require('../models/user');
 
 module.exports.postAddMoviePolicy = async (req, res, next) => {
+    console.log(req.body);
     const users = await User.find({email: req.body.user.email, password: req.body.user.password});
     const movies = await Movie.find(req.body.movie);
     const schema = {

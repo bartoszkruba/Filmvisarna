@@ -8,8 +8,8 @@ const api = axios.create({
 
 export default {
 
-	addMovie(movie, user) {
-		return api.post('addMovie', {movie, user});
+	addMovie(request) {
+		return api.post('addMovie', request);
 	},
 	// Gets movies with matching query from DB
 	// Example: getMovies({title: 'Batman'}) - gets all movies with title "Batman"
@@ -52,8 +52,8 @@ export default {
 		return api.post('setTickets', {ticket, user });
 	},
 
-	uploadImage: (image, uploadHandler) => {
-		return api.post('uploadimage', image, uploadHandler)
+	uploadImage: (images, uploadHandler) => {
+		return api.post('uploadimage', images, uploadHandler)
 	}
 
 } 

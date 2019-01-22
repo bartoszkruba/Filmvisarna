@@ -117,6 +117,19 @@
           <div class="col-sm-1"></div>
         </div>
 
+        <div class="row mb-3">
+          <div class="col-sm-1"></div>
+          <div class="col-sm-5">
+            <label for="PosterImage">Poster Image</label>
+            <input type="file" class="form-control-file" id="PosterImage" @change="posterImageChanged">
+          </div>
+          <div class="col-sm-5">
+            <label for="BackgroundImage">Background Image</label>
+            <input type="file" class="form-control-file" id="BackgroundImage" @change="backgroundImageChanged">
+          </div>
+          <div class="col-sm-1"></div>
+        </div>
+
         <div class="row">
           <div class="col-sm-1"></div>
           <div class="col-sm-5">
@@ -167,25 +180,6 @@
         <div class="row">
           <div class="col-sm-1"></div>
           <div class="col-sm-5">
-            <label for="Images">Images:</label>
-            <ul class="list-group mb-3" v-for="url in images">
-              <li class="list-group-item d-flex justify-content-between">
-                <span>{{url}}</span>
-                <button class="btn btn-sm btn-danger" @click="removeImage(url)">X</button>
-              </li>
-            </ul>
-            <div class="input-group mb-3">
-              <input
-                type="text"
-                class="form-control"
-                id="ImageLink"
-                placeholder="Add Link"
-                v-model="imageLink"
-              >
-              <div class="input-group-prepend">
-                <button class="btn btn-outline-danger" @click="addImage">Add</button>
-              </div>
-            </div>
           </div>
           <div class="col-sm-5">
             <label for="Trailers">Trailers:</label>
@@ -406,12 +400,6 @@
     <div v-if="!this.$store.state.loggedInUser.admin">
       <b-jumbotron class="jumbotron"><h1>Du måste vara inloggad som administratör <br> för att få åtkomst till den här sidan</h1></b-jumbotron>
     </div>
-    <div class="text-center">
-      <p>{{loadingMessage}}</p>
-      <input type="file" @change="onFileChanged1">
-      <input type="file" @change="onFileChanged2">
-      <button @click="onUpload">Upload!</button>
-    </div>
   </div>
 </template>
 
@@ -464,8 +452,8 @@ export default {
         movieTheatreName: null
       },
 
-      selectedFile1: null,
-      selectedFile2: null,
+      posterImage: null,
+      backgroundImage: null,
       loadingMessage: "Ready To Load Madafaka"
     };
   },
@@ -474,16 +462,17 @@ export default {
     this.getMovieTheatres();
   },
   methods: {
-    onFileChanged1 (event){
-      this.selectedFile1 = event.target.files[0];
+    posterImageChanged (event){
+      this.posterImage = event.target.files[0];
     },
-    onFileChanged2 (event){
-      this.selectedFile2 = event.target.files[0];
+    backgroundImageChanged (event){
+      this.backgroundImage = event.target.files[0];
     },
     onUpload(){
       const images = new FormData()
-      images.append('image1', this.selectedFile1);
-      images.append('image2', this.selectedFile2);
+      images.append('poster', this.posterImage);
+      images.append('background', this.backgroundImage);
+      images.append('title', "Taxi Driver");
       api.uploadImage(images, {
         onUploadProgress: progressEvent => {
         this.loadingMessage = progressEvent.loaded / progressEvent.total;
@@ -598,6 +587,26 @@ export default {
         this.description &&
         this.description.trim() !== ""
       ) {
+
+        const request = new FormData()
+        images.append('poster', this.posterImage);
+        images.append('background', this.backgroundImage);
+        images.append('title', this.title);
+        images.append('productionCountries', this.productionCountries);
+        images.append('productionYear', parseInt(this.productionYear));
+        images.append('length', parseInt(this.length));
+        images.append('genre', this.genre);
+        images.append('distributor', this.distributor);
+        images.append('language', this.language);
+        images.append('subtitles', this.subtitles);
+        images.append('director', this.director);
+        images.append('ageLimit', parseInt(this.ageLimit));
+        images.append('actors', this.actors);
+        images.append('description', this.description);
+        images.append('youtubeTrailers', this.trailers);
+        images.append('reviews', this.reviews);
+        images.append('user', this.$store.getters.getCredentials);
+
         const movie = {
           title: this.title,
           productionCountries: this.productionCountries,
@@ -616,10 +625,8 @@ export default {
           reviews: this.reviews
         };
 
-        const userCredentials = this.$store.getters.getCredentials;
-
         try {
-          const response = await api.addMovie(movie , userCredentials);
+          const response = await api.addMovie(request);
           this.message = response.data.message;
           this.error = null;
           window.scrollTo(0, 0);
