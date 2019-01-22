@@ -1,12 +1,12 @@
 const User = require('../models/user');
 const uniqid = require('uniqid');
 const MovieSession = require('../models/movieSession');
+const Bcrypt = require('bcrypt');
 
 module.exports.setBookedTicket = async (req, res, next) => {
-    console.log(req.body)
-    const user = await User.findOne({ email: req.body.user.email, password: req.body.user.password });
+    const user = await User.findOne({ email: req.body.user.email});
     const session = await MovieSession.findOne({ _id: req.body.ticket.sessionID }).populate('movieID').populate('movieTheatreID');
-    if (user && checkPlaces(session, req.body.ticket.placeNumbers)) {
+    if (user && Bcrypt.compareSync(req.body.user.password, user.password) && checkPlaces(session, req.body.ticket.placeNumbers)) {
         console.log("Verified");
         try {
             bookedMovie = {
@@ -15,10 +15,10 @@ module.exports.setBookedTicket = async (req, res, next) => {
                 theatre: session.movieTheatreID.name,
                 time: session.date.time,
                 date: session.date.year.toString()
-                    + "-"
-                    + session.date.month.toString().padStart(2, '0')
-                    + "-"
-                    + session.date.day.toString().padStart(2, '0'),
+                + "-"
+                + session.date.month.toString().padStart(2, '0')
+                + "-"
+                + session.date.day.toString().padStart(2, '0'),
                 price: parseInt(req.body.ticket.children) * 65
                     + parseInt(req.body.ticket.pensioner) * 75
                     + parseInt(req.body.ticket.adults) * 85,
@@ -30,7 +30,7 @@ module.exports.setBookedTicket = async (req, res, next) => {
                     + parseInt(req.body.ticket.pensioner),
                 placeNumbers: req.body.ticket.placeNumbers
             };
-            if (session.freePlaces - bookedMovie.totalTickets >= 0) {
+            if (session.freePlaces - bookedMovie.totalTickets >= 0 && bookedMovie.totalTickets === bookedMovie.placeNumbers.length) {
                 user.bookedTickets.push(bookedMovie);
                 user.save();
                 res.send({
@@ -49,13 +49,14 @@ module.exports.setBookedTicket = async (req, res, next) => {
             console.log(error);
             res.status(400).send({
                 error: 'Kunde inte boka biljetten'
+
             });
         }
     } else {
-        console.log("Not Validated");
+        console.log("Not Verified");
         res.send({
             validated: false,
-            message: 'användaren finns inte i databasen eller platsen är redan bokad'
+            message: 'användaren finns inte i databasen'
         });
     }
 }

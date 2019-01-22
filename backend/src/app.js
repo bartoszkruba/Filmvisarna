@@ -17,7 +17,6 @@ const app = express();
 
 const startupConfig = require('./util/startupConfig');
 
-
 // Telling Server to use cors package
 app.use(cors());
 // Telling server to use body-parser package with json configuration
@@ -30,12 +29,11 @@ app.use(Router);
 // function for starting server
 const startServer = async () => {
     // Telling mongoose to connect to the MongoDB Atlas
-    await mongoose.connect('mongodb+srv://groupaccount:groupaccount1234@cluster0-ydy7f.mongodb.net/filmvisarna', { useNewUrlParser: true });
+    await mongoose.connect('mongodb+srv://groupaccount:groupaccount1234@cluster0-ydy7f.mongodb.net/filmvisarna', {useNewUrlParser: true});
     // Telling server to start listening on localhost:8081
     app.listen(startupConfig.port, () => {
 
         // resetEverything();
-
 
         // new MovieSession({
         //     movieID: '5c3897dba4b4065c06286187',
@@ -51,6 +49,9 @@ const startServer = async () => {
         console.log(startupConfig.startupMessage);
     });
 }
+
+// Starting server
+startServer();
 
 async function resetEverything() {
     const MovieSession = require('./models/movieSession');
@@ -84,8 +85,6 @@ async function resetEverything() {
         users[f].bookedTickets = [];
         users[f].save();
     }
-    
-
 }
 
 function getLetter(row){
@@ -115,6 +114,17 @@ function getLetter(row){
     }
 };
 
-// Starting server
-startServer();
+//*************************************************************** */
+// !!!!! Calling this will fuck upp all passwords in Database !!!!
+async function hashPasswords(){
+    
+    const User = require('./models/user');
+    const Bcrypt = require('bcrypt');
 
+    const users = await User.find();
+    for(let i = 1; i < users.length; i++){
+        users[i].password = Bcrypt.hashSync(users[i].password, 10);
+        users[i].save();
+    }
+}
+// *******************************************************************

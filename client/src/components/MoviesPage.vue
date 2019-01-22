@@ -31,7 +31,7 @@
           <figure class="images">
             <router-link
               class="router-link"
-              :to="'/film?movieID='+m._id"
+              :to="'/film?'+m._id"
               exact-active-class="menu-item-active"
             >
               <img :src="require('../assets/'+m.images[1])" class="posterpic">
@@ -39,15 +39,14 @@
           </figure>
 
           <div class="movietext">
-
-          <div class="flex-col">
-            <router-link
-              class="router-link"
-              :to="'/film?movieID='+m._id"
-              exact-active-class="menu-item-active"
-            >
-              <h2>{{m.title}}</h2>
-            </router-link>
+            <div class="flex-col">
+              <router-link
+                class="router-link"
+                :to="'/film?'+m._id"
+                exact-active-class="menu-item-active"
+              >
+                <h2>{{m.title}}</h2>
+              </router-link>
 
               <div class="flexbox ptaggar info-direction">
                 <p>Längd: {{parseInt(m.length/60)}} timmar och {{m.length%60}} minuter</p>
@@ -88,6 +87,9 @@ export default {
   mounted(){
     this.errorFromMongo = false;
     this.getUrlQuery();
+    this.getMovies();
+  },
+  mounted() {
     this.getMovies();
   },
   methods: {
@@ -139,7 +141,7 @@ export default {
       this.getUrlQuery();
         this.getMovies();
     }
-}
+  }
 };
 </script>
 

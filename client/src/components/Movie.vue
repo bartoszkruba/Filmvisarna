@@ -1,3 +1,4 @@
+<!-- INTE KOPPLAD MOT DATABAS -->
 
 <template>
 <div class="Movie">
@@ -11,7 +12,8 @@
         <li>Vår hemsida har tekniskt strul</li>
         <li>Du har klickat på en gammal länk</li>
       </ul>
-      <router-link class="router-link" to="/moviesPage" exact-active-class="menu-item-active">Klicka här för att komma till alla filmer</router-link>
+      <router-link class="router-link" to="/filmsida" exact-active-class="menu-item-active">Klicka här för att komma till alla filmer</router-link>
+
     </section>
 
     <section v-if="aMovie && movieSessions">
@@ -119,12 +121,6 @@
 
 
     </section>
-    <section v-else class="loading-logo">
-      <h1 class="text-center spinner">
-        <font-awesome-icon icon="spinner"/>
-      </h1>
-      <h1 class="text-center">Loading</h1>
-    </section>
   </b-jumbotron>
 </div>
 </template>
@@ -144,7 +140,6 @@ export default {
       sessionID: null,
       targetSessionDisplay: null,
       loggaInButtonPressed: this.$store.state.loggaInButtonPressed,
-      urlQuery: {}
     };
   },
   methods: {
@@ -208,10 +203,16 @@ export default {
       this.sessionID = e.target.value;
     },
     goToBooking(){
+      const sessionAndMovieID = {
+        movieID: this.movieID(),
+        sessionID: this.sessionID,
+        redirect: true
+      }
       if(!this.$store.getters.isUserSignedIn){
          this.$store.commit('toggleLoggaInWindow');
+         this.$store.commit('setRoute', sessionAndMovieID)
       }else{
-        this.$router.push('/BokningSida?movieID='+this.urlQuery.movieID+'&sessionID='+this.sessionID);
+        this.$router.push('/BokningSida?movieID='+this.movieID()+'&sessionID='+this.sessionID);
       }
     },
     starView(s, n) {
@@ -222,10 +223,10 @@ export default {
     },
     async getMovieByID() {
       this.aMovie = null;
-      if (this.urlQuery.movieID !== undefined) {
+      if (this.movieID() !== null) {
         try {
           const response = await api.getMovies({
-            _id: this.urlQuery.movieID
+            _id: this.movieID()
           });
           if (response.data.movies.length > 0)
             this.aMovie = response.data.movies[0];
@@ -238,26 +239,15 @@ export default {
     },
     async getMovieSessions(){
       this.movieSessions = null;
-      if (this.urlQuery.movieID !== undefined) {
+      if (this.movieID() !== null) {
         try {
           const response = await api.getMovieSessions({
-            movieID: this.urlQuery.movieID
+            movieID: this.movieID()
           });
           this.movieSessions = response.data.movie_sessions;
           if(this.movieSessions.length > 0){
-            let targetSession = null;
-            if(this.urlQuery.sessionID){
-              targetSession = this.movieSessions.find((cur)=>{
-                return cur._id === this.urlQuery.sessionID
-              });
-            }
-            if(targetSession){
-              this.sessionID = this.urlQuery.sessionID;
-              this.targetSessionDisplay = `${this.getWeekdayString(targetSession.date.year,targetSession.date.month,targetSession.date.day)} ${targetSession.date.day}/${targetSession.date.month} ${targetSession.date.year} kl: ${targetSession.date.time}`;
-            } else {
-              this.sessionID = this.movieSessions[0]._id;
-              this.targetSessionDisplay = `${this.getWeekdayString(this.movieSessions[0].date.year,this.movieSessions[0].date.month,this.movieSessions[0].date.day)} ${this.movieSessions[0].date.day}/${this.movieSessions[0].date.month} ${this.movieSessions[0].date.year} kl: ${this.movieSessions[0].date.time}`;
-            }
+            this.sessionID = this.movieSessions[0]._id;
+            this.targetSessionDisplay = `${this.getWeekdayString(this.movieSessions[0].date.year,this.movieSessions[0].date.month,this.movieSessions[0].date.day)} ${this.movieSessions[0].date.day}/${this.movieSessions[0].date.month} ${this.movieSessions[0].date.year} kl: ${this.movieSessions[0].date.time}`;
           }
         } catch (error) {
         }
@@ -265,36 +255,20 @@ export default {
       if(this.movieSessions === null)
         this.errorFromMongo = true
     },
-    getUrlQuery() {
-      this.urlQuery = {};
-      let url = window.location.href;
-      url = url.substr(url.lastIndexOf("#"));
-      let searchIndex = url.indexOf("?")+1;
-      let output = {};
-
-      if(searchIndex > 0) {
-        url = url.substr(searchIndex).split("&");
-        for(let i = 0; i < url.length; i++){
-          url[i] = url[i].split("=");
-          if(url[i][1].length > 0)
-            this.urlQuery[url[i][0]] = url[i][1];
-        }
-      }
+    movieID() {
+      if (window.location.hash.indexOf("?") > 0)
+        return window.location.hash.substr(window.location.hash.indexOf("?") + 1);
+      return null;
     }
   },
   mounted: function() {
-    this.getUrlQuery();
     this.getMovieByID();
     this.getMovieSessions();
   },
   watch: {
     '$route': function() {
-      this.getUrlQuery();
       this.getMovieByID();
       this.getMovieSessions();
-    },
-     '$store.state.loggaInButtonPressed': function() {
-        this.$router.push('/BokningSida?movieID='+this.urlQuery.movieID+'&sessionID='+this.sessionID);
     },
   }
 };
@@ -304,35 +278,6 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
-}
-
-.loading-logo {
-  height: 70vh;
-  opacity: 1;
-  animation: flickerAnimation 3s infinite;
-  overflow: hidden;
-}
-
-@keyframes flickerAnimation {
-  /* flame pulses */
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-.spinner{
-  -webkit-animation: spin 3s infinite linear;
-}
-
-@-webkit-keyframes spin {
-    0%  {-webkit-transform: rotate(0deg);}
-    100% {-webkit-transform: rotate(360deg);}
 }
 
 .trailer-view {
