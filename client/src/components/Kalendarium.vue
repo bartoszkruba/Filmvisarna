@@ -35,9 +35,9 @@
               >
                 <img
                   class="posterpic"
-                  :src="require('../assets/'+movies.find((cur)=>{
+                  :src="movies.find((cur)=>{
                return cur._id === session.movieID
-               }).images[1])"
+               }).imagesLinks.poster"
                 >
               </router-link>
             </figure>
