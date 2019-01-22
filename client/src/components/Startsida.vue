@@ -55,7 +55,7 @@
                 <figure class="imgbox">
                   <router-link
                     class="router-link"
-                    :to="'/film?movieID'+this.movies[2]._id"
+                    :to="'/film?movieID='+this.movies[2]._id"
                     exact-active-class="menu-item-active"
                   >
                     <img class="poster" :src="require('../assets/'+this.movies[2].images[1])">
@@ -211,7 +211,7 @@ export default {
     },
     goToBooking(movieIndex) {
       this.movieIndex = movieIndex;
-      const session = this.sessions.find((cur)=>{ 
+      const session = this.sessions.find((cur)=>{
                     return cur.movieID === this.movies[this.movieIndex]._id})._id
       const sessionAndMovieID = {
         movieID: this.movies[this.movieIndex]._id,
@@ -222,9 +222,9 @@ export default {
          this.$store.commit('toggleLoggaInWindow');
          this.$store.commit('setRoute', sessionAndMovieID)
       }else{
-        this.$router.push('/BokningSida?movieID='+this.movies[movieIndex]._id+'&sessionID='+this.sessions.find((cur)=>{ 
+        this.$router.push('/BokningSida?movieID='+this.movies[movieIndex]._id+'&sessionID='+this.sessions.find((cur)=>{
                     return cur.movieID === this.movies[movieIndex]._id})._id);
-      }        
+      }
     },
   }
 };
@@ -256,7 +256,7 @@ export default {
 
 @-webkit-keyframes spin {
     0%  {-webkit-transform: rotate(0deg);}
-    100% {-webkit-transform: rotate(360deg);}   
+    100% {-webkit-transform: rotate(360deg);}
 }
 
 h1 {
@@ -304,7 +304,7 @@ ul {
 }
 
 @media only screen and (max-device-width: 560px) {
-  
+
   .welcome-text{
     font-size: 70%;
   }

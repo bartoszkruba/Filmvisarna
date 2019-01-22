@@ -31,7 +31,7 @@
           <figure class="images">
             <router-link
               class="router-link"
-              :to="'/film?'+m._id"
+              :to="'/film?movieID='+m._id"
               exact-active-class="menu-item-active"
             >
               <img :src="require('../assets/'+m.images[1])" class="posterpic">
@@ -42,7 +42,7 @@
             <div class="flex-col">
               <router-link
                 class="router-link"
-                :to="'/film?'+m._id"
+                :to="'/film?movieID='+m._id"
                 exact-active-class="menu-item-active"
               >
                 <h2>{{m.title}}</h2>
