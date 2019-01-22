@@ -2,7 +2,7 @@
   <div class="main">
     <b-jumbotron
       class="white-text"
-      style="background-image: url(http://le13emecri.com/wp-content/uploads/2014/01/rideau-rouge.jpg)"
+      style="background-image: url(http://www.milanticketsopera.com/themes/theater/images/img.jpg)"
     >
       <template slot="header" class="white-text welcome-text">
         <h1 class="white-text welcome-text">Välkommen till Filmvisarna!</h1>
@@ -161,8 +161,8 @@
       <h1 class="text-center">Loading</h1>
     </div>
     <b-jumbotron
-      class="white-text"
-      style="background-image: url(http://le13emecri.com/wp-content/uploads/2014/01/rideau-rouge.jpg)"
+      class="white-text second-jumbo"
+      style=""
     >
       <template slot="header" class="white-text">Senaste nytt</template>
       <h1 class="white-text">Vi har nu öppnat, Välkomna</h1>
@@ -283,6 +283,13 @@ export default {
   }
 }
 
+.main{
+  background-color: rgb(227, 225, 233);
+}
+.second-jumbo{
+  background-image: url(http://www.milanticketsopera.com/themes/theater/images/img.jpg);
+  background-size: cover;
+}
 h1 {
   text-align: center;
 }
