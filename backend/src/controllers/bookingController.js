@@ -35,13 +35,25 @@ module.exports.setBookedTicket = async (req, res, next) => {
             if (session.freePlaces - bookedMovie.totalTickets >= 0 && bookedMovie.totalTickets === bookedMovie.placeNumbers.length) {
                 user.bookedTickets.push(bookedMovie);
                 user.save();
+                session.freePlaces -= bookedMovie.totalTickets;
+                SetupPlacesOnSession(session, req.body.ticket.placeNumbers);
+                session.save();
                 res.send({
                     message: 'Biljetten är sparad',
                     orderID: bookedMovie.orderID
                 });
-                session.freePlaces -= bookedMovie.totalTickets;
-                SetupPlacesOnSession(session, req.body.ticket.placeNumbers);
-                session.save();
+
+                const message = generateEmailMessage(bookedMovie);
+
+                const mailOptions = {
+                    from: config.email,
+                    to: user.email,
+                    subject: "Boknings informations",
+                    text: message
+                }
+
+                emailTransporter.sendMail(mailOptions);
+
             } else {
                 res.status(400).send({
                     error: "Det finns inte tillräcklig många lediga platser"
@@ -82,4 +94,28 @@ function SetupPlacesOnSession(session, places) {
             }
         }
     }
+}
+
+function generateEmailMessage(bookedMovie){
+    let placeNumbers = "";
+
+    for(let i = 0; i< bookedMovie.placeNumbers.length; i++){
+        placeNumbers += bookedMovie.placeNumbers[i] + ", ";
+    }
+
+    const message = `
+                Ditt bokningsnummer: ${bookedMovie.orderID}
+                Film: ${bookedMovie.title}
+                Plats: ${bookedMovie.theatre}
+                Datum: ${bookedMovie.date}
+                Tid: ${bookedMovie.time}
+                Antal biljetter: ${bookedMovie.totalTickets}
+                Vuxna: ${bookedMovie.adults}
+                Barn: ${bookedMovie.children}
+                Pensionär: ${bookedMovie.pensioner}
+                Platser: ${placeNumbers}
+
+                Pris: ${bookedMovie.price} SEK
+                `
+    return message
 }

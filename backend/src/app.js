@@ -35,7 +35,7 @@ const startServer = async () => {
 
         // testSendingEmail();
 
-        // resetEverything();
+        resetEverything();
 
         console.log(startupConfig.startupMessage);
     });

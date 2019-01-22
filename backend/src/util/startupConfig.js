@@ -1,3 +1,6 @@
+const email = "filmvisarna@gmail.com";
+const emailPassword = "filmvisarna1234";
+
 const port = 8081;
 const nodemailer = require('nodemailer');
 
@@ -49,10 +52,6 @@ module.exports.startupMessage = `
 
 Listening on ${port}
 `
-
-
-const email = "filmvisarna@gmail.com";
-const emailPassword = "filmvisarna1234";
 
 module.exports.email = "filmvisarna@gmail.com";
 
