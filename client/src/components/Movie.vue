@@ -88,7 +88,7 @@
           </p>
 
           <p>
-            <span v-if="aMovie.actors.length > 0">
+            <span v-if="aMovie.director.length > 0">
               Regisör: {{aMovie.director}}<br>
             </span>
             <span v-if="aMovie.actors.length > 0">
