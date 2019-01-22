@@ -187,6 +187,8 @@ export default {
 .main{
   margin-left: 20vw;
   margin-right: 20vw;
+  background-color: rgba(2, 2, 2, 0.4);
+  color: white;
 }
 .flexbox {
   display: flex;
@@ -212,6 +214,7 @@ h2 {
   color: black;
   font-weight: bold;
   font-size: 2.5rem;
+  color: white;
 }
 a:hover {
   text-decoration: none;
@@ -222,6 +225,8 @@ hr {
 .posterpic {
   width: 20vmin;
   box-shadow: 2px 2px 5px black;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 .images {
   margin: 0;
