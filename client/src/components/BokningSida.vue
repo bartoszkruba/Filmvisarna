@@ -27,7 +27,12 @@
         <h4>Salong: {{this.theatre.name}}</h4>
         <h4>|</h4>
         <h4>Tid: {{this.session.date.day+'/'+this.session.date.month+' '+this.session.date.year +' '+ this.session.date.time}}</h4>
+
       </div>
+      <b-dropdown id="ddown-buttons" text="Ändra visningsdatum: " variant="danger" class="m-2">
+        <b-dropdown-item-button v-on:click="changeSession" v-for="session in sessions" :value="session._id" :key="session._id">{{getWeekdayString(session.date.year,session.date.month,session.date.day).slice(0,-3)}} {{session.date.day + '/' + session.date.month + ' ' + session.date.year + ' ' + session.date.time }} </b-dropdown-item-button>
+      </b-dropdown>
+
       <h4>Antal biljetter:</h4>
       <p>
         <strong>Ordinarie</strong>
@@ -78,6 +83,7 @@
           <p>Datum: <strong>{{this.session.date.day+'/'+this.session.date.month+' '+this.session.date.year }}</strong> </p>
           <p>Tid: <strong>{{this.session.date.time}}</strong></p>
           <p>Salong: <strong>{{this.theatre.name}} </strong></p>
+
           <div class="Biljetter">
             <p>Biljetter:</p>
             <div class="vilkaBiljetter">
@@ -130,6 +136,7 @@ export default {
       movie: undefined,
       ledigaPlatserISal: null,
       session: null,
+      sessions: null,
       theatre: null,
       bokningsnummer: null,
       totalt: null,
@@ -146,7 +153,7 @@ export default {
     this.errorFromMongo = false;
     this.getUrlQuery();
     this.getMovieByID();
-    this.getSessionByID();
+    this.getSessions();
     if (!this.$store.getters.isUserSignedIn) {
       this.$router.push('/filmSida');
     }
@@ -156,7 +163,7 @@ export default {
       this.errorFromMongo = false;
       this.getUrlQuery();
       this.getMovieByID();
-      this.getSessionByID();
+      this.getSessions();
     }
   },
 
@@ -183,6 +190,41 @@ export default {
     this.totalt = 0;
   },
   methods: {
+    getWeekdayString(y, m, d){
+      let stringDate = `${y}-${m}-${d}`;
+      let date = new Date(stringDate);
+      let weekday = date.getDay();
+      let output;
+      switch (weekday) {
+        case 0:
+          output = "Söndag";
+          break;
+        case 1:
+          output = "Måndag";
+          break;
+        case 2:
+          output = "Tisdag";
+          break;
+        case 3:
+          output = "Onsdag";
+          break;
+        case 4:
+          output = "Torsdag";
+          break;
+        case 5:
+          output = "Fredag";
+          break;
+        case 6:
+          output = "Lördag";
+          break;
+        default:
+          output = "Ingen dag alls"
+      }
+      return output;
+    },
+    changeSession(e){
+      this.$router.push(`/BokningSida?movieID=${this.urlQuery.movieID}&sessionID=${e.target.value}`);
+    },
     getUrlQuery() {
       this.urlQuery = {};
       let url = window.location.href;
@@ -201,7 +243,7 @@ export default {
     },
     async getMovieByID() {
       this.movie = null;
-      if (this.urlQuery.movieID !== null) {
+      if (this.urlQuery.movieID) {
         try {
           const response = await api.getMovies({
             _id: this.urlQuery.movieID
@@ -212,23 +254,32 @@ export default {
       if (this.movie === null)
         this.errorFromMongo = true;
     },
+    async getSessions(){
+      this.sessions = null;
+      if(this.urlQuery.movieID){
+        try{
+          const response = await api.getMovieSessions({
+            movieID: this.urlQuery.movieID
+          });
+          this.sessions = response.data.movie_sessions;
+        }catch(error){}
+      }
+
+      if(this.sessions === null) this.errorFromMongo = true;
+      else this.getSessionByID();
+    },
     async getSessionByID() {
       this.session = null;
-      if (this.urlQuery.sessionID !== null) {
-        try {
-          const response = await api.getMovieSessions({
-            _id: this.urlQuery.sessionID
-          });
-          if (response.data.movie_sessions.length) {
 
-            this.session = response.data.movie_sessions[0];
-            this.ledigaPlatserISal = this.session.freePlaces;
-            this.theatreID = this.session.movieTheatreID;
-          }
-        } catch (error) {}
-        if (this.session === null) this.errorFromMongo = true;
-        else this.getTheatreByID();
+      if (this.urlQuery.sessionID) {
+        this.session = this.sessions.find((curr) => {
+          return curr._id === this.urlQuery.sessionID
+        });
+        this.ledigaPlatserISal = this.session.freePlaces;
+        this.theatreID = this.session.movieTheatreID;
       }
+      if (!this.session) this.errorFromMongo = true;
+      else this.getTheatreByID();
     },
     async getTheatreByID() {
       // Sätt theatre till null för att testa om lyckas hämtning

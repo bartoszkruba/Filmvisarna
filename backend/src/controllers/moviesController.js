@@ -1,6 +1,6 @@
 // importing mongoose model for Movie
 const Movie = require('../models/movie');
-
+const Bcrypt = require('bcrypt');
 
 module.exports.getMovies = async (req, res, next) => {
     try {
@@ -19,8 +19,8 @@ module.exports.getMovies = async (req, res, next) => {
 // controller for adding new movies to the DB
 module.exports.postAddMovie = async (req, res, next) => {
     try {
-        const user = await User.findOne({ email: req.body.user.email, password: req.body.user.password });
-        if (user) {
+        const user = await User.findOne({ email: req.body.user.email});
+        if (user && Bcrypt.compareSync(req.body.user.password, user.password) && user.admin) {
             await new Movie(req.body.movie).save();
             res.send({
                 message: 'Movie added'

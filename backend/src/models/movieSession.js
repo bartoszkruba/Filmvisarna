@@ -32,12 +32,17 @@ movieSessionSchema = new Schema({
         ref: 'MovieTheatre'
     },
     freePlaces: {
-
     },
-    places: {
-    },
-    FreePlaces: [],
-    Places: []
+    places: [
+        {
+            seatNumber: {
+                type: String
+            },
+            booked: {
+                type: Boolean
+            }
+        }
+    ]
 });
 
 module.exports = mongoose.model("MovieSession", movieSessionSchema);
