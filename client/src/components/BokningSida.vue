@@ -121,7 +121,7 @@
           <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
         </div>
         <!-- Modal Component -->
-        <b-modal id="modal1" v-if="totalt>=65" title="Bekräftelse" @ok="goHem" ok-only>
+        <b-modal id="modal1" v-if="totalt>=65 && this.allSeatsSelected" title="Bekräftelse" @ok="goHem" ok-only>
           <p>Film:
             <strong>{{movie.title}}</strong>
           </p>
@@ -415,7 +415,8 @@ export default {
     },
 
     checkAllSeatsChoosen(moreSeats){
-      this.allSeatsSelected = moreSeats;
+      this.allSeatsSelected = !moreSeats;
+      console.log(moreSeats);
     },
 
     visaFelMedellande() {
