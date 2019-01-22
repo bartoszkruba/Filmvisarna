@@ -95,7 +95,7 @@ export default {
   methods: {
     async getMovies() {
       this.movies = null;
-      
+
         try{ 
           if(this.urlQuery.searchQuery){
             const response = await api.searchMovies(this.urlQuery.searchQuery.replace('_', ' '));
@@ -103,18 +103,18 @@ export default {
             if(this.movies.length === 1){
               this.$router.push(`/film?movieID=${this.movies[0]._id}`);
             }
-          } 
+          }
           else {
             const response = await api.getMovies();
             this.movies = response.data.movies;
           }
 
         }catch(error){
-          
+
         }
-       
-        
-      if (this.movies === null) 
+
+
+      if (this.movies === null)
         this.errorFromMongo = true;
 
     },
