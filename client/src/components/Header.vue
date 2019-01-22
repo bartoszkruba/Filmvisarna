@@ -87,6 +87,8 @@ export default {
     async searchForMovies() {
       if(this.searchQuery && this.searchQuery.trim() !== ''){
         this.$router.push(`/filmsida?searchQuery=${this.searchQuery.replace(' ', '_')}`);
+      }else{
+        this.$router.push(`/filmsida`);
       }
       this.searchQuery = null;
     },
