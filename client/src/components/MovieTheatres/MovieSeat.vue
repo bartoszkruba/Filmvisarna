@@ -8,7 +8,7 @@ import api from "@/services/Api.js";
 
 export default {
   name: "MovieSeat",
-  props:['myId','seatBooked'],
+  props:['myId','seatBooked','disableSeatChooser'],
   data() {
     return{
       choosenSeat: false,
