@@ -51,7 +51,12 @@ const UserSchema = Schema({
             },
             totalTickets: {
                 type: String,
-            }
+            },
+            placeNumbers: [
+                {
+                    type: String
+                }
+            ]
         }
     ]
 });

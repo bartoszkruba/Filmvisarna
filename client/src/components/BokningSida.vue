@@ -14,12 +14,10 @@
   <section v-if="movie && session && theatre">
     <div>
       <img :src="require('../assets/'+this.movie.images[0])" class="img">
-      <div class="papillon">
+      <title>
         <h1 class="title">{{movie.title}}</h1>
-
-
         <div class="antal-bilijetter"></div>
-      </div>
+      </title>
     </div>
 
     <div class="text">
@@ -79,20 +77,26 @@
         </div>
         <!-- Modal Component -->
         <b-modal id="modal1" v-if="totalt>=65" title="Bekräftelse" @ok="goHem" ok-only>
-          <p>Film: <strong> {{movie.title}}</strong></p>
-          <p>Datum: <strong>{{this.session.date.day+'/'+this.session.date.month+' '+this.session.date.year }}</strong> </p>
-          <p>Tid: <strong>{{this.session.date.time}}</strong></p>
-          <p>Salong: <strong>{{this.theatre.name}} </strong></p>
-
-          <div class="Biljetter">
-            <p>Biljetter:</p>
-            <div class="vilkaBiljetter">
-              <p v-if="antal>0"><strong>{{antal}} Ordinarie</strong></p>
-              <p v-if="antalPensionar>0"><strong>{{antalPensionar}} Pensionär</strong></p>
-              <p v-if="antalBarn>0"><strong>{{antalBarn}} Barn</strong></p>
+          <div class="mainBekraftelse">
+            <div class="textBekraftelse">
+              <p>Film: <strong> {{movie.title}}</strong></p>
+              <p>Datum: <strong>{{this.session.date.day+'/'+this.session.date.month+' '+this.session.date.year }}</strong> </p>
+              <p>Tid: <strong>{{this.session.date.time}}</strong></p>
+              <p>Salong: <strong>{{this.theatre.name}} </strong></p>
+              <div class="Biljetter">
+                <p>Biljetter:</p>
+                <div class="vilkaBiljetter">
+                  <p v-if="antal>0"><strong>{{antal}} Ordinarie</strong></p>
+                  <p v-if="antalPensionar>0"><strong>{{antalPensionar}} Pensionär</strong></p>
+                  <p v-if="antalBarn>0"><strong>{{antalBarn}} Barn</strong></p>
+                </div>
+              </div>
+              <p>Att betala: <strong>{{totalt}}kr</strong></p>
+            </div>
+            <div>
+              <img :src="require('../assets/'+this.movie.images[1])" class="img2">
             </div>
           </div>
-          <p>Att betala: <strong>{{totalt}}kr</strong></p>
           <p class="my-4">Din bokningsnummer: <strong>{{bokningsnummer}}</strong></p>
           <p class="my-4"><strong>OBS!</strong>Du kan hämta ut dina biljetter senast 40min innan filmen börjar</p>
           <p> betalningen sker vid kassan i biografen</p>
@@ -407,6 +411,16 @@ export default {
     -webkit-transform: rotate(360deg);
   }
 }
+.textBekraftelse{
+  width: 20vw;
+}
+.mainBekraftelse{
+  display: flex;
+}
+.img2{
+  width: 90%;
+  box-shadow: 2px 2px 20px black;
+}
 
 .modal-body p {
   margin: 0.8rem;
@@ -483,7 +497,7 @@ h4 {
   text-align: center;
 }
 
-.papillon {
+title {
   position: relative;
   margin-top: -17vh;
   display: block;
@@ -537,8 +551,15 @@ div .vilkaBiljetter {
 
 @media screen and (max-width: 416px) {
 
-  .papillon {
+  title {
     margin-top: -10vh;
+  }
+  .textBekraftelse{
+    width: 90vw;
+  } 
+  .mainBekraftelse{
+  display: flex;
+  flex-direction: column;
   }
 
   .title {
