@@ -49,10 +49,6 @@ const movieSchema = schema({
         type: Number,
         required: true
     },
-    images: {
-        type: Array,
-        required: true
-    },
     imagesLinks: {
         poster: {
             type: String,
