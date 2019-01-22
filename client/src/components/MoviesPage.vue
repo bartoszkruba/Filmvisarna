@@ -34,7 +34,7 @@
               :to="'/film?movieID='+m._id"
               exact-active-class="menu-item-active"
             >
-              <img :src="require('../assets/'+m.images[1])" class="posterpic">
+              <img :src="m.imagesLinks.poster" class="posterpic">
             </router-link>
           </figure>
 
