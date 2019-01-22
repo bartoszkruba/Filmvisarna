@@ -53,6 +53,16 @@ const movieSchema = schema({
         type: Array,
         required: true
     },
+    imagesLinks: {
+        poster: {
+            type: String,
+            required: true
+        },
+        background: {
+            type: String,
+            required: true
+        }
+    },
     youtubeTrailers: {
         type: Array,
         required: true

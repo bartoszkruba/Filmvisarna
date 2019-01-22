@@ -20,7 +20,7 @@
                     :to="'/film?movieID='+this.movies[0]._id"
                     exact-active-class="menu-item-active"
                   >
-                    <img class="poster" :src="require('../assets/'+this.movies[0].images[1])">
+                  <img class="poster" :src="movies[0].imagesLinks.poster"> 
                   </router-link>
                   <h3>{{movies[0].title}}</h3>
                   <router-link
@@ -40,7 +40,7 @@
                     :to="'/film?movieID='+this.movies[1]._id"
                     exact-active-class="menu-item-active"
                   >
-                    <img class="poster" :src="require('../assets/'+this.movies[1].images[1])">
+                    <img class="poster" :src="movies[1].imagesLinks.poster"> 
                   </router-link>
                   <h3>{{movies[1].title}}</h3>
                   <router-link
@@ -60,7 +60,7 @@
                     :to="'/film?movieID='+this.movies[2]._id"
                     exact-active-class="menu-item-active"
                   >
-                    <img class="poster" :src="require('../assets/'+this.movies[2].images[1])">
+                    <img class="poster" :src="movies[2].imagesLinks.poster"> 
                   </router-link>
                   <h3>{{movies[2].title}}</h3>
                   <router-link
@@ -90,7 +90,7 @@
               @click="linkToMovePage"
               slot="img"
               class="d-block img-fluid b-carousel-slide poster"
-              :src="require('../assets/'+this.movies[0].images[1])"
+              :src="this.movies[0].imagesLinks.poster"
               :value="movies[0]._id"
             >
             <ul class="schadow-text">
@@ -112,7 +112,7 @@
               @click="linkToMovePage"
               slot="img"
               class="d-block img-fluid b-carousel-slide poster"
-              :src="require('../assets/'+this.movies[1].images[1])"
+              :src="this.movies[1].imagesLinks.poster"
               :value="movies[1]._id"
             >
             <ul class="schadow-text">
@@ -134,7 +134,7 @@
               @click="linkToMovePage"
               slot="img"
               class="d-block img-fluid b-carousel-slide poster"
-              :src="require('../assets/'+this.movies[2].images[1])"
+              :src="this.movies[2].imagesLinks.poster"
               :value="movies[2]._id"
             >
             <ul class="schadow-text">
