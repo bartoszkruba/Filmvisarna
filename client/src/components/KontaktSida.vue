@@ -102,14 +102,17 @@ hr {
   border-color: rgb(185, 184, 184);
   margin-top: 3rem;
 }
-@media screen and (max-width: 414px) {
+@media screen and (max-width: 800px) {
   .kontakta {
   width: 70vw;
   margin: 4vh auto;
-  
+}
+.main{
+  margin-left: 10vw;
+  margin-right: 10vw;
 }
 }
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 500px) {
   h3 {
     font-size: 7vw;
   }

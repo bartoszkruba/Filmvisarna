@@ -411,6 +411,10 @@ export default {
     -webkit-transform: rotate(360deg);
   }
 }
+
+main{
+  background-color: white;
+}
 .textBekraftelse{
   width: 20vw;
 }
