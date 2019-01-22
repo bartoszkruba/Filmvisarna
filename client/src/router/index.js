@@ -35,7 +35,7 @@ export default new Router({
       component: BokningSida
     },
     {
-      path: '/moviesPage',
+      path: '/filmer',
       name: 'MoviesPage',
       component: MoviesPage
     },
@@ -50,7 +50,7 @@ export default new Router({
       component: Kalendarium
     },
     {
-      path: '/movie',
+      path: '/film',
       name: 'Movie',
       component: Movie
     },

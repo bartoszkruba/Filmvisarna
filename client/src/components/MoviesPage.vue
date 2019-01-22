@@ -18,7 +18,7 @@
           <figure class="images">
             <router-link
               class="router-link"
-              :to="'/Movie?'+m._id"
+              :to="'/film?'+m._id"
               exact-active-class="menu-item-active"
             >
               <img :src="require('../assets/'+m.images[1])" class="posterpic">
@@ -29,7 +29,7 @@
             <div class="flex-col">
               <router-link
                 class="router-link"
-                :to="'/Movie?'+m._id"
+                :to="'/film?'+m._id"
                 exact-active-class="menu-item-active"
               >
                 <h2>{{m.title}}</h2>
@@ -127,7 +127,7 @@ export default {
 
 @-webkit-keyframes spin {
     0%  {-webkit-transform: rotate(0deg);}
-    100% {-webkit-transform: rotate(360deg);}   
+    100% {-webkit-transform: rotate(360deg);}
 }
 
 
@@ -224,4 +224,3 @@ hr {
   }
 }
 </style>
-
