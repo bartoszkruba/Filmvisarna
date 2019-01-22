@@ -50,6 +50,10 @@ export default {
 
 	setTickets: (ticket,user) => {
 		return api.post('setTickets', {ticket, user });
+	},
+
+	uploadImage: (image, uploadHandler) => {
+		return api.post('uploadimage', image, uploadHandler)
 	}
 
 } 

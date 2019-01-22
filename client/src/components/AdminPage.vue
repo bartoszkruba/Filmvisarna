@@ -406,7 +406,8 @@
     <div v-if="!this.$store.state.loggedInUser.admin">
       <b-jumbotron class="jumbotron"><h1>Du måste vara inloggad som administratör <br> för att få åtkomst till den här sidan</h1></b-jumbotron>
     </div>
-    <div>
+    <div class="text-center">
+      <p>{{loadingMessage}}</p>
       <input type="file" @change="onFileChanged">
       <button @click="onUpload">Upload!</button>
     </div>
@@ -462,7 +463,8 @@ export default {
         movieTheatreName: null
       },
 
-      selectedFile: null
+      selectedFile: null,
+      loadingMessage: "Ready To Load Madafaka"
     };
   },
   created() {
@@ -475,7 +477,13 @@ export default {
     },
 
     onUpload(){
-      console.log(this.selectedFile);
+      const formData = new FormData()
+      formData.append('image', this.selectedFile, this.selectedFile.name)
+      api.uploadImage(formData, {
+        onUploadProgress: progressEvent => {
+        this.loadingMessage = progressEvent.loaded / progressEvent.total;
+    }
+      })
     },
 
     async getMovies() {

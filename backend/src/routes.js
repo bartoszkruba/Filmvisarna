@@ -16,9 +16,12 @@ const authenticationPolicy = require('./policies/authenticationPolicy');
 
 const bookingController = require('./controllers/bookingController');
 
-Router.post('/addMovie',moviesPolicy.postAddMoviePolicy, moviesController.postAddMovie);
+const imagesController = require('./controllers/imagesController');
 
-Router.post('/addMovie', moviesPolicy.postAddMoviePolicy, moviesController.postAddMovie);
+const multer = require('multer');
+const upload = multer({dest: 'public/'});
+
+Router.post('/addMovie', moviesPolicy.postAddMoviePolicy, moviesController.postAddMovie, upload.single('image'), imagesController.postImage);
 
 Router.post('/searchMovies', moviesController.searchMovies);
 // Creating routes for different URLs
@@ -32,7 +35,6 @@ Router.get('/', (req, res, next) => {
 
 // route for POST request to localhost:8081/movies
 Router.post('/movies', moviesController.getMovies);
-
 
 Router.post('/movieTheatres', movieTheatreController.postMovieTheatres);
 
