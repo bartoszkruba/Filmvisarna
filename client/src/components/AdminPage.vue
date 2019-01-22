@@ -1,5 +1,5 @@
 <template>
-<div>
+<div style="background-color: white">
   <div v-if="this.$store.state.loggedInUser.admin">
     <b-jumbotron class="jumbotron"><h1>Admin Sida</h1></b-jumbotron>
     <h2 class="text-center">Add Movie</h2>
@@ -406,6 +406,10 @@
     <div v-if="!this.$store.state.loggedInUser.admin">
       <b-jumbotron class="jumbotron"><h1>Du måste vara inloggad som administratör <br> för att få åtkomst till den här sidan</h1></b-jumbotron>
     </div>
+    <div>
+      <input type="file" @change="onFileChanged">
+      <button @click="onUpload">Upload!</button>
+    </div>
   </div>
 </template>
 
@@ -456,7 +460,9 @@ export default {
         },
         movieTitle: null,
         movieTheatreName: null
-      }
+      },
+
+      selectedFile: null
     };
   },
   created() {
@@ -464,6 +470,14 @@ export default {
     this.getMovieTheatres();
   },
   methods: {
+    onFileChanged (event){
+      this.selectedFile = event.target.files[0];
+    },
+
+    onUpload(){
+      console.log(this.selectedFile);
+    },
+
     async getMovies() {
       const response = await api.getMovies();
       this.movies = response.data.movies;
