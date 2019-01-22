@@ -225,6 +225,8 @@ export default {
   margin-top: 1rem;
   margin-left: 20vw;
   margin-right: 20vw;
+  background-color: rgba(2, 2, 2, 0.4);
+  color: white;
 }
 .flexbox {
   display: flex;
@@ -248,6 +250,8 @@ hr {
 .posterpic {
   width: 15vmin;
   box-shadow: 2px 2px 5px black;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 .images {
   margin: 0;
@@ -283,8 +287,7 @@ span {
 
 @media screen and (max-width: 500px) {
   .main{
-    margin-left: 0;
-    margin-right: 0;
+    margin: 0;
   }
   .desk-only{
     display: none;

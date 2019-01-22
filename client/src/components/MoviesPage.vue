@@ -267,8 +267,7 @@ hr {
 
 @media screen and (max-width: 500px) {
   .main{
-    margin-left: 0;
-    margin-right: 0;
+   margin: 0;
   }
   h2 {
     font-size: 1.5rem;
