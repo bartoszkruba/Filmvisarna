@@ -232,11 +232,11 @@ export default {
       let searchIndex = url.indexOf("?")+1;
       let output = {};
 
-      if (searchIndex > 0) {
+      if(searchIndex > 0) {
         url = url.substr(searchIndex).split("&");
-        for (let i = 0; i < url.length; i++) {
+        for(let i = 0; i < url.length; i++){
           url[i] = url[i].split("=");
-          if (url[i][1].length > 0)
+          if(url[i][1].length > 0)
             this.urlQuery[url[i][0]] = url[i][1];
         }
       }
