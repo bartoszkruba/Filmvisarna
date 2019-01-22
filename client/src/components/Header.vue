@@ -20,7 +20,7 @@
               size="sm"
               class="mr-sm-2"
               type="text"
-              placeholder="Sök"
+              placeholder="Sök Film"
               v-model="searchQuery"
             />
             <b-button
@@ -49,7 +49,7 @@
             </b-nav-item>
             <b-nav-item
               class="router-link"
-              to="/adminSida"
+              to="/adminPage"
               v-if="this.$store.state.showAdminButton"
               exact-active-class="menu-item-active"
             >Admin Sida</b-nav-item>
@@ -85,14 +85,9 @@ export default {
       this.$router.push("/");
     },
     async searchForMovies() {
-      if(this.searchQuery){
-        const response = await api.searchMovies(this.searchQuery);
-        if(this.searchQuery && this.searchQuery.trim() !== ''){
-          this.$router.push(`/filmSida?searchQuery=${this.searchQuery.replace(' ', '_')}`);
-        }
-      }else {
-        this.$router.push(`/filmSida`);
-
+      const response = await api.searchMovies(this.searchQuery);
+      if(this.searchQuery && this.searchQuery.trim() !== ''){
+        this.$router.push(`/filmsida?${this.searchQuery.replace(' ', '_')}`);
       }
       this.searchQuery = null;
     },

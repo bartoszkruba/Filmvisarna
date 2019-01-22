@@ -17,7 +17,6 @@ const app = express();
 
 const startupConfig = require('./util/startupConfig');
 
-
 // Telling Server to use cors package
 app.use(cors());
 // Telling server to use body-parser package with json configuration
@@ -30,27 +29,20 @@ app.use(Router);
 // function for starting server
 const startServer = async () => {
     // Telling mongoose to connect to the MongoDB Atlas
-    await mongoose.connect('mongodb+srv://groupaccount:groupaccount1234@cluster0-ydy7f.mongodb.net/filmvisarna', { useNewUrlParser: true });
+    await mongoose.connect(startupConfig.mongooseConnection, { useNewUrlParser: true });
     // Telling server to start listening on localhost:8081
     app.listen(startupConfig.port, () => {
 
-        // resetEverything();
+        // testSendingEmail();
 
+        resetEverything();
 
-        // new MovieSession({
-        //     movieID: '5c3897dba4b4065c06286187',
-        //     date: {
-        //         year: 2019,
-        //         month: 2,
-        //         day: 12,
-        //         time: "20:00"
-        //     },
-        //     freePlaces: 81,
-        //     movieTheatreID: "5c3dae361a418e28df53e67a"
-        // }).save();
         console.log(startupConfig.startupMessage);
     });
 }
+
+// Starting server
+startServer();
 
 async function resetEverything() {
     const MovieSession = require('./models/movieSession');
@@ -59,34 +51,35 @@ async function resetEverything() {
 
     const movieSessions = await MovieSession.find();
 
-    for(let k = 0; k < movieSessions.length; k++){
+    for (let k = 0; k < movieSessions.length; k++) {
 
         const theatreID = movieSessions[k].movieTheatreID;
-        const movieTheatre = await MovieTheatre.findOne({_id: theatreID});
+        const movieTheatre = await MovieTheatre.findOne({ _id: theatreID });
         let freePlaces = [];
-    
-        for(let i = 0; i < movieTheatre.seatsPerRow.length; i++){
-            for(let j = 0; j < movieTheatre.seatsPerRow[i]; j++){
-                const seat = getLetter(i) + (j+1) + ";"
-                freePlaces.push({seatNumber: seat, booked: false});
+
+        for (let i = 0; i < movieTheatre.seatsPerRow.length; i++) {
+            for (let j = 0; j < movieTheatre.seatsPerRow[i]; j++) {
+                const seat = getLetter(i) + (j + 1) + "";
+                freePlaces.push({ seatNumber: seat, booked: false });
             }
         }
-        movieSessions[k].freePlaces = freePlaces;
+        movieSessions[k].places = freePlaces;
+        movieSessions[k].freePlaces = movieTheatre.seats;
+        movieSessions[k].FreePlaces = null;
+        movieSessions[k].Places = null;
         movieSessions[k].save();
     }
 
     const users = await User.find();
 
-    for(let f = 0; f < users.length; f++){
+    for (let f = 0; f < users.length; f++) {
         users[f].bookedTickets = [];
         users[f].save();
     }
-    
-
 }
 
-function getLetter(row){
-    switch (row+1) {
+function getLetter(row) {
+    switch (row + 1) {
         case 1:
             return "A"
         case 2:
@@ -108,10 +101,32 @@ function getLetter(row){
         case 10:
             return "I"
         default:
-        return "X"
+            return "X"
     }
 };
 
-// Starting server
-startServer();
+//*************************************************************** */
+// !!!!! Calling this will fuck upp all passwords in Database !!!!
+async function hashPasswords() {
 
+    const User = require('./models/user');
+    const Bcrypt = require('bcrypt');
+
+    const users = await User.find();
+    for (let i = 1; i < users.length; i++) {
+        users[i].password = Bcrypt.hashSync(users[i].password, 10);
+        users[i].save();
+    }
+}
+// *******************************************************************
+
+function testSendingEmail() {
+    const emailTransporter = startupConfig.emailTransporter;
+    let mailOptions = {
+        from: startupConfig.email,
+        to: startupConfig.email,
+        subject: "This is a test",
+        text: "Test"
+    }
+    emailTransporter.sendMail(mailOptions);
+}

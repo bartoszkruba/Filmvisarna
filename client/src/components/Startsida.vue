@@ -1,19 +1,5 @@
 <template>
   <div class="main">
-     <section v-if="errorFromMongo" class="text-center mt-3">
-      <h1>Något blev fel!</h1>
-      <p>Länken som angavs fungar inte just nu. Det kan bero på något av följande</p>
-      <ul>
-        <li>Antipiratbyrån har hackat oss</li>
-        <li>Vår hemsida har tekniskt strul</li>
-        <li>Du har klickat på en gammal länk</li>
-      </ul>
-      <router-link
-        class="router-link"
-        to="/moviesPage"
-        exact-active-class="menu-item-active"
-      >Klicka här för att komma till alla filmer</router-link>
-    </section>
 
     <section v-if="movies && sessions">
       <b-jumbotron class="white-text backg-image first-jumbo" >
@@ -30,7 +16,7 @@
                 <figure class="imgbox">
                   <router-link
                     class="router-link"
-                    :to="'/Movie?movieID='+this.movies[0]._id"
+                    :to="'/film?movieID='+this.movies[0]._id"
                     exact-active-class="menu-item-active"
                   >
                     <img class="poster" :src="require('../assets/'+this.movies[0].images[1])">
@@ -38,7 +24,7 @@
                   <h3>{{movies[0].title}}</h3>
                   <router-link
                     class="router-link"
-                    :to="'/Movie?movieID='+this.movies[0]._id"
+                    :to="'/film?movieID='+this.movies[0]._id"
                     exact-active-class="menu-item-active"
                   >
                     <b-button>Läs mer</b-button>
@@ -50,7 +36,7 @@
                 <figure class="imgbox">
                   <router-link
                     class="router-link"
-                    :to="'/Movie?movieID='+this.movies[1]._id"
+                    :to="'/film?movieID='+this.movies[1]._id"
                     exact-active-class="menu-item-active"
                   >
                     <img class="poster" :src="require('../assets/'+this.movies[1].images[1])">
@@ -58,7 +44,7 @@
                   <h3>{{movies[1].title}}</h3>
                   <router-link
                     class="router-link"
-                    :to="'/Movie?movieID='+this.movies[1]._id"
+                    :to="'/film?movieID='+this.movies[1]._id"
                     exact-active-class="menu-item-active"
                   >
                     <b-button>Läs mer</b-button>
@@ -70,7 +56,7 @@
                 <figure class="imgbox">
                   <router-link
                     class="router-link"
-                    :to="'/Movie?movieID'+this.movies[2]._id"
+                    :to="'/film?movieID='+this.movies[2]._id"
                     exact-active-class="menu-item-active"
                   >
                     <img class="poster" :src="require('../assets/'+this.movies[2].images[1])">
@@ -78,17 +64,17 @@
                   <h3>{{movies[2].title}}</h3>
                   <router-link
                     class="router-link"
-                    :to="'/Movie?movieID='+this.movies[2]._id"
+                    :to="'/film?movieID='+this.movies[2]._id"
                     exact-active-class="menu-item-active"
                   >
                     <b-button>Läs mer</b-button>
                   </router-link>
                     <b-button v-on:click="goToBooking(2)">Snabb boka</b-button>
-                </figure>
-              </b-col>
-            </b-row>
-          </b-container>
-        </div>
+                  </figure>
+                </b-col>
+              </b-row>
+            </b-container>
+          </div>
 
         <b-carousel
           id="carousel1"
@@ -114,7 +100,7 @@
             </ul>
             <router-link
               class="router-link"
-              :to="'/Movie?movieID='+this.movies[0]._id"
+              :to="'/film?movieID='+this.movies[0]._id"
               exact-active-class="menu-item-active"
             >
               <b-button>Läs mer</b-button>
@@ -136,7 +122,7 @@
             </ul>
             <router-link
               class="router-link"
-              :to="'/Movie?movieID='+this.movies[1]._id"
+              :to="'/film?movieID='+this.movies[1]._id"
               exact-active-class="menu-item-active"
             >
               <b-button>Läs mer</b-button>
@@ -158,14 +144,15 @@
             </ul>
             <router-link
               class="router-link"
-              :to="'/Movie?movieID='+this.movies[2]._id"
+              :to="'/film?movieID='+this.movies[2]._id"
               exact-active-class="menu-item-active"
             >
               <b-button>Läs mer</b-button>
             </router-link>
               <b-button v-on:click="goToBooking(2)">Snabb boka</b-button>
-          </b-carousel-slide>
-        </b-carousel>
+            </b-carousel-slide>
+          </b-carousel>
+        </div>
       </div>
     </div>
     <div v-else class="loading-logo">
@@ -186,7 +173,6 @@
           <li>m.m.</li>
         </ul>
       </b-jumbotron>
-    </section>
   </div>
 </template>
 <script>
@@ -195,16 +181,11 @@ export default {
   //Hämta data från server
   data() {
     return {
-      movies: undefined,
+      movies: null,
       sessions: null,
       movieIndex: null,
-      errorFromMongo: false
-
     };
   },
-   mounted: function() {
-    this.errorFromMongo = false;
-   },
   created() {
     this.getMovies();
     this.getSessions();
@@ -216,56 +197,38 @@ export default {
     onSlideEnd(slide) {
       this.sliding = false;
     },
-    async getMovies() { 
-      this.movies = null;
-      if (this.movieID !== null) {
-        try {
-          const response = await api.getMovies({ _id: this.movieID });
-          this.movies = response.data.movies;
-        } catch (error) {}
-      }
-      if (this.movies === null) this.errorFromMongo = true;
+    async getMovies() {
+      const response = await api.getMovies();
+      this.movies = response.data.movies;
     },
     async getSessions() {
-      this.sessions = null;
-      if (this.sessionID !== null) {
-        try {
-          const response = await api.getMovieSessions();
-          if (response.data.movie_sessions.length) {
-            this.sessions = response.data.movie_sessions;
-            
-          }
-        } catch (error) {}
-        if (this.sessions === null) this.errorFromMongo = true;
-      }
+      const response = await api.getMovieSessions();
+      this.sessions = response.data.movie_sessions;
     },
     linkToMovePage(e) {
-      return this.$router.push("/Movie?movieID=" + e.srcElement.attributes.value.value);
+      return this.$router.push("/film?movieID=" + e.srcElement.attributes.value.value);
     },
-
-    goToBooking(movieIndex){
+    goToBooking(movieIndex) {
       this.movieIndex = movieIndex;
+      const session = this.sessions.find((cur)=>{
+                    return cur.movieID === this.movies[this.movieIndex]._id})._id
+      const sessionAndMovieID = {
+        movieID: this.movies[this.movieIndex]._id,
+        sessionID: session,
+        redirect: true
+      }
       if(!this.$store.getters.isUserSignedIn){
          this.$store.commit('toggleLoggaInWindow');
+         this.$store.commit('setRoute', sessionAndMovieID)
       }else{
         this.$router.push('/BokningSida?movieID='+this.movies[movieIndex]._id+'&sessionID='+this.sessions.find((cur)=>{
                     return cur.movieID === this.movies[movieIndex]._id})._id);
       }
     },
-  },
-   watch: {
-     '$store.state.loggaInButtonPressed': function() {
-       this.$router.push('/BokningSida?movieID='+this.movies[this.movieIndex]._id+'&sessionID='+this.sessions.find((cur)=>{
-                    return cur.movieID === this.movies[this.movieIndex]._id})._id);
-    }, 
-  },
-    '$route': function() {
-      this.errorFromMongo = false;
-    }
+  }
 };
 </script>
 <style scoped>
-
 .loading-logo {
   height: 70vh;
   opacity: 1;
@@ -286,7 +249,7 @@ export default {
   }
 }
 
-.spinner{
+.spinner {
   -webkit-animation: spin 3s infinite linear;
 }
 
@@ -321,7 +284,7 @@ li {
   text-align: center;
   list-style-type: none;
 }
-ul{
+ul {
   margin: 0;
   padding: 0;
 }
@@ -343,12 +306,12 @@ ul{
   padding-top: 2vh;
 }
 
-.white-text{
+.white-text {
   color: white;
   text-shadow: 20px 20px 20px 20px black;
 }
 
-.welcome-text{
+.welcome-text {
   font-size: 130%;
 }
 

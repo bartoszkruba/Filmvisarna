@@ -31,11 +31,15 @@ movieSessionSchema = new Schema({
         required: true,
         ref: 'MovieTheatre'
     },
-    freePlaces: [
+    freePlaces: {
+    },
+    places: [
         {
             seatNumber: {
-                type: String,
-                required: true
+                type: String
+            },
+            booked: {
+                type: Boolean
             }
         }
     ]

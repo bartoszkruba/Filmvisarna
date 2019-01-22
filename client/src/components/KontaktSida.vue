@@ -18,7 +18,7 @@
 
     <div class="kontakta">
       <h3>Öppettider</h3>
-      <p>Öppet måndag - fredag 11:00-21:00, lördag - söndag 10:00-21:00</p>
+      <p>Öppet måndag - fredag 11:00-23:45, lördag - söndag 10:00-23:45</p>
       <p>Julafton stängt</p>
       <p>Nyårsafton 10:00-15:00</p>
       <p>Nyårsdagen 11:00-17:00</p>
@@ -55,8 +55,8 @@
       <p>Storagatan, 213 56 Malmö</p>
     </div>
   </div>
-</template> 
- 
+</template>
+
 <script>
 import api from "@/services/Api.js";
 

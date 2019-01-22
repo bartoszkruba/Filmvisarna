@@ -8,18 +8,16 @@
       <li>Vår hemsida har tekniskt strul</li>
       <li>Du har klickat på en gammal länk</li>
     </ul>
-    <router-link class="router-link" to="/moviesPage" exact-active-class="menu-item-active">Klicka här för att komma till alla filmer</router-link>
+    <router-link class="router-link" to="/filmSida" exact-active-class="menu-item-active">Klicka här för att komma till alla filmer</router-link>
   </section>
 
   <section v-if="movie && session && theatre">
     <div>
       <img :src="require('../assets/'+this.movie.images[0])" class="img">
-      <div class="papillon">
+      <title>
         <h1 class="title">{{movie.title}}</h1>
-
-
         <div class="antal-bilijetter"></div>
-      </div>
+      </title>
     </div>
 
     <div class="text">
@@ -27,7 +25,12 @@
         <h4>Salong: {{this.theatre.name}}</h4>
         <h4>|</h4>
         <h4>Tid: {{this.session.date.day+'/'+this.session.date.month+' '+this.session.date.year +' '+ this.session.date.time}}</h4>
+
       </div>
+      <b-dropdown id="ddown-buttons" text="Ändra visningsdatum: " variant="danger" class="m-2">
+        <b-dropdown-item-button v-on:click="changeSession" v-for="session in sessions" :value="session._id" :key="session._id">{{getWeekdayString(session.date.year,session.date.month,session.date.day).slice(0,-3)}} {{session.date.day + '/' + session.date.month + ' ' + session.date.year + ' ' + session.date.time }} </b-dropdown-item-button>
+      </b-dropdown>
+
       <h4>Antal biljetter:</h4>
       <p>
         <strong>Ordinarie</strong>
@@ -73,20 +76,27 @@
 
         </div>
         <!-- Modal Component -->
-        <b-modal id="modal1" v-if="totalt>=65" title="Bekräftelse" @ok="goHem" @cancel="cancelBokning" ok-only>
-          <p>Film: <strong> {{movie.title}}</strong></p>
-          <p>Datum: <strong>{{this.session.date.day+'/'+this.session.date.month+' '+this.session.date.year }}</strong> </p>
-          <p>Tid: <strong>{{this.session.date.time}}</strong></p>
-          <p>Salong: <strong>{{this.theatre.name}} </strong></p>
-          <div class="Biljetter">
-            <p>Biljetter:</p>
-            <div class="vilkaBiljetter">
-              <p v-if="antal>0"><strong>{{antal}} Ordinarie</strong></p>
-              <p v-if="antalPensionar>0"><strong>{{antalPensionar}} Pensionär</strong></p>
-              <p v-if="antalBarn>0"><strong>{{antalBarn}} Barn</strong></p>
+        <b-modal id="modal1" v-if="totalt>=65" title="Bekräftelse" @ok="goHem" ok-only>
+          <div class="mainBekraftelse">
+            <div class="textBekraftelse">
+              <p>Film: <strong> {{movie.title}}</strong></p>
+              <p>Datum: <strong>{{this.session.date.day+'/'+this.session.date.month+' '+this.session.date.year }}</strong> </p>
+              <p>Tid: <strong>{{this.session.date.time}}</strong></p>
+              <p>Salong: <strong>{{this.theatre.name}} </strong></p>
+              <div class="Biljetter">
+                <p>Biljetter:</p>
+                <div class="vilkaBiljetter">
+                  <p v-if="antal>0"><strong>{{antal}} Ordinarie</strong></p>
+                  <p v-if="antalPensionar>0"><strong>{{antalPensionar}} Pensionär</strong></p>
+                  <p v-if="antalBarn>0"><strong>{{antalBarn}} Barn</strong></p>
+                </div>
+              </div>
+              <p>Att betala: <strong>{{totalt}}kr</strong></p>
+            </div>
+            <div>
+              <img :src="require('../assets/'+this.movie.images[1])" class="img2">
             </div>
           </div>
-          <p>Att betala: <strong>{{totalt}}kr</strong></p>
           <p class="my-4">Din bokningsnummer: <strong>{{bokningsnummer}}</strong></p>
           <p class="my-4"><strong>OBS!</strong>Du kan hämta ut dina biljetter senast 40min innan filmen börjar</p>
           <p> betalningen sker vid kassan i biografen</p>
@@ -130,6 +140,7 @@ export default {
       movie: undefined,
       ledigaPlatserISal: null,
       session: null,
+      sessions: null,
       theatre: null,
       bokningsnummer: null,
       totalt: null,
@@ -146,9 +157,9 @@ export default {
     this.errorFromMongo = false;
     this.getUrlQuery();
     this.getMovieByID();
-    this.getSessionByID();
+    this.getSessions();
     if (!this.$store.getters.isUserSignedIn) {
-      this.$router.push('/moviesPage');
+      this.$router.push('/filmSida');
     }
   },
   watch: {
@@ -156,28 +167,18 @@ export default {
       this.errorFromMongo = false;
       this.getUrlQuery();
       this.getMovieByID();
-      this.getSessionByID();
+      this.getSessions();
     }
   },
 
   computed: {
     createTicket: function() {
       let ticket = {
-        orderID: this.bokningsnummer,
         sessionID: this.urlQuery.sessionID,
-        title: this.movie.title,
-        theatre: this.theatre.name,
-        totalTickets: this.antalBarn + this.antal + this.antalPensionar,
-        price: this.totalt,
-        time: this.session.date.time,
-        date: this.session.date.year +
-          "/" +
-          this.session.date.month +
-          "/" +
-          this.session.date.day,
         children: this.antalBarn,
         pensioner: this.antalPensionar,
-        adults: this.antal
+        adults: this.antal,
+        placeNumbers: ["A1", "A2", "A3"]
       };
       return ticket;
     },
@@ -193,6 +194,41 @@ export default {
     this.totalt = 0;
   },
   methods: {
+    getWeekdayString(y, m, d){
+      let stringDate = `${y}-${m}-${d}`;
+      let date = new Date(stringDate);
+      let weekday = date.getDay();
+      let output;
+      switch (weekday) {
+        case 0:
+          output = "Söndag";
+          break;
+        case 1:
+          output = "Måndag";
+          break;
+        case 2:
+          output = "Tisdag";
+          break;
+        case 3:
+          output = "Onsdag";
+          break;
+        case 4:
+          output = "Torsdag";
+          break;
+        case 5:
+          output = "Fredag";
+          break;
+        case 6:
+          output = "Lördag";
+          break;
+        default:
+          output = "Ingen dag alls"
+      }
+      return output;
+    },
+    changeSession(e){
+      this.$router.push(`/BokningSida?movieID=${this.urlQuery.movieID}&sessionID=${e.target.value}`);
+    },
     getUrlQuery() {
       this.urlQuery = {};
       let url = window.location.href;
@@ -200,18 +236,18 @@ export default {
       let searchIndex = url.indexOf("?")+1;
       let output = {};
 
-      if (searchIndex > 0) {
+      if(searchIndex > 0) {
         url = url.substr(searchIndex).split("&");
-        for (let i = 0; i < url.length; i++) {
+        for(let i = 0; i < url.length; i++){
           url[i] = url[i].split("=");
-          if (url[i][1].length > 0)
+          if(url[i][1].length > 0)
             this.urlQuery[url[i][0]] = url[i][1];
         }
       }
     },
     async getMovieByID() {
       this.movie = null;
-      if (this.urlQuery.movieID !== null) {
+      if (this.urlQuery.movieID) {
         try {
           const response = await api.getMovies({
             _id: this.urlQuery.movieID
@@ -222,23 +258,32 @@ export default {
       if (this.movie === null)
         this.errorFromMongo = true;
     },
+    async getSessions(){
+      this.sessions = null;
+      if(this.urlQuery.movieID){
+        try{
+          const response = await api.getMovieSessions({
+            movieID: this.urlQuery.movieID
+          });
+          this.sessions = response.data.movie_sessions;
+        }catch(error){}
+      }
+
+      if(this.sessions === null) this.errorFromMongo = true;
+      else this.getSessionByID();
+    },
     async getSessionByID() {
       this.session = null;
-      if (this.urlQuery.sessionID !== null) {
-        try {
-          const response = await api.getMovieSessions({
-            _id: this.urlQuery.sessionID
-          });
-          if (response.data.movie_sessions.length) {
 
-            this.session = response.data.movie_sessions[0];
-            this.ledigaPlatserISal = this.session.freePlaces;
-            this.theatreID = this.session.movieTheatreID;
-          }
-        } catch (error) {}
-        if (this.session === null) this.errorFromMongo = true;
-        else this.getTheatreByID();
+      if (this.urlQuery.sessionID) {
+        this.session = this.sessions.find((curr) => {
+          return curr._id === this.urlQuery.sessionID
+        });
+        this.ledigaPlatserISal = this.session.freePlaces;
+        this.theatreID = this.session.movieTheatreID;
       }
+      if (!this.session) this.errorFromMongo = true;
+      else this.getTheatreByID();
     },
     async getTheatreByID() {
       // Sätt theatre till null för att testa om lyckas hämtning
@@ -256,18 +301,8 @@ export default {
       if (this.theatre === null)
         this.errorFromMongo = true;
     },
-    getBokningsnummer() {
-      this.bokningsnummer = (Math.random() + 1);
-    },
     goHem() {
       this.$router.push("/");
-    },
-    cancelBokning() {
-      this.antal = 0;
-      this.antalPensionar = 0;
-      this.antalBarn = 0;
-      this.ledigaPlatserISal = this.session.freePlaces;
-      this.totalt = 0;
     },
     plus() {
       this.antal += 1;
@@ -376,6 +411,16 @@ export default {
     -webkit-transform: rotate(360deg);
   }
 }
+.textBekraftelse{
+  width: 20vw;
+}
+.mainBekraftelse{
+  display: flex;
+}
+.img2{
+  width: 90%;
+  box-shadow: 2px 2px 20px black;
+}
 
 main{
   background-color: white;
@@ -455,7 +500,7 @@ h4 {
   text-align: center;
 }
 
-.papillon {
+title {
   position: relative;
   margin-top: -17vh;
   display: block;
@@ -509,8 +554,15 @@ div .vilkaBiljetter {
 
 @media screen and (max-width: 416px) {
 
-  .papillon {
+  title {
     margin-top: -10vh;
+  }
+  .textBekraftelse{
+    width: 90vw;
+  } 
+  .mainBekraftelse{
+  display: flex;
+  flex-direction: column;
   }
 
   .title {

@@ -1,6 +1,28 @@
 <template>
   <section class="hello">
-   
+    <!--<section>
+  <b-navbar type="dark" variant="danger" toggleable>
+    <b-navbar-toggle target="nav_dropdown_collapse"></b-navbar-toggle>
+    <b-collapse is-nav id="nav_dropdown_collapse">
+      <b-navbar-nav>
+        <b-nav-item href="#">Home</b-nav-item>
+        <b-nav-item href="#">Link</b-nav-item>
+      </b-navbar-nav>
+    </b-collapse>
+  </b-navbar>
+    </section>-->
+    <section v-if="errorFromMongo" class="text-center mt-3">
+    <h1>Något blev fel!</h1>
+    <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
+    <ul>
+      <li>Antipiratbyrån har hackat oss</li>
+      <li>Vår hemsida har tekniskt strul</li>
+      <li>Du har klickat på en gammal länk</li>
+    </ul>
+    <router-link class="router-link" to="/" exact-active-class="menu-item-active">Klicka här för att komma till start sidan</router-link>
+  </section>
+
+    <section v-if="movies">
 
     <h1 class="text-center mt-3" v-if="movies && movies.length === 0">Inga Sökträffar :(</h1>
    
@@ -10,7 +32,7 @@
           <figure class="images">
             <router-link
               class="router-link"
-              :to="'/Movie?movieID='+m._id"
+              :to="'/film?movieID='+m._id"
               exact-active-class="menu-item-active"
             >
               <img :src="require('../assets/'+m.images[1])" class="posterpic">
@@ -18,6 +40,14 @@
           </figure>
 
           <div class="movietext">
+            <div class="flex-col">
+              <router-link
+                class="router-link"
+                :to="'/film?movieID='+m._id"
+                exact-active-class="menu-item-active"
+              >
+                <h2>{{m.title}}</h2>
+              </router-link>
 
           <section class="flex-col">
             <router-link
@@ -55,6 +85,7 @@
       </h1>
       <h1 class="text-center">Loading</h1>
     </div>
+    </section>
   </section>
 </template>
 
@@ -65,27 +96,45 @@ export default {
   name: "MoviesPage",
   data() {
     return {
-      movies: null,
-      urlQuery: {}
+      movies: undefined,
+      urlQuery: {},
+      errorFromMongo: false
+
     };
   },
   mounted(){
+    this.errorFromMongo = false;
     this.getUrlQuery();
+    this.getMovies();
+  },
+  mounted() {
     this.getMovies();
   },
   methods: {
     async getMovies() {
+      this.movies = null;
+      
+        try{ 
+          if(this.urlQuery.searchQuery){
+            const response = await api.searchMovies(this.urlQuery.searchQuery.replace('_', ' '));
+            this.movies = response.data.movies;
+            if(this.movies.length === 1){
+              this.$router.push(`/film?movieID=${this.movies[0]._id}`);
+            }
+          } 
+          else {
+            const response = await api.getMovies();
+            this.movies = response.data.movies;
+          }
 
-      if(this.urlQuery.searchQuery){
-        const response = await api.searchMovies(this.urlQuery.searchQuery.replace('_', ' '));
-        this.movies = response.data.movies;
-        if(this.movies.length === 1){
-          this.$router.push(`/Movie?movieID=${this.movies[0]._id}`);
+        }catch(error){
+          
         }
-      } else {
-        const response = await api.getMovies();
-        this.movies = response.data.movies;
-      }
+       
+        
+      if (this.movies === null) 
+        this.errorFromMongo = true;
+
     },
     getUrlQuery() {
       this.urlQuery = {};
@@ -105,11 +154,12 @@ export default {
     }
   },
   watch:{
-    $route (to, from){
-        this.getUrlQuery();
+    '$route': function() {
+      this.errorFromMongo = false;
+      this.getUrlQuery();
         this.getMovies();
     }
-}
+  }
 };
 </script>
 

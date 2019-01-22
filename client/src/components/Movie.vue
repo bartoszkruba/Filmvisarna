@@ -1,4 +1,3 @@
-
 <template>
 <div class="Movie">
 
@@ -11,7 +10,8 @@
         <li>Vår hemsida har tekniskt strul</li>
         <li>Du har klickat på en gammal länk</li>
       </ul>
-      <router-link class="router-link" to="/moviesPage" exact-active-class="menu-item-active">Klicka här för att komma till alla filmer</router-link>
+      <router-link class="router-link" to="/filmsida" exact-active-class="menu-item-active">Klicka här för att komma till alla filmer</router-link>
+
     </section>
 
     <section v-if="aMovie && movieSessions">
@@ -35,13 +35,13 @@
           <br>
           <div v-if="movieSessions.length">
 
-          <!-- <router-link class="router-link" :to="'/BokningSida?'+aMovie._id" exact-active-class="menu-item-active"> -->
-            <b-btn v-on:click="goToBooking" variant="danger">Boka biljetter</b-btn>
-          <!-- </router-link> -->
 
-            <b-dropdown id="ddown-buttons" text="Ändra visningsdatum: " variant="danger" class="m-2">
+          <div class="knappar">
+            <b-btn v-on:click="goToBooking" variant="danger">Boka biljetter</b-btn>
+
+            <b-dropdown id="ddown-buttons" text="Ändra visningsdatum: " variant="danger" class="visningsdatum">
               <b-dropdown-item-button v-on:click="changeSession" v-for="session in this.movieSessions" :value="session._id" :key="session._id">{{getWeekdayString(session.date.year,session.date.month,session.date.day).slice(0,-3)}} {{session.date.day + '/' + session.date.month + ' ' + session.date.year + ' ' + session.date.time }}</b-dropdown-item-button>
-            </b-dropdown>
+            </b-dropdown></div>
             <h3><br>
               Vald visning: {{targetSessionDisplay}}
             </h3>
@@ -117,12 +117,6 @@
 
 
 
-    </section>
-    <section v-else class="loading-logo">
-      <h1 class="text-center spinner">
-        <font-awesome-icon icon="spinner"/>
-      </h1>
-      <h1 class="text-center">Loading</h1>
     </section>
   </b-jumbotron>
 </div>
@@ -207,8 +201,14 @@ export default {
       this.sessionID = e.target.value;
     },
     goToBooking(){
+      const sessionAndMovieID = {
+        movieID: this.urlQuery.movieID,
+        sessionID: this.sessionID,
+        redirect: true
+      }
       if(!this.$store.getters.isUserSignedIn){
          this.$store.commit('toggleLoggaInWindow');
+         this.$store.commit('setRoute', sessionAndMovieID)
       }else{
         this.$router.push('/BokningSida?movieID='+this.urlQuery.movieID+'&sessionID='+this.sessionID);
       }
@@ -291,10 +291,7 @@ export default {
       this.getUrlQuery();
       this.getMovieByID();
       this.getMovieSessions();
-    },
-     '$store.state.loggaInButtonPressed': function() {
-        this.$router.push('/BokningSida?movieID='+this.urlQuery.movieID+'&sessionID='+this.sessionID);
-    },
+    }
   }
 };
 </script>
@@ -376,6 +373,9 @@ export default {
 .movieheader_text {
   flex: 5;
 }
+.visningsdatum{
+    margin-left: 1vw;
+  }
 
 .moviedescription {
   font-style: italic;
@@ -387,6 +387,9 @@ export default {
   color: rgb(245, 245, 245);
   font-size: 200%;
   font-weight: bold;
+}
+.knappar{
+  margin-top: 6vh;
 }
 
 li {
@@ -419,6 +422,9 @@ li {
 }
 
 @media screen and (min-width: 768px) {
+  .m-2{
+    margin: 0;
+  }
   .moviedescription {
     font-size: 150%;
   }
@@ -451,5 +457,22 @@ li {
  .backgr{
    margin: 0;
  }
+}
+
+@media screen and (max-width: 320px) {
+  .visningsdatum{
+    margin-top: 1vh;
+  }
+  .movietitle{
+    text-align: center;
+  }
+}
+@media screen and (max-width: 414px) and (min-width: 321px) {
+  .movietitle{
+    text-align: center;
+  }
+  .visningsdatum{
+    margin-left: 2vw;
+  }
 }
 </style>
