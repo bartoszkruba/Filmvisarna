@@ -2,6 +2,8 @@ const User = require('../models/user');
 const uniqid = require('uniqid');
 const MovieSession = require('../models/movieSession');
 const Bcrypt = require('bcrypt');
+const config = require('../util/startupConfig')
+const emailTransporter = config.emailTransporter;
 
 module.exports.setBookedTicket = async (req, res, next) => {
     const user = await User.findOne({ email: req.body.user.email});
