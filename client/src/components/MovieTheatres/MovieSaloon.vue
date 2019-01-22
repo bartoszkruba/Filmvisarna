@@ -11,10 +11,10 @@
         <section class="rows">
           <template v-for="(seat, index2) in seatsPerRow[index]">
             <MovieSeat
-              class="movieSeat"
               @setChoosenSeats="setChoosenSeats"
               :myId="freePlaces[(count(index)+index2)].seatNumber"
               :seatBooked="freePlaces[(count(index)+index2)].booked"
+              :moreSeats="moreSeats"
             ></MovieSeat>
           </template>
         </section>
@@ -63,19 +63,24 @@ export default {
       console.log(seatsChoosen);
       //If choosen seats is already in array and it comes as an input again,
       //remove it from array because user undid his choise
-
       if (this.choosenSeats.includes(seatsChoosen)) {
         this.choosenSeats.splice(this.choosenSeats.indexOf(seatsChoosen), 1);
       } else {
-        if (this.mySeats > this.choosenSeats.length) {
+        if (this.moreSeats) {
           //otherwise add it to the array
           this.choosenSeats.push(seatsChoosen);
         } else {
           console.log("du får inte välja fler säten");
         }
+        
       }
-
+      this.$emit('checkAllSeatsChoosen',this.moreSeats);
       console.log(this.choosenSeats);
+    }
+  },
+  computed:{
+    moreSeats: function(){
+      return this.mySeats > this.choosenSeats.length;
     }
   }
 };
