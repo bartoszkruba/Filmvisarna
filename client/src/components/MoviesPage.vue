@@ -115,7 +115,7 @@ export default {
       try {
         if (this.urlQuery.searchQuery) {
           const response = await api.searchMovies(
-            this.urlQuery.searchQuery.replace("_", " ")
+            this.urlQuery.searchQuery.split('_').join(' ')
           );
           this.movies = response.data.movies;
           if (this.movies.length === 1) {
