@@ -152,6 +152,9 @@
           <p class="my-4">Ditt bokningsnummer:
             <strong>{{bokningsnummer}}</strong>
           </p>
+          <p>
+            Dina platser: <strong>{{choosenSeats.join(", ")}}</strong>
+          </p>
           <p class="my-4">
             <strong>OBS!</strong>Du kan hämta ut dina biljetter senast 40min innan filmen börjar
           </p>
@@ -655,7 +658,7 @@ div .vilkaBiljetter {
   }
   .textBekraftelse{
     width: 90vw;
-  } 
+  }
   .mainBekraftelse{
   display: flex;
   flex-direction: column;
