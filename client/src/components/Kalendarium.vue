@@ -35,7 +35,7 @@
               >
                 <img
                   class="posterpic"
-                  :src="movies.find((cur)=>{
+                  :src="url + movies.find((cur)=>{
                return cur._id === session.movieID
                }).imagesLinks.poster"
                 >
@@ -106,6 +106,11 @@ export default {
     this.getMovies();
     this.getSessions();
     this.getTheatres();
+  },
+  computed: {
+    url: function(){
+      return api.url
+    }
   },
   methods: {
     //movies data

@@ -569,22 +569,22 @@ export default {
       this.reviews.splice(this.reviews.indexOf(review), 1);
     },
     async addMovie() {
-      if (
-        this.title &&
-        this.length &&
-        this.genre &&
-        this.genre.trim() !== "" &&
-        this.distributor &&
-        this.distributor.trim() !== "" &&
-        this.language &&
-        this.language.trim() !== "" &&
-        this.ageLimit &&
-        this.subtitles &&
-        this.subtitles.trim() !== "" &&
-        this.director &&
-        this.director.trim() !== "" &&
-        this.description &&
-        this.description.trim() !== ""
+      if ( true
+        // this.title &&
+        // this.length &&
+        // this.genre &&
+        // this.genre.trim() !== "" &&
+        // this.distributor &&
+        // this.distributor.trim() !== "" &&
+        // this.language &&
+        // this.language.trim() !== "" &&
+        // this.ageLimit &&
+        // this.subtitles &&
+        // this.subtitles.trim() !== "" &&
+        // this.director &&
+        // this.director.trim() !== "" &&
+        // this.description &&
+        // this.description.trim() !== ""
       ) {
 
         const request = new FormData()

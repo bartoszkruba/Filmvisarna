@@ -13,7 +13,7 @@
 
   <section v-if="movie && session && theatre">
     <div>
-      <img :src="movie.imagesLinks.background" class="img">
+      <img :src="url + movie.imagesLinks.background" class="img">
       <title>
         <h1 class="title">{{movie.title}}</h1>
         <div class="antal-bilijetter"></div>
@@ -94,7 +94,7 @@
               <p>Att betala: <strong>{{totalt}}kr</strong></p>
             </div>
             <div>
-              <img :src="movie.imagesLinks.poster" class="img2">
+              <img :src="url + movie.imagesLinks.poster" class="img2">
             </div>
           </div>
           <p class="my-4">Din bokningsnummer: <strong>{{bokningsnummer}}</strong></p>
@@ -182,7 +182,9 @@ export default {
       };
       return ticket;
     },
-
+  url: function() {
+    return api.url
+  }
   },
   created() {
     this.pris = 85;

@@ -54,6 +54,6 @@ export default {
 
 	uploadImage: (images, uploadHandler) => {
 		return api.post('uploadimage', images, uploadHandler)
-	}
-
+	},
+	url: URL + '/api'
 } 
