@@ -68,9 +68,9 @@ module.exports.setBookedTicket = async (req, res, next) => {
         }
     } else {
         console.log("Not Verified");
-        res.send({
+        res.status(400).send({
             validated: false,
-            message: 'användaren finns inte i databasen'
+            message: 'De här platserna blev percis bokade, försök igen'
         });
     }
 }
