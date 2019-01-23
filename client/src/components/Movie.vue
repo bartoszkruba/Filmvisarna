@@ -1,7 +1,8 @@
 <template>
 <div class="Movie">
 
-  <section v-if="errorFromMongo">
+  <b-jumbotron class="jumbobg">
+    <section v-if="errorFromMongo">
       <h1>Något blev fel!</h1>
       <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
       <ul>
@@ -13,9 +14,9 @@
 
     </section>
 
-  <b-jumbotron class="jumbobg" v-if="aMovie && movieSessions">
+    <section v-if="aMovie && movieSessions">
 
-    <section >
+
       <!-- Title -->
       <section class="movieheader">
 
@@ -117,12 +118,6 @@
       </section>
     </section>
   </b-jumbotron>
-  <div class="mt-5 loading-logo" v-else>
-        <h1 class="text-center spinner">
-          <font-awesome-icon icon="spinner"/>
-        </h1>
-        <h1 class="text-center">Loading</h1>
-      </div>
 </div>
 </template>
 
@@ -311,39 +306,6 @@ export default {
   box-sizing: border-box;
 }
 
-.loading-logo {
-  color:white;
-  opacity: 1;
-  animation: flickerAnimation 3s infinite;
-  overflow: hidden;
-}
-
-@keyframes flickerAnimation {
-  /* flame pulses */
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-.spinner {
-  -webkit-animation: spin 3s infinite linear;
-}
-
-@-webkit-keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-  }
-}
-
 .jumbobg{
   background-color: rgba(2, 2, 2, 0.4);
   color: white;
@@ -436,7 +398,7 @@ hr{
   border-top: 1px solid rgb(71, 64, 64);
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 768px)  {
   .m-2{
     margin: 0;
   }
@@ -501,6 +463,13 @@ hr{
   }
   .jumbobg{
   margin: 0;
+  }
 }
+
+@media screen and (min-width: 417px) and (max-width: 768px){
+   .jumbobg{
+    width: 90vw;
+  }
+ 
 }
 </style>
