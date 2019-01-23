@@ -114,12 +114,11 @@
           <p class="totalt">totalt: {{totalt}}kr</p>
         </div>
         <div class="slutför btn">
-          <b-btn v-on:click="visaFelMedellande" v-b-modal.modal1>Slutför bokning</b-btn>
+          <b-btn v-on:click="visaFelMedellande">Slutför bokning</b-btn>
           <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
         </div>
         <!-- Modal Component -->
-        <b-modal id="modal1" v-if="totalt>=65 && this.allSeatsSelected" title="Bekräftelse" @ok="goHem" ok-only>
-          {{this.allSeatsSelected}}
+        <b-modal id="modal1" v-model="showTicketModal" title="Bekräftelse" @ok="goHem" ok-only no-close-on-esc no-close-on-backdrop hide-header-close>
           <p>Film:
             <strong>{{movie.title}}</strong>
           </p>
@@ -166,6 +165,9 @@
       </h1>
       <h1 class="text-center">Loading</h1>
     </section>
+    <b-modal v-model="showErrorModalBookedSeat" title="Fel!" @ok="reloadPage" ok-only no-close-on-esc no-close-on-backdrop hide-header-close>
+      <h5>Någon av platserna du har valt blev precis bokad,<br> vänligen försök igen</h5>
+    </b-modal>
   </main>
 </template>
 
@@ -206,6 +208,8 @@ export default {
       allSeatsSelected: false,
       choosenSeats: [],
       btnPressed: false,
+      showTicketModal: false,
+      showErrorModalBookedSeat:false,
     };
   },
   components: {
@@ -430,8 +434,6 @@ export default {
     },
 
     visaFelMedellande() {
-      console.log(this.allSeatsSelected);
-      console.log(this.choosenSeats.length);
       if (this.totalt == 0) {
         this.visaMedellande = true;
       } else {
@@ -444,17 +446,31 @@ export default {
     },
 
     async bokaFilm() {
-      const response = await api.setTickets(
-        this.createTicket,
-        this.$store.getters.getCredentials
-      );
-      this.bokningsnummer = response.data.orderID;
-      this.$store.commit("updateTickets", response.data.bookedTickets);
+      try{
+        const response = await api.setTickets(
+          this.createTicket,
+          this.$store.getters.getCredentials
+        );
+        this.bokningsnummer = response.data.orderID;
+        this.$store.commit("updateTickets", response.data.bookedTickets);
+        this.showTicketModal = true;
+        this.showErrorModalBookedSeat = false;
+    }
+      catch(error){
+        this.showTicketModal = false;
+        this.showErrorModalBookedSeat = true;
+        console.log(error.response.data.message);
+      }
     },
 
     someBtnPressed(){
       this.btnPressed = !this.btnPressed;
     },
+
+    reloadPage(){
+      this.getSessions();
+      console.log("nu laddar vi om skiten")
+    }
   }
 };
 </script>
