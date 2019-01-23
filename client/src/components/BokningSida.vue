@@ -52,7 +52,7 @@
             v-on:click="plus"
             type="button"
             class="btn btn-dark"
-            :disabled="this.ledigaPlatserISal === 0"
+            :disabled="this.ledigaPlatserISal - this.totalSeats === 0"
           >+</button>
         </div>
         <p>
@@ -70,7 +70,7 @@
             v-on:click="plusPensionar"
             type="button"
             class="btn btn-dark"
-            :disabled="this.ledigaPlatserISal === 0"
+            :disabled="this.ledigaPlatserISal - this.totalSeats === 0"
           >+</button>
         </div>
 
@@ -90,14 +90,14 @@
               v-on:click="plusBarn"
               type="button"
               class="btn btn-dark"
-              :disabled="this.ledigaPlatserISal === 0"
+              :disabled="this.ledigaPlatserISal - this.totalSeats === 0"
             >+</button>
           </div>
         </div>
         <p class="ledigaPlatser">
           <em>
             <strong>OBS!</strong>
-            Lediga platser: {{this.ledigaPlatserISal}} av {{this.theatre.seats}}
+            Lediga platser: {{this.ledigaPlatserISal - this.totalSeats}} av {{this.theatre.seats}}
           </em>
         </p>
         <section class="movieTheatre mt-5">
@@ -378,14 +378,12 @@ export default {
       this.totalt += 85;
       this.visaTotal = true;
       this.visaMedellande = false;
-      this.ledigaPlatserISal--;
       this.someBtnPressed();
     },
     minus() {
       if (this.antal > 0) {
         this.totalt -= 85;
         this.antal -= 1;
-        this.ledigaPlatserISal++;
         this.someBtnPressed();
       } else {
         alert("Du kan inte välja mindre än en biljett ");
@@ -396,14 +394,12 @@ export default {
       this.antalPensionar += 1;
       this.visaTotal = true;
       this.visaMedellande = false;
-      this.ledigaPlatserISal--;
       this.someBtnPressed();
     },
     minusPensionar() {
       if (this.antalPensionar > 0) {
         this.totalt -= 75;
         this.antalPensionar -= 1;
-        this.ledigaPlatserISal++;
         this.someBtnPressed();
       } else {
         alert("Du kan inte välja mindre än en biljett ");
@@ -414,14 +410,12 @@ export default {
       this.antalBarn += 1;
       this.visaTotal = true;
       this.visaMedellande = false;
-      this.ledigaPlatserISal--;
       this.someBtnPressed();
     },
     minusBarn() {
       if (this.antalBarn > 0) {
         this.antalBarn -= 1;
         this.totalt -= 65;
-        this.ledigaPlatserISal++;
         this.someBtnPressed();
       } else {
         alert("Du kan inte välja mindre än en biljett ");
