@@ -2,7 +2,10 @@
 <template>
   <section class="movie-saloon">
     <section class="instruktions">
-      <h5><span v-if="mySeats > 0">Välj {{mySeats}} Platser</span> <span v-else>Välj antal biljetter du vill boka</span></h5>
+      <h5>
+        <span v-if="mySeats > 0">Välj {{mySeats}} Platser</span>
+        <span v-else>Välj antal biljetter du vill boka</span>
+      </h5>
       <p v-if="mySeats > 0">Välj platser genom att klicka på stolarna i salongen</p>
     </section>
     <section class="screen">Bioduk</section>
@@ -20,6 +23,10 @@
         </section>
       </template>
     </section>
+    <section class="mt-3">
+      <font-awesome-icon style="color: blue" class="mr-1 ml-2" icon="square"/>Vald plats
+      <font-awesome-icon style="color: red" class="mr-1 ml-2" icon="square"/>Upptagen plats
+    </section>
   </section>
 </template>
 
@@ -34,7 +41,7 @@ export default {
       seatsPerRow: null,
       totalSeats: null,
       freePlaces: null,
-      choosenSeats: [],
+      choosenSeats: []
     };
   },
   components: {
@@ -71,14 +78,13 @@ export default {
         } else {
           console.log("du får inte välja fler säten");
         }
-
       }
-      this.$emit('checkAllSeatsChoosen',this.moreSeats, this.choosenSeats);
+      this.$emit("checkAllSeatsChoosen", this.moreSeats, this.choosenSeats);
       console.log(this.choosenSeats);
     }
   },
-  computed:{
-    moreSeats: function(){
+  computed: {
+    moreSeats: function() {
       return this.mySeats > this.choosenSeats.length;
     }
   }
