@@ -324,5 +324,8 @@ span {
   h4{
       margin-top: 0.5rem;
   }
+  .text{
+    margin: 0;
+  }
 }
 </style>
