@@ -39,7 +39,7 @@
                 :to="'/film?movieID='+m._id"
                 exact-active-class="menu-item-active"
               >
-                <img :src="m.imagesLinks.poster" class="posterpic">
+                <img :src="url + m.imagesLinks.poster" class="posterpic">
               </router-link>
             </figure>
 
@@ -102,6 +102,11 @@ export default {
     this.errorFromMongo = false;
     this.getUrlQuery();
     this.getMovies();
+  },
+  computed: {
+    url:function() {
+        return api.url;
+    }
   },
   methods: {
     async getMovies() {

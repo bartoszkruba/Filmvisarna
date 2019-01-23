@@ -1,3 +1,5 @@
+const path = require('path');
+
 // Used as http server - creates routes for different URLs
 const express = require('express');
 // Used for connecting to MongoDB and creating new collections 
@@ -21,10 +23,14 @@ const startupConfig = require('./util/startupConfig');
 app.use(cors());
 // Telling server to use body-parser package with json configuration
 app.use(bodyParser.json());
+
 // Telling server to use morgan
 app.use(morgan('combined'));
 // Telling server to use routes
+app.use("/public", express.static('public'));
+
 app.use(Router);
+
 
 // function for starting server
 const startServer = async () => {

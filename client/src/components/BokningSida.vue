@@ -1,28 +1,24 @@
 <template>
-  <main>
-    <section v-if="errorFromMongo">
-      <h1>Något blev fel!</h1>
-      <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
-      <ul>
-        <li>Antipiratbyrån har hackat oss</li>
-        <li>Vår hemsida har tekniskt strul</li>
-        <li>Du har klickat på en gammal länk</li>
-      </ul>
-      <router-link
-        class="router-link"
-        to="/filmSida"
-        exact-active-class="menu-item-active"
-      >Klicka här för att komma till alla filmer</router-link>
-    </section>
+<main>
+  <section v-if="errorFromMongo">
+    <h1>Något blev fel!</h1>
+    <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
+    <ul>
+      <li>Antipiratbyrån har hackat oss</li>
+      <li>Vår hemsida har tekniskt strul</li>
+      <li>Du har klickat på en gammal länk</li>
+    </ul>
+    <router-link class="router-link" to="/filmSida" exact-active-class="menu-item-active">Klicka här för att komma till alla filmer</router-link>
+  </section>
 
-    <section v-if="movie && session && theatre">
-      <div>
-       <!-- <img :src="require('../assets/'+this.movie.images[0])" class="img"> -->
-        <div class="papillon">
-          <h1 class="title">{{movie.title}}</h1>
-
-          <div class="antal-bilijetter"></div>
-        </div>
+  <section v-if="movie && session && theatre">
+    <div>
+      <img :src="url + movie.imagesLinks.background" class="img">
+      <title>
+        <h1 class="title">{{movie.title}}</h1>
+        <div class="antal-bilijetter"></div>
+      </title>
+    </div>
       </div>
 
       <div class="text">
@@ -121,7 +117,6 @@
           <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
         </div>
         <!-- Modal Component -->
-
         <b-modal id="modal1" v-if="totalt>=65 && this.allSeatsSelected" title="Bekräftelse" @ok="goHem" ok-only>
           <p>Film:
             <strong>{{movie.title}}</strong>
@@ -242,9 +237,13 @@ export default {
       };
       return ticket;
     },
+
     totalSeats: function() {
       return this.antalBarn + this.antalPensionar + this.antal;
-    }
+    },
+  url: function() {
+    return api.url
+  }
   },
   created() {
     this.pris = 85;

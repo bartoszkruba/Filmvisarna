@@ -16,9 +16,13 @@ const authenticationPolicy = require('./policies/authenticationPolicy');
 
 const bookingController = require('./controllers/bookingController');
 
-Router.post('/addMovie',moviesPolicy.postAddMoviePolicy, moviesController.postAddMovie);
+const multer = require('multer');
+const upload = multer({dest: 'public/'});
 
-Router.post('/addMovie', moviesPolicy.postAddMoviePolicy, moviesController.postAddMovie);
+Router.post('/addMovie', upload.fields([
+    {name: "poster"},
+    {name: "background"}
+]), moviesPolicy.postAddMoviePolicy, moviesController.authenticateAdmin, moviesController.postAddMovie);
 
 Router.post('/searchMovies', moviesController.searchMovies);
 // Creating routes for different URLs
@@ -33,7 +37,6 @@ Router.get('/', (req, res, next) => {
 // route for POST request to localhost:8081/movies
 Router.post('/movies', moviesController.getMovies);
 
-
 Router.post('/movieTheatres', movieTheatreController.postMovieTheatres);
 
 Router.post('/movieSessions', movieSessionController.postMovieSessions);
@@ -44,6 +47,15 @@ Router.post('/register', authenticationPolicy.postRegister, authenticationContro
 Router.post('/login', authenticationController.postValidate);
 Router.post('/getTickets', authenticationController.getBookedTickets);
 Router.post('/setTickets', bookingController.setBookedTicket);
+
+Router.post('/uploadimage', upload.fields([
+    {name: "poster"},
+    {name: "background"}
+]), (req, res, next) =>{
+    console.log(req.body);
+    console.log(req.files);
+});
+
 
 // Exporting Router
 module.exports = Router;
