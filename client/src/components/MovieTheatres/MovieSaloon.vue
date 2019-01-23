@@ -18,6 +18,7 @@
               :myId="freePlaces[(count(index)+index2)].seatNumber"
               :seatBooked="freePlaces[(count(index)+index2)].booked"
               :moreSeats="moreSeats"
+              :btnPressed="btnPressed"
             ></MovieSeat>
           </template>
         </section>
@@ -35,7 +36,7 @@ import api from "@/services/Api.js";
 import MovieSeat from "@/components/MovieTheatres/MovieSeat";
 export default {
   name: "MovieSaloon",
-  props: ["theatreID", "sessionID", "mySeats"],
+  props: ["theatreID", "sessionID", "mySeats","btnPressed"],
   data() {
     return {
       seatsPerRow: null,
@@ -66,7 +67,6 @@ export default {
 
     //Sets the choosen
     setChoosenSeats(seatsChoosen) {
-      console.log(seatsChoosen);
       //If choosen seats is already in array and it comes as an input again,
       //remove it from array because user undid his choise
       if (this.choosenSeats.includes(seatsChoosen)) {
@@ -80,12 +80,18 @@ export default {
         }
       }
       this.$emit("checkAllSeatsChoosen", this.moreSeats, this.choosenSeats);
-      console.log(this.choosenSeats);
     }
   },
   computed: {
     moreSeats: function() {
       return this.mySeats > this.choosenSeats.length;
+    }
+  },
+
+  watch: {
+    btnPressed: function(){
+      this.choosenSeats = [];
+      this.$emit("checkAllSeatsChoosen", this.moreSeats, this.choosenSeats);
     }
   }
 };

@@ -1,6 +1,6 @@
 <template>
   <header>
-    <b-navbar toggleable="md" type="dark" class="navbar navbar-expand-xl">
+    <b-navbar toggleable="lg" type="dark" class="navbar navbar-expand-xl">
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
       <b-navbar-brand class="router-link" style="color:white;" to="/">Filmvisarna</b-navbar-brand>
@@ -98,6 +98,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+header{
+  top: 0;
+  position: sticky;
+  z-index: 999;
+}
 .navbar {
   background-color: #cc0020;
 }
@@ -115,4 +120,6 @@ export default {
   background-color: #f0f3f500;
   border-color: white;
 }
+
+
 </style>

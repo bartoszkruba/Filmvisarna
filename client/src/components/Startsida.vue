@@ -189,8 +189,9 @@ export default {
       movieIndex: null
     };
   },
-  created() {
+  mounted: function() {
     this.getMovies();
+    this.scrollTop();
   },
   computed: {
     url: function(){
@@ -198,6 +199,10 @@ export default {
     }
   },
   methods: {
+    scrollTop(){
+      window.scrollTo(0,0);
+    },
+
     onSlideStart(slide) {
       this.sliding = true;
     },

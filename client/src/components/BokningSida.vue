@@ -52,7 +52,7 @@
             v-on:click="plus"
             type="button"
             class="btn btn-dark"
-            :disabled="this.ledigaPlatserISal === 0"
+            :disabled="this.ledigaPlatserISal - this.totalSeats === 0"
           >+</button>
         </div>
         <p>
@@ -70,7 +70,7 @@
             v-on:click="plusPensionar"
             type="button"
             class="btn btn-dark"
-            :disabled="this.ledigaPlatserISal === 0"
+            :disabled="this.ledigaPlatserISal - this.totalSeats === 0"
           >+</button>
         </div>
 
@@ -90,14 +90,14 @@
               v-on:click="plusBarn"
               type="button"
               class="btn btn-dark"
-              :disabled="this.ledigaPlatserISal === 0"
+              :disabled="this.ledigaPlatserISal - this.totalSeats === 0"
             >+</button>
           </div>
         </div>
         <p class="ledigaPlatser">
           <em>
             <strong>OBS!</strong>
-            Lediga platser: {{this.ledigaPlatserISal}} av {{this.theatre.seats}}
+            Lediga platser: {{this.ledigaPlatserISal - this.totalSeats}} av {{this.theatre.seats}}
           </em>
         </p>
         <section class="movieTheatre mt-5">
@@ -105,6 +105,7 @@
             :theatreID="theatreID"
             :sessionID="this.urlQuery.sessionID"
             :mySeats="totalSeats"
+            :btnPressed="btnPressed"
             @checkAllSeatsChoosen="checkAllSeatsChoosen"
           ></MovieSaloon>
         </section>
@@ -113,11 +114,11 @@
           <p class="totalt">totalt: {{totalt}}kr</p>
         </div>
         <div class="slutför btn">
-          <b-btn v-on:click="visaFelMedellande" v-b-modal.modal1>Slutför bokning</b-btn>
+          <b-btn v-on:click="visaFelMedellande">Slutför bokning</b-btn>
           <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
         </div>
         <!-- Modal Component -->
-        <b-modal id="modal1" v-if="totalt>=65 && this.allSeatsSelected" title="Bekräftelse" @ok="goHem" ok-only>
+        <b-modal id="modal1" v-model="showTicketModal" title="Bekräftelse" @ok="goHem" ok-only no-close-on-esc no-close-on-backdrop hide-header-close>
           <p>Film:
             <strong>{{movie.title}}</strong>
           </p>
@@ -148,8 +149,11 @@
           <p>Att betala:
             <strong>{{totalt}}kr</strong>
           </p>
-          <p class="my-4">Din bokningsnummer:
+          <p class="my-4">Ditt bokningsnummer:
             <strong>{{bokningsnummer}}</strong>
+          </p>
+          <p>
+            Dina platser: <strong>{{choosenSeats.join(", ")}}</strong>
           </p>
           <p class="my-4">
             <strong>OBS!</strong>Du kan hämta ut dina biljetter senast 40min innan filmen börjar
@@ -164,6 +168,9 @@
       </h1>
       <h1 class="text-center">Loading</h1>
     </section>
+    <b-modal v-model="showErrorModalBookedSeat" title="Fel!" @ok="reloadPage" ok-only no-close-on-esc no-close-on-backdrop hide-header-close>
+      <h5>Någon av platserna du har valt blev precis bokad,<br> vänligen försök igen</h5>
+    </b-modal>
   </main>
 </template>
 
@@ -202,7 +209,10 @@ export default {
       errorFromMongo: false,
       urlQuery: {},
       allSeatsSelected: false,
-      choosenSeats: []
+      choosenSeats: [],
+      btnPressed: false,
+      showTicketModal: false,
+      showErrorModalBookedSeat:false,
     };
   },
   components: {
@@ -371,13 +381,13 @@ export default {
       this.totalt += 85;
       this.visaTotal = true;
       this.visaMedellande = false;
-      this.ledigaPlatserISal--;
+      this.someBtnPressed();
     },
     minus() {
       if (this.antal > 0) {
         this.totalt -= 85;
         this.antal -= 1;
-        this.ledigaPlatserISal++;
+        this.someBtnPressed();
       } else {
         alert("Du kan inte välja mindre än en biljett ");
       }
@@ -387,13 +397,13 @@ export default {
       this.antalPensionar += 1;
       this.visaTotal = true;
       this.visaMedellande = false;
-      this.ledigaPlatserISal--;
+      this.someBtnPressed();
     },
     minusPensionar() {
       if (this.antalPensionar > 0) {
         this.totalt -= 75;
         this.antalPensionar -= 1;
-        this.ledigaPlatserISal++;
+        this.someBtnPressed();
       } else {
         alert("Du kan inte välja mindre än en biljett ");
       }
@@ -403,13 +413,13 @@ export default {
       this.antalBarn += 1;
       this.visaTotal = true;
       this.visaMedellande = false;
-      this.ledigaPlatserISal--;
+      this.someBtnPressed();
     },
     minusBarn() {
       if (this.antalBarn > 0) {
         this.antalBarn -= 1;
         this.totalt -= 65;
-        this.ledigaPlatserISal++;
+        this.someBtnPressed();
       } else {
         alert("Du kan inte välja mindre än en biljett ");
       }
@@ -418,14 +428,13 @@ export default {
     checkAllSeatsChoosen(moreSeats, choosenSeats){
       this.allSeatsSelected = !moreSeats;
       this.choosenSeats = choosenSeats;
-      console.log("Bokningen har " + choosenSeats.length);
     },
 
     visaFelMedellande() {
       if (this.totalt == 0) {
         this.visaMedellande = true;
       } else {
-        if (this.allSeatsSelected) {
+        if (this.allSeatsSelected && this.choosenSeats.length > 0) {
           this.bokaFilm();
         }else{
           console.log("Du måste boka platser för så många biljetter du valt")
@@ -434,12 +443,30 @@ export default {
     },
 
     async bokaFilm() {
-      const response = await api.setTickets(
-        this.createTicket,
-        this.$store.getters.getCredentials
-      );
-      this.bokningsnummer = response.data.orderID;
-      this.$store.commit("updateTickets", response.data.bookedTickets);
+      try{
+        const response = await api.setTickets(
+          this.createTicket,
+          this.$store.getters.getCredentials
+        );
+        this.bokningsnummer = response.data.orderID;
+        this.$store.commit("updateTickets", response.data.bookedTickets);
+        this.showTicketModal = true;
+        this.showErrorModalBookedSeat = false;
+    }
+      catch(error){
+        this.showTicketModal = false;
+        this.showErrorModalBookedSeat = true;
+        console.log(error.response.data.message);
+      }
+    },
+
+    someBtnPressed(){
+      this.btnPressed = !this.btnPressed;
+    },
+
+    reloadPage(){
+      this.getSessions();
+      console.log("nu laddar vi om skiten")
     }
   }
 };
@@ -633,7 +660,7 @@ div .vilkaBiljetter {
   }
   .textBekraftelse{
     width: 90vw;
-  } 
+  }
   .mainBekraftelse{
   display: flex;
   flex-direction: column;
