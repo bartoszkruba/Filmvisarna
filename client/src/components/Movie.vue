@@ -45,6 +45,9 @@
             <h3><br>
               Vald visning: {{targetSessionDisplay}}
             </h3>
+            <h5>
+              Antal lediga platser: {{movieSessions.find(curr=>{return curr._id===this.sessionID} ).freePlaces}}
+            </h5>
           </div>
           <div v-else>
             <p>Det finns inga visningar publicerade för {{aMovie.title}}</p>
