@@ -76,13 +76,13 @@
         <hr>
       </div>
       </section>
-      <div class="mt-5 loading-logo" v-if="movies === null">
+    </section>
+    <div class="mt-5 loading-logo" v-else>
         <h1 class="text-center spinner">
           <font-awesome-icon icon="spinner"/>
         </h1>
         <h1 class="text-center">Loading</h1>
       </div>
-    </section>
   </section>
 </template>
 
@@ -158,6 +158,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .loading-logo {
+  color:white;
   opacity: 1;
   animation: flickerAnimation 3s infinite;
   overflow: hidden;
