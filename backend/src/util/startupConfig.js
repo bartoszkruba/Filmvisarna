@@ -1,4 +1,8 @@
+const email = "filmvisarna@gmail.com";
+const emailPassword = "filmvisarna1234";
+
 const port = 8081;
+const nodemailer = require('nodemailer');
 
 module.exports.port = port;
 
@@ -49,4 +53,14 @@ module.exports.startupMessage = `
 Listening on ${port}
 `
 
+module.exports.email = "filmvisarna@gmail.com";
 
+module.exports.mongooseConnection = "mongodb+srv://groupaccount:groupaccount1234@cluster0-ydy7f.mongodb.net/filmvisarna"
+
+module.exports.emailTransporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: email,
+    pass: emailPassword
+  }
+})

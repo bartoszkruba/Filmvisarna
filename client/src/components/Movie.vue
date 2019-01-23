@@ -1,7 +1,7 @@
 <template>
 <div class="Movie">
 
-  <b-jumbotron bg-variant="white">
+  <b-jumbotron class="jumbobg">
     <section v-if="errorFromMongo">
       <h1>Något blev fel!</h1>
       <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
@@ -21,7 +21,7 @@
       <section class="movieheader">
 
         <section class="movieheader_pic">
-          <img class="movieposter" :src="require('../assets/'+this.aMovie.images[1])">
+          <img class="movieposter" :src="aMovie.imagesLinks.poster">
         </section>
 
         <section class="movieheader_text">
@@ -88,7 +88,7 @@
           </p>
 
           <p>
-            <span v-if="aMovie.actors.length > 0">
+            <span v-if="aMovie.director.length > 0">
               Regisör: {{aMovie.director}}<br>
             </span>
             <span v-if="aMovie.actors.length > 0">
@@ -302,6 +302,13 @@ export default {
   box-sizing: border-box;
 }
 
+.jumbobg{
+  background-color: rgba(2, 2, 2, 0.4);
+  margin-bottom: 0;
+  margin: 2rem;
+  color: white;
+}
+
 .trailer-view {
   display: flex;
   flex-direction: column;
@@ -344,11 +351,11 @@ export default {
 .moviedescription {
   font-style: italic;
   font-size: 100%;
-  color: rgb(85, 85, 85);
+  color: rgb(204, 201, 201);
 }
 
 .movietitle {
-  color: rgb(55, 55, 55);
+  color: rgb(231, 228, 228);
   font-size: 200%;
   font-weight: bold;
 }
@@ -427,6 +434,9 @@ li {
   .movietitle{
     text-align: center;
   }
+    .jumbobg{
+  margin: 0;
+}
 }
 @media screen and (max-width: 414px) and (min-width: 321px) {
   .movietitle{
@@ -435,5 +445,8 @@ li {
   .visningsdatum{
     margin-left: 2vw;
   }
+  .jumbobg{
+  margin: 0;
+}
 }
 </style>

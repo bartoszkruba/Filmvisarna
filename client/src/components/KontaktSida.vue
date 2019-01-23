@@ -31,6 +31,10 @@
         <p>Storagatan, 213 56 Malmö</p>
         <p>Telefon 05-17 17 00 00</p>
       </div>
+      <h3>Bild</h3>
+      <p>Våra salonger visar filmen i högsta möjliga bildkvalitet.</p>
+      <h3>Ljud</h3>
+      <p>Vi har 7.1 ljud i alla våra biografer.</p>
     </div>
 
     <div class="kontakta">
@@ -71,6 +75,15 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.main{
+  color: white;
+  background-color: rgba(2, 2, 2, 0.4);
+  margin-left: 20vw;
+  margin-right: 20vw;
+}
+p{
+  color: white;
+}
 h1{
   margin-top: 3vh;
   text-align: center;
@@ -78,6 +91,7 @@ h1{
 .kontakta {
   width: 60vw;
   margin: 6vh auto;
+  
   
 }
 .biograf {
@@ -88,14 +102,17 @@ hr {
   border-color: rgb(185, 184, 184);
   margin-top: 3rem;
 }
-@media screen and (max-width: 414px) {
+@media screen and (max-width: 800px) {
   .kontakta {
   width: 70vw;
   margin: 4vh auto;
-  
+}
+.main{
+  margin-left: 10vw;
+  margin-right: 10vw;
 }
 }
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 500px) {
   h3 {
     font-size: 7vw;
   }

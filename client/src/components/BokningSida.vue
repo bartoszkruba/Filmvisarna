@@ -1,8 +1,3 @@
-<!-- backlog for bokning -->
-<!-- minus fuckar upp allt, varje minus måste resetta allt -->
-<!-- lägg till tre biljetter, välj två platser, ta bort en biljett, boka??? -->
-<!-- try catch på bokaFilm, fel om backend inte svarar -->
-
 <template>
   <main>
     <section v-if="errorFromMongo">
@@ -126,6 +121,7 @@
           <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
         </div>
         <!-- Modal Component -->
+
         <b-modal id="modal1" v-if="totalt>=65 && this.allSeatsSelected" title="Bekräftelse" @ok="goHem" ok-only>
           <p>Film:
             <strong>{{movie.title}}</strong>
@@ -488,6 +484,20 @@ export default {
   }
 }
 
+main{
+  background-color: white;
+}
+.textBekraftelse{
+  width: 20vw;
+}
+.mainBekraftelse{
+  display: flex;
+}
+.img2{
+  width: 90%;
+  box-shadow: 2px 2px 20px black;
+}
+
 .modal-body p {
   margin: 0.8rem;
   text-align: start;
@@ -563,7 +573,7 @@ h4 {
   text-align: center;
 }
 
-.papillon {
+title {
   position: relative;
   margin-top: -17vh;
   display: block;
@@ -616,8 +626,16 @@ div .vilkaBiljetter {
 }
 
 @media screen and (max-width: 416px) {
-  .papillon {
+
+  title {
     margin-top: -10vh;
+  }
+  .textBekraftelse{
+    width: 90vw;
+  } 
+  .mainBekraftelse{
+  display: flex;
+  flex-direction: column;
   }
 
   .title {

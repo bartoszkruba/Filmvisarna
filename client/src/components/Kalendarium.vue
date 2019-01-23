@@ -22,8 +22,8 @@
     </section>
 
     <section v-if="movies && sessions && theatres">
-      <b-jumbotron class="jumbo" header="Kalendarium" lead="Nedan kan du se kommande filmer"></b-jumbotron>
-
+      
+      <section class="main">
       <section class="flex-col wrapping">
         <section v-for="session in this.sessions">
           <div class="flexbox flex-mobil">
@@ -35,9 +35,9 @@
               >
                 <img
                   class="posterpic"
-                  :src="require('../assets/'+movies.find((cur)=>{
+                  :src="movies.find((cur)=>{
                return cur._id === session.movieID
-               }).images[1])"
+               }).imagesLinks.poster"
                 >
               </router-link>
             </figure>
@@ -50,17 +50,21 @@
                 return cur._id === session.movieID
                 }).title}}
               </h5>
+              <div class="flexbox col-mob">
               <p>
                 <span>tid:</span>
-                {{session.date.time}} |
-                <span>Lediga Platser:</span>
+                {{session.date.time}}</p>
+                <p class="desk-only">|</p>
+               <p> <span>Lediga Platser:</span>
                 {{session.freePlaces}}
               </p>
+              <p class="desk-only">|</p>
               <p>
                 {{theatres.find((cur)=>{
                 return cur._id === session.movieTheatreID
                 }).name}}
               </p>
+              </div>
 
               <div class="flexbox buttons">
                 <router-link
@@ -68,7 +72,7 @@
                   :to="'/film?movieID='+ session.movieID+'&sessionID='+session._id"
                   exact-active-class="menu-item-active"
                 >
-                  <b-button>Film</b-button>
+                  <b-button>Läs mer</b-button>
                 </router-link>
                   <b-button class="secound-button" @click="goToBooking(session)">Boka</b-button>
               </div>
@@ -76,6 +80,7 @@
           </div>
           <hr>
         </section>
+      </section>
       </section>
     </section>
   </section>
@@ -216,7 +221,13 @@ export default {
     100% {-webkit-transform: rotate(360deg);}
 }
 
-
+.main{
+  margin-top: 1rem;
+  margin-left: 20vw;
+  margin-right: 20vw;
+  background-color: rgba(2, 2, 2, 0.4);
+  color: white;
+}
 .flexbox {
   display: flex;
 }
@@ -239,6 +250,8 @@ hr {
 .posterpic {
   width: 15vmin;
   box-shadow: 2px 2px 5px black;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 .images {
   margin: 0;
@@ -259,8 +272,29 @@ span {
 .secound-button {
   margin-left: 1rem;
 }
+.desk-only{
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+@media screen and (min-width: 501px) and (max-width: 800px) {
+  .main{
+    margin-left: 10vw;
+    margin-right: 10vw;
+  }
+
+}
 
 @media screen and (max-width: 500px) {
+  .main{
+    margin: 0;
+  }
+  .desk-only{
+    display: none;
+  }
+  .col-mob{
+    flex-direction: column;
+  }
   h1 {
     font-size: 2rem;
   }
@@ -284,6 +318,9 @@ span {
   }
   h4{
       margin-top: 0.5rem;
+  }
+  .text{
+    margin: 0;
   }
 }
 </style>

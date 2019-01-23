@@ -1,11 +1,9 @@
 <template>
-  <section>
-    <b-jumbotron class="jumbotron">
-      <h1>{{this.$store.state.loggedInUser.name}}</h1>
-    </b-jumbotron>
+  <section> 
     <section class="order-history">
-      <h1>Orderhistorik</h1>
-      <b-table striped hover responsive :fields="fields" :items="this.$store.state.loggedInUser.bookedTickets"></b-table>
+      <h1 class="mt-5">{{this.$store.state.loggedInUser.name}}</h1>
+      <h1 class="mt-5">Orderhistorik</h1>
+      <b-table class="bg" striped hover responsive :fields="fields" :items="this.$store.state.loggedInUser.bookedTickets"></b-table>
     </section>
     <b-modal v-model="showUserSettings" title="Uppdatera Medlemsprofil" ok-only>
       <h5>{{this.$store.state.loggedInUser.name}}</h5>
@@ -119,5 +117,10 @@ export default {
 .order-history {
   padding: 1% 5%;
   text-align: center;
+  color: white;
+}
+
+.bg{
+  background-color: rgba(2, 2, 2, 0.4);
 }
 </style>

@@ -20,7 +20,7 @@
               size="sm"
               class="mr-sm-2"
               type="text"
-              placeholder="Sök Film"
+              placeholder="Sök"
               v-model="searchQuery"
             />
             <b-button
@@ -85,9 +85,10 @@ export default {
       this.$router.push("/");
     },
     async searchForMovies() {
-      const response = await api.searchMovies(this.searchQuery);
       if(this.searchQuery && this.searchQuery.trim() !== ''){
-        this.$router.push(`/filmsida?${this.searchQuery.replace(' ', '_')}`);
+        this.$router.push(`/filmsida?searchQuery=${this.searchQuery.replace(' ', '_')}`);
+      }else{
+        this.$router.push(`/filmsida`);
       }
       this.searchQuery = null;
     },
