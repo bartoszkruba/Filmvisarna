@@ -703,12 +703,14 @@ export default {
         this.movieSession.date.year &&
         this.movieSession.date.month &&
         this.movieSession.date.day &&
+        parseInt(this.movieSession.date.day) > 0 &&
+        parseInt(this.movieSession.date.day) < 31 &&
         this.movieSession.date.hour &&
         this.movieSession.date.hour.trim() !== "" &&
         this.movieSession.date.minute &&
         this.movieSession.date.minute.trim() !== "" &&
-        this.movieTitle &&
-        this.movieTheatreName
+        this.movieSession.movieTitle &&
+        this.movieSession.movieTheatreName
       ) {
         try {
           const userCredentials = this.$store.getters.getCredentials;
@@ -745,8 +747,9 @@ export default {
             movieTheatreName: null
           };
         } catch (error) {
+          console.log(error);
           this.sessionMessage = null;
-          this.sessionError = error.response.data.message
+          this.sessionError = error.response
             ? error.response.data.message
             : "Something went wrong";
         }
