@@ -25,7 +25,7 @@
       
       <section class="main">
       <section class="flex-col wrapping">
-        <section v-for="session in this.sessions">
+        <section v-for="session in this.sessions.slice(0,articlesShown)">
           <div class="flexbox flex-mobil">
             <figure class="images">
               <router-link
@@ -81,7 +81,11 @@
           <hr>
         </section>
       </section>
+      
       </section>
+      <div class="showMoreButton">
+        <b-button class="showMore" v-on:click="loadMore">Visa fler</b-button>
+      </div>
     </section>
   </section>
 </template>
@@ -99,7 +103,9 @@ export default {
       theatres: null,
       errorFromMongo: false,
       clickedMovieSession: null,
+      articlesShown: 5
     };
+    
   },
   mounted() {
     this.errorFromMongo = false;
@@ -114,6 +120,13 @@ export default {
   },
   methods: {
     //movies data
+    loadMore(){console.log(this.articlesShown);
+    
+      this.articlesShown +=5;
+      
+      
+      
+    },
     async getMovies() {
       this.movies = null;
       try {
@@ -224,6 +237,16 @@ export default {
 @-webkit-keyframes spin {
     0%  {-webkit-transform: rotate(0deg);}
     100% {-webkit-transform: rotate(360deg);}
+}
+
+.showMore{
+  width: 60vw;
+  text-align: center;
+}
+.showMoreButton{
+  display: flex;
+  justify-content: center;
+  margin: 1vh 
 }
 
 .main{
