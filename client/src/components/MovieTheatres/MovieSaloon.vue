@@ -11,14 +11,17 @@
     <section class="screen">Bioduk</section>
     <section class="seats mt-5">
       <template v-for="(rows,index) in seatsPerRow">
-        <section class="rows">
+        <section class="rows" v-bind:class="index">
           <template v-for="(seat, index2) in seatsPerRow[index]">
             <MovieSeat
+               @hoverOverSeat="hoverOverSeat"
               @setChoosenSeats="setChoosenSeats"
               :myId="freePlaces[(count(index)+index2)].seatNumber"
               :seatBooked="freePlaces[(count(index)+index2)].booked"
               :moreSeats="moreSeats"
               :btnPressed="btnPressed"
+              :leavingSeat="leavingSeat"
+              :seatsToHover="seatsToHover"
             ></MovieSeat>
           </template>
         </section>
@@ -42,7 +45,10 @@ export default {
       seatsPerRow: null,
       totalSeats: null,
       freePlaces: null,
-      choosenSeats: []
+      choosenSeats: [],
+      leavingSeat: false,
+      seatsToHover: []
+      
     };
   },
   components: {
@@ -80,7 +86,31 @@ export default {
         }
       }
       this.$emit("checkAllSeatsChoosen", this.moreSeats, this.choosenSeats);
+    },
+
+
+    hoverOverSeat(e,hover){
+      if(hover && this.mySeats > 0){
+        this.seatsToHover = [];
+        this.seatsToHover.push(e.target.id);
+        console.log(e)
+        if(this.mySeats > 1){
+            let index = this.freePlaces.findIndex(i => i.seatNumber === e.target.id);
+            for(let i = index; i < this.mySeats + index; i++){
+                this.seatsToHover.push(this.freePlaces[i].seatNumber);
+            }
+        }
+      }else{
+        this.leavingSeat = !this.leavingSeat;
+      }
+    },
+
+    whatRow(rowID){
+      let thisRow = 0;
+      
+      return thisRow;
     }
+   
   },
   computed: {
     moreSeats: function() {
@@ -117,4 +147,8 @@ export default {
 .instruktions {
   text-align: center;
 }
+
+.active { 
+  background-color: orange !important; 
+} 
 </style>

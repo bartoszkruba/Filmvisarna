@@ -1,10 +1,13 @@
 
 <template>
   <div
+    @mouseenter="hoverOverSeats"
+    @mouseout="leaveHover"
     @click="seatClicked"
     class="movie-seat"
     v-bind:id="myId"
-    v-bind:class="{ isBooked: seatBooked, myBooking: choosenSeat, movieSeat: moreSeats}"
+    v-bind:ref="myId"
+    v-bind:class="{ isBooked: seatBooked, myBooking: choosenSeat, movieSeat: moreSeats, active: hover}"
   ></div>
 </template>
 
@@ -13,10 +16,13 @@ import api from "@/services/Api.js";
 
 export default {
   name: "MovieSeat",
-  props: ["myId", "seatBooked", "moreSeats", "btnPressed"],
+  props: ["myId", "seatBooked", "moreSeats", "btnPressed", "leavingSeat", "seatsToHover"],
   data() {
     return {
-      choosenSeat: false
+      choosenSeat: false,
+      hover: false,
+      leavingHover: false,
+      previousHover: []
     };
   },
   methods: {
@@ -27,11 +33,30 @@ export default {
           this.$emit("setChoosenSeats", e.target.id);
         }
       }
-    }
+    },
+    hoverOverSeats(e){
+      this.$emit('hoverOverSeat',e,true);
+    },
+    leaveHover(e){
+      this.$emit('hoverOverSeat',e,false);
+    },
   },
   watch: {
     btnPressed: function() {
       this.choosenSeat = false;
+    },
+    seatsToHover: function() {
+          this.hover = false;
+      if(this.seatsToHover.includes(this.myId)){
+          this.hover = true;
+      }
+    },
+
+    leavingSeat: function() {
+      if(this.seatsToHover.includes(this.myId)){
+          this.hover = false;
+          console.log("leaving seat")
+      }
     }
   }
 };
@@ -45,19 +70,13 @@ export default {
   background-color: gray;
   border-radius: 0 0 20% 20%;
   display: inline-block;
-  margin: 1px;
-}
-.myBooking {
-  background-color: rgb(0, 0, 255) !important;
+  margin: 4px;
 }
 
-.movieSeat:hover {
+.active{
   background-color: yellow;
 }
 
-.isBooked {
-  background-color: red !important;
-}
 @media screen and (max-width: 1024px) {
   .movie-seat {
     width: 3vw;
