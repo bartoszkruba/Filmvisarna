@@ -1,6 +1,6 @@
 <template>
   <section class="hello">
-    <section v-if="errorFromMongo" class="text-center mt-3">
+    <section v-if="errorFromMongo" class="text-center mt-3 nagotFel">
       <h1>Något blev fel!</h1>
       <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
       <ul>
@@ -121,8 +121,7 @@ export default {
   },
   methods: {
     //movies data
-    loadMore(){console.log(this.articlesShown);
-    
+    loadMore(){
       this.articlesShown +=5;
     },
      goToTop(){
@@ -238,6 +237,10 @@ export default {
 @-webkit-keyframes spin {
     0%  {-webkit-transform: rotate(0deg);}
     100% {-webkit-transform: rotate(360deg);}
+}
+
+.nagotFel  {
+  color: white;
 }
 
 .goUp{

@@ -11,7 +11,7 @@
     </b-collapse>
   </b-navbar>
     </section>-->
-    <section v-if="errorFromMongo" class="text-center mt-3">
+    <section v-if="errorFromMongo" class="text-center mt-3 nagotFel">
       <h1>Något blev fel!</h1>
       <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
       <ul>
@@ -189,6 +189,16 @@ export default {
   }
 }
 
+.nagotFel  {
+  color: white;
+}
+.nagotFel h1{
+  font-weight: bold;
+}
+.nagotFel p{
+  padding: 0;
+}
+
 .main{
   margin-left: 20vw;
   margin-right: 20vw;
@@ -271,6 +281,13 @@ hr {
 }
 
 @media screen and (max-width: 500px) {
+  .nagotFel{
+    margin-bottom: 30vh;
+  }
+  .nagotFel p{
+    font-size: 1rem;
+    line-height: 1rem;
+  }
   .main{
    margin: 0;
   }
