@@ -22,6 +22,7 @@
     </section>
 
     <section v-if="movies && sessions && theatres">
+      <font-awesome-icon class="goUp" v-on:click="goToTop" :icon="['fas', 'arrow-alt-circle-up']"/>
       
       <section class="main">
       <section class="flex-col wrapping">
@@ -123,9 +124,9 @@ export default {
     loadMore(){console.log(this.articlesShown);
     
       this.articlesShown +=5;
-      
-      
-      
+    },
+     goToTop(){
+      window.scrollTo(0,0)
     },
     async getMovies() {
       this.movies = null;
@@ -239,6 +240,15 @@ export default {
     100% {-webkit-transform: rotate(360deg);}
 }
 
+.goUp{
+  display: flex;
+  position: fixed;
+  color: #b8babb;
+  font-size: 4rem;
+  right: 0;
+  left: 93vw;
+  }
+
 .showMore{
   width: 60vw;
   text-align: center;
@@ -273,6 +283,7 @@ export default {
   margin-bottom: 1rem;
 }
 hr {
+  width: 51vw;
   border-color: rgb(124, 123, 123);
 }
 .posterpic {
@@ -313,12 +324,24 @@ span {
   .showMore{
     width: 80vw;
   }
+  hr{
+    width:60vw;
+  }
+  .goUp{
+    display: none;
+  }
 
 }
 
 @media screen and (max-width: 500px) {
+  .goUp{
+    display: none;
+  }
   .showMore{
     width: 100vw;
+  }
+  hr{
+    width:70vw;
   }
   .main{
     margin: 0;
