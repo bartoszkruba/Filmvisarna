@@ -246,7 +246,7 @@ export default {
 .showMoreButton{
   display: flex;
   justify-content: center;
-  margin: 1vh 
+  margin: 0 0vw 3vh 0vw;
 }
 
 .main{
@@ -310,10 +310,16 @@ span {
     margin-left: 10vw;
     margin-right: 10vw;
   }
+  .showMore{
+    width: 80vw;
+  }
 
 }
 
 @media screen and (max-width: 500px) {
+  .showMore{
+    width: 100vw;
+  }
   .main{
     margin: 0;
   }
