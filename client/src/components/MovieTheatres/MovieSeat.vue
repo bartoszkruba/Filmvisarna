@@ -1,6 +1,6 @@
 
 <template>
-  <div class="movie-seat"></div>
+  <div @click="seatClicked" class="movie-seat" v-bind:id="myId" v-bind:class="{ isBooked: seatBooked, myBooking: choosenSeat, movieSeat: moreSeats}"></div>
 </template>
 
 <script>
@@ -8,9 +8,23 @@ import api from "@/services/Api.js";
 
 export default {
   name: "MovieSeat",
+  props:['myId','seatBooked','moreSeats'],
   data() {
     return{
-
+      choosenSeat: false,
+    }
+  },
+  methods: {
+    seatClicked(e){
+      if(e.target.className.includes("isBooked")){
+          console.log("Stolen är upptagen");
+      }
+      else{
+        if(this.moreSeats || this.choosenSeat){
+        this.choosenSeat = !this.choosenSeat;
+        this.$emit('setChoosenSeats',e.target.id);
+        }
+      }
     }
   }
 };
@@ -26,7 +40,18 @@ export default {
     display: inline-block;
     margin: 1px;
     }
+     .myBooking {
+    background-color: yellow !important;
+  }
 
+  .movieSeat:hover {
+    background-color: yellow;
+  }
+
+  .isBooked {
+    background-color: red !important;
+    
+  } 
     @media screen and (max-width: 1024px){
     .movie-seat {
     width: 3vw;
