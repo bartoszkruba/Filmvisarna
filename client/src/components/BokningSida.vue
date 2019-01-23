@@ -112,7 +112,6 @@
     </h1>
     <h1 class="text-center">Loading</h1>
   </section>
-  <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
 </main>
 </template>
 
