@@ -328,7 +328,7 @@
                 <label class="input-group-text" for="MonthSelector">Month</label>
               </div>
               <select class="custom-select" id="MonthSelector" v-model="movieSession.date.month">
-                <option selected>1</option>
+                <option selected>01</option>
                 <option>02</option>
                 <option>03</option>
                 <option>04</option>
@@ -569,22 +569,22 @@ export default {
       this.reviews.splice(this.reviews.indexOf(review), 1);
     },
     async addMovie() {
-      if ( true
-        // this.title &&
-        // this.length &&
-        // this.genre &&
-        // this.genre.trim() !== "" &&
-        // this.distributor &&
-        // this.distributor.trim() !== "" &&
-        // this.language &&
-        // this.language.trim() !== "" &&
-        // this.ageLimit &&
-        // this.subtitles &&
-        // this.subtitles.trim() !== "" &&
-        // this.director &&
-        // this.director.trim() !== "" &&
-        // this.description &&
-        // this.description.trim() !== ""
+      if (
+        this.title &&
+        this.length &&
+        this.genre &&
+        this.genre.trim() !== "" &&
+        this.distributor &&
+        this.distributor.trim() !== "" &&
+        this.language &&
+        this.language.trim() !== "" &&
+        this.ageLimit &&
+        this.subtitles &&
+        this.subtitles.trim() !== "" &&
+        this.director &&
+        this.director.trim() !== "" &&
+        this.description &&
+        this.description.trim() !== ""
       ) {
 
         const request = new FormData()

@@ -111,8 +111,11 @@ hr {
 }
 @media screen and (max-width: 800px) {
   .kontakta {
-  width: 50vw;
+  width: 60vw;
   margin: 4vh auto;
+}
+.main{
+  width: 75vw;
 }
 }
 @media screen and (max-width: 500px) {
@@ -120,7 +123,7 @@ hr {
     font-size: 7vw;
   }
   .kontakta{
-    width: 50vw;
+    width: 75vw;
   margin: 4vh auto;
   }
   .main{
