@@ -72,8 +72,8 @@ export default {
 }
 @media screen and (max-width: 570px) {
   .movie-seat {
-    width: 5vw;
-    height: 5vw;
+    width: 6vw;
+    height: 6vw;
   }
 }
 </style>
