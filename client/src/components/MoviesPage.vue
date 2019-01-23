@@ -11,7 +11,7 @@
     </b-collapse>
   </b-navbar>
     </section>-->
-    <section v-if="errorFromMongo" class="text-center mt-3">
+    <section v-if="errorFromMongo" class="text-center mt-3 nagotFel">
       <h1>Något blev fel!</h1>
       <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
       <ul>
@@ -115,7 +115,7 @@ export default {
       try {
         if (this.urlQuery.searchQuery) {
           const response = await api.searchMovies(
-            this.urlQuery.searchQuery.replace("_", " ")
+            this.urlQuery.searchQuery.split('_').join(' ')
           );
           this.movies = response.data.movies;
           if (this.movies.length === 1) {
@@ -187,6 +187,16 @@ export default {
   100% {
     -webkit-transform: rotate(360deg);
   }
+}
+
+.nagotFel  {
+  color: white;
+}
+.nagotFel h1{
+  font-weight: bold;
+}
+.nagotFel p{
+  padding: 0;
 }
 
 .main{
@@ -271,6 +281,13 @@ hr {
 }
 
 @media screen and (max-width: 500px) {
+  .nagotFel{
+    margin-bottom: 30vh;
+  }
+  .nagotFel p{
+    font-size: 1rem;
+    line-height: 1rem;
+  }
   .main{
    margin: 0;
   }

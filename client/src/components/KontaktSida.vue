@@ -31,8 +31,14 @@
         <p>Storagatan, 213 56 Malmö</p>
         <p>Telefon 05-17 17 00 00</p>
       </div>
+    </div>
+
+      <div class="kontakta">
       <h3>Bild</h3>
       <p>Våra salonger visar filmen i högsta möjliga bildkvalitet.</p>
+      </div>
+
+      <div class="kontakta">      
       <h3>Ljud</h3>
       <p>Vi har 7.1 ljud i alla våra biografer.</p>
     </div>
@@ -78,8 +84,9 @@ export default {
 .main{
   color: white;
   background-color: rgba(2, 2, 2, 0.4);
-  margin-left: 20vw;
-  margin-right: 20vw;
+  width: 60vw;
+  margin: 2rem auto;
+  padding: 2rem 0;
 }
 p{
   color: white;
@@ -89,7 +96,7 @@ h1{
   text-align: center;
 }
 .kontakta {
-  width: 60vw;
+  width: 50vw;
   margin: 6vh auto;
   
   
@@ -104,17 +111,23 @@ hr {
 }
 @media screen and (max-width: 800px) {
   .kontakta {
-  width: 70vw;
+  width: 60vw;
   margin: 4vh auto;
 }
 .main{
-  margin-left: 10vw;
-  margin-right: 10vw;
+  width: 75vw;
 }
 }
 @media screen and (max-width: 500px) {
   h3 {
     font-size: 7vw;
+  }
+  .kontakta{
+    width: 75vw;
+  margin: 4vh auto;
+  }
+  .main{
+    width: 90vw;
   }
   
 }
