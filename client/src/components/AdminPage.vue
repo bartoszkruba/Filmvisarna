@@ -117,6 +117,19 @@
           <div class="col-sm-1"></div>
         </div>
 
+        <div class="row mb-3">
+          <div class="col-sm-1"></div>
+          <div class="col-sm-5">
+            <label for="PosterImage">Poster Image</label>
+            <input type="file" class="form-control-file" id="PosterImage" @change="posterImageChanged">
+          </div>
+          <div class="col-sm-5">
+            <label for="BackgroundImage">Background Image</label>
+            <input type="file" class="form-control-file" id="BackgroundImage" @change="backgroundImageChanged">
+          </div>
+          <div class="col-sm-1"></div>
+        </div>
+
         <div class="row">
           <div class="col-sm-1"></div>
           <div class="col-sm-5">
@@ -167,25 +180,6 @@
         <div class="row">
           <div class="col-sm-1"></div>
           <div class="col-sm-5">
-            <label for="Images">Images:</label>
-            <ul class="list-group mb-3" v-for="url in images">
-              <li class="list-group-item d-flex justify-content-between">
-                <span>{{url}}</span>
-                <button class="btn btn-sm btn-danger" @click="removeImage(url)">X</button>
-              </li>
-            </ul>
-            <div class="input-group mb-3">
-              <input
-                type="text"
-                class="form-control"
-                id="ImageLink"
-                placeholder="Add Link"
-                v-model="imageLink"
-              >
-              <div class="input-group-prepend">
-                <button class="btn btn-outline-danger" @click="addImage">Add</button>
-              </div>
-            </div>
           </div>
           <div class="col-sm-5">
             <label for="Trailers">Trailers:</label>
@@ -430,7 +424,6 @@ export default {
       description: null,
       actors: [],
       productionCountries: [],
-      images: [],
       trailers: [],
       actor: null,
       country: null,
@@ -456,7 +449,11 @@ export default {
         },
         movieTitle: null,
         movieTheatreName: null
-      }
+      },
+
+      posterImage: null,
+      backgroundImage: null,
+      loadingMessage: "Ready To Load Madafaka"
     };
   },
   created() {
@@ -464,6 +461,24 @@ export default {
     this.getMovieTheatres();
   },
   methods: {
+    posterImageChanged (event){
+      this.posterImage = event.target.files[0];
+    },
+    backgroundImageChanged (event){
+      this.backgroundImage = event.target.files[0];
+    },
+    onUpload(){
+      const images = new FormData()
+      images.append('poster', this.posterImage);
+      images.append('background', this.backgroundImage);
+      images.append('title', "Taxi Driver");
+      api.uploadImage(images, {
+        onUploadProgress: progressEvent => {
+        this.loadingMessage = progressEvent.loaded / progressEvent.total;
+    }
+      })
+    },
+
     async getMovies() {
       const response = await api.getMovies();
       this.movies = response.data.movies;
@@ -554,23 +569,43 @@ export default {
       this.reviews.splice(this.reviews.indexOf(review), 1);
     },
     async addMovie() {
-      if (
-        this.title &&
-        this.length &&
-        this.genre &&
-        this.genre.trim() !== "" &&
-        this.distributor &&
-        this.distributor.trim() !== "" &&
-        this.language &&
-        this.language.trim() !== "" &&
-        this.ageLimit &&
-        this.subtitles &&
-        this.subtitles.trim() !== "" &&
-        this.director &&
-        this.director.trim() !== "" &&
-        this.description &&
-        this.description.trim() !== ""
+      if ( true
+        // this.title &&
+        // this.length &&
+        // this.genre &&
+        // this.genre.trim() !== "" &&
+        // this.distributor &&
+        // this.distributor.trim() !== "" &&
+        // this.language &&
+        // this.language.trim() !== "" &&
+        // this.ageLimit &&
+        // this.subtitles &&
+        // this.subtitles.trim() !== "" &&
+        // this.director &&
+        // this.director.trim() !== "" &&
+        // this.description &&
+        // this.description.trim() !== ""
       ) {
+
+        const request = new FormData()
+        request.append('poster', this.posterImage);
+        request.append('background', this.backgroundImage);
+        request.append('title', this.title);
+        request.append('productionCountries', this.productionCountries);
+        request.append('productionYear', parseInt(this.productionYear));
+        request.append('length', parseInt(this.length));
+        request.append('genre', this.genre);
+        request.append('distributor', this.distributor);
+        request.append('language', this.language);
+        request.append('subtitles', this.subtitles);
+        request.append('director', this.director);
+        request.append('ageLimit', parseInt(this.ageLimit));
+        request.append('actors', this.actors);
+        request.append('description', this.description);
+        request.append('youtubeTrailers', this.trailers);
+        request.append('reviews', JSON.stringify(this.reviews));
+        request.append('user', JSON.stringify(this.$store.getters.getCredentials));
+
         const movie = {
           title: this.title,
           productionCountries: this.productionCountries,
@@ -589,10 +624,8 @@ export default {
           reviews: this.reviews
         };
 
-        const userCredentials = this.$store.getters.getCredentials;
-
         try {
-          const response = await api.addMovie(movie , userCredentials);
+          const response = await api.addMovie(request);
           this.message = response.data.message;
           this.error = null;
           window.scrollTo(0, 0);

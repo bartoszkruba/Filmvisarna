@@ -21,7 +21,7 @@
       <section class="movieheader">
 
         <section class="movieheader_pic">
-          <img class="movieposter" :src="aMovie.imagesLinks.poster">
+          <img class="movieposter" :src="url + aMovie.imagesLinks.poster">
         </section>
 
         <section class="movieheader_text">
@@ -279,6 +279,11 @@ export default {
             this.urlQuery[url[i][0]] = url[i][1];
         }
       }
+    }
+  },
+  computed: {
+    url: function(){
+      return api.url
     }
   },
   mounted: function() {
