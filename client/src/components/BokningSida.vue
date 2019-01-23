@@ -105,6 +105,7 @@
             :theatreID="theatreID"
             :sessionID="this.urlQuery.sessionID"
             :mySeats="totalSeats"
+            :btnPressed="btnPressed"
             @checkAllSeatsChoosen="checkAllSeatsChoosen"
           ></MovieSaloon>
         </section>
@@ -118,6 +119,7 @@
         </div>
         <!-- Modal Component -->
         <b-modal id="modal1" v-if="totalt>=65 && this.allSeatsSelected" title="Bekräftelse" @ok="goHem" ok-only>
+          {{this.allSeatsSelected}}
           <p>Film:
             <strong>{{movie.title}}</strong>
           </p>
@@ -148,7 +150,7 @@
           <p>Att betala:
             <strong>{{totalt}}kr</strong>
           </p>
-          <p class="my-4">Din bokningsnummer:
+          <p class="my-4">Ditt bokningsnummer:
             <strong>{{bokningsnummer}}</strong>
           </p>
           <p class="my-4">
@@ -202,7 +204,8 @@ export default {
       errorFromMongo: false,
       urlQuery: {},
       allSeatsSelected: false,
-      choosenSeats: []
+      choosenSeats: [],
+      btnPressed: false,
     };
   },
   components: {
@@ -372,12 +375,14 @@ export default {
       this.visaTotal = true;
       this.visaMedellande = false;
       this.ledigaPlatserISal--;
+      this.someBtnPressed();
     },
     minus() {
       if (this.antal > 0) {
         this.totalt -= 85;
         this.antal -= 1;
         this.ledigaPlatserISal++;
+        this.someBtnPressed();
       } else {
         alert("Du kan inte välja mindre än en biljett ");
       }
@@ -388,12 +393,14 @@ export default {
       this.visaTotal = true;
       this.visaMedellande = false;
       this.ledigaPlatserISal--;
+      this.someBtnPressed();
     },
     minusPensionar() {
       if (this.antalPensionar > 0) {
         this.totalt -= 75;
         this.antalPensionar -= 1;
         this.ledigaPlatserISal++;
+        this.someBtnPressed();
       } else {
         alert("Du kan inte välja mindre än en biljett ");
       }
@@ -404,12 +411,14 @@ export default {
       this.visaTotal = true;
       this.visaMedellande = false;
       this.ledigaPlatserISal--;
+      this.someBtnPressed();
     },
     minusBarn() {
       if (this.antalBarn > 0) {
         this.antalBarn -= 1;
         this.totalt -= 65;
         this.ledigaPlatserISal++;
+        this.someBtnPressed();
       } else {
         alert("Du kan inte välja mindre än en biljett ");
       }
@@ -418,14 +427,15 @@ export default {
     checkAllSeatsChoosen(moreSeats, choosenSeats){
       this.allSeatsSelected = !moreSeats;
       this.choosenSeats = choosenSeats;
-      console.log("Bokningen har " + choosenSeats.length);
     },
 
     visaFelMedellande() {
+      console.log(this.allSeatsSelected);
+      console.log(this.choosenSeats.length);
       if (this.totalt == 0) {
         this.visaMedellande = true;
       } else {
-        if (this.allSeatsSelected) {
+        if (this.allSeatsSelected && this.choosenSeats.length > 0) {
           this.bokaFilm();
         }else{
           console.log("Du måste boka platser för så många biljetter du valt")
@@ -440,7 +450,11 @@ export default {
       );
       this.bokningsnummer = response.data.orderID;
       this.$store.commit("updateTickets", response.data.bookedTickets);
-    }
+    },
+
+    someBtnPressed(){
+      this.btnPressed = !this.btnPressed;
+    },
   }
 };
 </script>
