@@ -1,8 +1,9 @@
 <template>
+
   <div class="main">
     <b-jumbotron
-      class="white-text"
-      style="background-image: url(http://www.milanticketsopera.com/themes/theater/images/img.jpg)"
+      class="white-text jumbobg"
+    
     >
       <template slot="header" class="white-text welcome-text">
         <h1 class="white-text welcome-text">Välkommen till Filmvisarna!</h1>
@@ -161,7 +162,7 @@
       <h1 class="text-center">Loading</h1>
     </div>
     <b-jumbotron
-      class="white-text second-jumbo"
+      class="white-text jumbobg"
       style=""
     >
       <template slot="header" class="white-text">Senaste nytt</template>
@@ -284,12 +285,12 @@ export default {
 }
 
 .main{
-  background-color: rgb(227, 225, 233);
+  
 }
-.second-jumbo{
-  background-image: url(http://www.milanticketsopera.com/themes/theater/images/img.jpg);
-  background-size: cover;
+.jumbobg{
+   background-color: rgba(2, 2, 2, 0);
 }
+
 h1 {
   text-align: center;
 }
@@ -323,6 +324,10 @@ ul {
 }
 .startposter {
   padding-top: 2vh;
+}
+.box{
+   background-color: rgba(2, 2, 2, 0.4);
+   color: white;
 }
 
 .white-text {
