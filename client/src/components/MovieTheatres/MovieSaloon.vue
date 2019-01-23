@@ -1,12 +1,12 @@
 
 <template>
   <section class="movie-saloon">
-    <section class="screen">Bioduk</section>
     <section class="instruktions">
-      <h5>Välj Platser</h5>
-      <p>Väl platser genom att klicka i salongen</p>
+      <h5><span v-if="mySeats > 0">Välj {{mySeats}} Platser</span> <span v-else>Välj antal biljetter du vill boka</span></h5>
+      <p v-if="mySeats > 0">Välj platser genom att klicka på stolarna i salongen</p>
     </section>
-    <section class="seats">
+    <section class="screen">Bioduk</section>
+    <section class="seats mt-5">
       <template v-for="(rows,index) in seatsPerRow">
         <section class="rows">
           <template v-for="(seat, index2) in seatsPerRow[index]">
@@ -20,7 +20,6 @@
         </section>
       </template>
     </section>
-    <p>{{mySeats}}</p>
   </section>
 </template>
 
