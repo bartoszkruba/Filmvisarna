@@ -22,12 +22,12 @@ const startupConfig = require('./util/startupConfig');
 // Telling Server to use cors package
 app.use(cors());
 // Telling server to use body-parser package with json configuration
-app.use(bodyParser());
+app.use(bodyParser.json());
 
 // Telling server to use morgan
 app.use(morgan('combined'));
 // Telling server to use routes
-app.use("/uploads", express.static('public'));
+app.use("/public", express.static('public'));
 
 app.use(Router);
 

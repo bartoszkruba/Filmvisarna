@@ -603,11 +603,8 @@ export default {
         request.append('actors', this.actors);
         request.append('description', this.description);
         request.append('youtubeTrailers', this.trailers);
-        request.append('reviews', this.reviews);
-        request.append('email', this.$store.getters.getCredentials.email);
-        request.append('password', this.$store.getters.getCredentials.password);
-
-        console.log(request);
+        request.append('reviews', JSON.stringify(this.reviews));
+        request.append('user', JSON.stringify(this.$store.getters.getCredentials));
 
         const movie = {
           title: this.title,
