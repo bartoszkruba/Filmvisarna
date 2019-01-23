@@ -262,6 +262,7 @@ export default {
 </script>
 <style scoped>
 .loading-logo {
+  color:white;
   height: 70vh;
   opacity: 1;
   animation: flickerAnimation 3s infinite;
