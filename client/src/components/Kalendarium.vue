@@ -252,6 +252,10 @@ export default {
   right: 0;
   left: 93vw;
   }
+.goUp:hover{
+  cursor: pointer;
+  color:white
+}
 
 .showMore{
   width: 60vw;
