@@ -1,6 +1,6 @@
 <template>
   <header>
-    <b-navbar toggleable="md" type="dark" class="navbar navbar-expand-xl">
+    <b-navbar toggleable="lg" type="dark" class="navbar navbar-expand-xl">
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
       <b-navbar-brand class="router-link" style="color:white;" to="/">Filmvisarna</b-navbar-brand>
@@ -115,4 +115,6 @@ export default {
   background-color: #f0f3f500;
   border-color: white;
 }
+
+
 </style>
