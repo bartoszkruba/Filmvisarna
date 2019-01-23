@@ -17,7 +17,7 @@
 
     <section v-if="movie && session && theatre">
       <div>
-        <img :src="require('../assets/'+this.movie.images[0])" class="img">
+       <!-- <img :src="require('../assets/'+this.movie.images[0])" class="img"> -->
         <div class="papillon">
           <h1 class="title">{{movie.title}}</h1>
 
