@@ -526,7 +526,7 @@ div .location {
   display: flex;
   width: 40vw;
   justify-content: space-between;
-  margin-top: 10vh;
+  margin-top: 5vh;
   padding-top: 2vh;
   border-top: 0.0625rem solid rgba(94, 94, 94, 0.411);
 }
