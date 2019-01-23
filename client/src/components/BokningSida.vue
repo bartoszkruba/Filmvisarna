@@ -20,7 +20,7 @@
         <div class="antal-bilijetter"></div>
       </title>
     </div>
-      </div>
+     
 
       <div class="text">
         <div class="location">
@@ -624,6 +624,8 @@ div .hej {
 div .vilkaBiljetter {
   margin-top: 1vh;
 }
+
+
 
 @media screen and (max-width: 416px) {
 
