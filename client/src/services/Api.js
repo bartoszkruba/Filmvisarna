@@ -29,8 +29,8 @@ export default {
 		return api.post('movieSessions', {query: query});
 	},
 
-	addMovieSession: (movieSession) => {
-		return api.post('addMovieSession', {movieSession: movieSession});
+	addMovieSession: (movieSession, user) => {
+		return api.post('addMovieSession', {movieSession: movieSession, user: user});
 	},
 
 	// Example:

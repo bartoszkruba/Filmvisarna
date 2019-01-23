@@ -14,12 +14,6 @@
         exact-active-class="menu-item-active"
       >Klicka här för att komma till alla filmer</router-link>
     </section>
-    <section v-else-if="movies === null" class="loading-logo">
-      <h1 class="text-center spinner">
-        <font-awesome-icon icon="spinner"/>
-      </h1>
-      <h1 class="text-center">Loading</h1>
-    </section>
 
     <section v-if="movies && sessions && theatres">
       <font-awesome-icon class="goUp" v-on:click="goToTop" :icon="['fas', 'arrow-alt-circle-up']"/>
@@ -87,6 +81,12 @@
       <div class="showMoreButton">
         <b-button class="showMore" v-on:click="loadMore">Visa fler</b-button>
       </div>
+    </section>
+    <section v-else class="loading-logo mt-5">
+      <h1 class="text-center spinner">
+        <font-awesome-icon icon="spinner"/>
+      </h1>
+      <h1 class="text-center">Loading</h1>
     </section>
   </section>
 </template>
@@ -211,6 +211,7 @@ export default {
 <style scoped>
 
 .loading-logo {
+  color: white;
   height: 70vh;
   opacity: 1;
   animation: flickerAnimation 3s infinite;

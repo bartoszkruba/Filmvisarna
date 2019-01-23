@@ -41,7 +41,7 @@ Router.post('/movieTheatres', movieTheatreController.postMovieTheatres);
 
 Router.post('/movieSessions', movieSessionController.postMovieSessions);
 
-Router.post('/addMovieSession', movieSessionController.postAddMovieSession);
+Router.post('/addMovieSession', movieSessionController.authenticadeAdmin, movieSessionController.postAddMovieSession);
 
 Router.post('/register', authenticationPolicy.postRegister, authenticationController.postRegister);
 Router.post('/login', authenticationController.postValidate);

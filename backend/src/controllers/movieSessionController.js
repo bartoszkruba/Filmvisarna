@@ -1,5 +1,7 @@
 const MovieSession = require('../models/movieSession');
 const MovieTheatre = require('../models/movieTheatre');
+const User = require('../models/user');
+const Bcrypt = require('bcrypt');
 
 module.exports.postMovieSessions = async (req, res, next) => {
     try {
@@ -45,6 +47,23 @@ module.exports.postAddMovieSession = async (req, res, next) => {
         movieTheatreID: req.body.movieSession.movieTheatreID
     }).save();
     res.send();
+}
+
+module.exports.authenticadeAdmin = async (req, res, next) => {
+    try {
+        const user = await User.findOne({ email: req.body.user.email});
+        if (user && Bcrypt.compareSync(req.body.user.password, user.password) && user.admin) {
+            next();
+        }else{
+            res.status(400).send({
+                error: 'You are not authorized'
+            });
+        }
+    } catch (error) {
+        res.status(400).send({
+            error: 'Could not add session to the database'
+        });
+    }
 }
 
 
