@@ -113,10 +113,6 @@
 
         </section>
       </section>
-      <hr class="my-4">
-
-
-
     </section>
   </b-jumbotron>
 </div>
@@ -309,8 +305,6 @@ export default {
 
 .jumbobg{
   background-color: rgba(2, 2, 2, 0.4);
-  margin-bottom: 0;
-  margin: 2rem;
   color: white;
 }
 
@@ -397,6 +391,10 @@ li {
   color: rgb(122, 122, 122);
 }
 
+hr{
+  border-top: 1px solid rgb(71, 64, 64);
+}
+
 @media screen and (min-width: 768px) {
   .m-2{
     margin: 0;
@@ -425,11 +423,21 @@ li {
   .trailer-video {
     margin-bottom: 0;
   }
+  .trailer-text{
+    margin-left: 2rem;
+  }
 
   .videoplayer {
     height: 20vmax;
     width: 30vmax;
   }
+
+  .jumbobg{
+  background-color: rgba(2, 2, 2, 0.4);
+  margin: 2rem auto;
+  width: 70vw;
+  color: white;
+}
 }
 
 @media screen and (max-width: 320px) {
