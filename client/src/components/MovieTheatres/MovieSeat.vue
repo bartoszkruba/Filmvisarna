@@ -41,7 +41,7 @@ export default {
     margin: 1px;
     }
      .myBooking {
-    background-color: yellow !important;
+    background-color: rgb(0, 0, 255) !important;
   }
 
   .movieSeat:hover {
