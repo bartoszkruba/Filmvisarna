@@ -1,9 +1,9 @@
 <template>
   <section class="hello">
-    <section v-if="errorFromMongo" class="text-center mt-3 nagotFel">
+    <section v-if="errorFromMongo" class="text-center mt-3 nagotFel dark-transparent">
       <h1>Något blev fel!</h1>
       <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
-      <ul>
+      <ul class="list-style-none">
         <li>Antipiratbyrån har hackat oss</li>
         <li>Vår hemsida har tekniskt strul</li>
         <li>Du har klickat på en gammal länk</li>
@@ -38,9 +38,9 @@
             </figure>
 
             <div class="flex-col text">
-              <h4>{{getWeekdayString(session.date.year,session.date.month,session.date.day)}} {{session.date.day.toString().padStart(2, "0")}}/{{session.date.month.toString().padStart(2, "0")}}-{{session.date.year}}</h4>
+              <h4 class="text-shadow">{{getWeekdayString(session.date.year,session.date.month,session.date.day)}} {{session.date.day.toString().padStart(2, "0")}}/{{session.date.month.toString().padStart(2, "0")}}-{{session.date.year}}</h4>
 
-              <h5>
+              <h5 class="text-shadow">
                 {{movies.find((cur)=>{
                 return cur._id === session.movieID
                 }).title}}
@@ -69,7 +69,7 @@
                 >
                   <b-button>Läs mer</b-button>
                 </router-link>
-                  <b-button class="secound-button" @click="goToBooking(session)">Boka</b-button>
+                  <b-button class="secound-button btn-danger" @click="goToBooking(session)">Boka</b-button>
               </div>
             </div>
           </div>
@@ -79,7 +79,7 @@
       
       </section>
       <div class="showMoreButton">
-        <b-button class="showMore" v-on:click="loadMore">Visa fler</b-button>
+        <b-button class="showMore mt-2" v-on:click="loadMore">Visa fler</b-button>
       </div>
     </section>
     <section v-else class="loading-logo mt-5">

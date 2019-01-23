@@ -12,16 +12,16 @@
       <p>
         På Storgatans biograf erbjuder vi två biosalonger, en stor och en mindre. Du kan boka biljetter direkt på
         hemsidan eller köpa dem på biografen, där du även kan köpa popcorn, snacks
-        och dricka. Välkommen.
+        och dricka. Välkommen!
       </p>
     </div>
 
     <div class="kontakta">
       <h3>Öppettider</h3>
-      <p>Öppet måndag - fredag 11:00-23:45, lördag - söndag 10:00-23:45</p>
-      <p>Julafton stängt</p>
-      <p>Nyårsafton 10:00-15:00</p>
-      <p>Nyårsdagen 11:00-17:00</p>
+      <p>måndag - fredag: 11:00-23:45, lördag - söndag: 10:00-23:45</p>
+      <p>Julafton: stängt</p>
+      <p>Nyårsafton: 10:00-15:00</p>
+      <p>Nyårsdagen: 11:00-17:00</p>
     </div>
 
     <div class="kontakta">
@@ -29,7 +29,7 @@
       <h6>ECutbildningar</h6>
       <div class="biograf">
         <p>Storagatan, 213 56 Malmö</p>
-        <p>Telefon 05-17 17 00 00</p>
+        <p>Telefon: 05-17 17 00 00</p>
       </div>
     </div>
 
@@ -45,7 +45,7 @@
 
     <div class="kontakta">
       <h3>För reservation av rullstolsplats</h3>
-      <p>Telefon 05-17 17 00 01</p>
+      <p>Telefon: 05-17 17 00 01</p>
       <hr>
     </div>
 
@@ -53,7 +53,7 @@
       <h3>Kontakta oss via e-post</h3>
       <p>
         På e-postadressen
-        <strong>kundservice@filmvisarna.se</strong>
+        <strong>filmvisarna@gmail.com</strong>
         kontaktar du oss om frågor eller åsikter som gäller biobesöket, webbplatsen osv.
       </p>
     </div>

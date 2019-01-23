@@ -1,11 +1,10 @@
 <template>
 <div class="Movie">
 
-  <b-jumbotron class="jumbobg">
-    <section v-if="errorFromMongo">
+  <section v-if="errorFromMongo" class="dark-transparent text-center" style="color: white">
       <h1>Något blev fel!</h1>
       <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
-      <ul>
+      <ul class="list-style-none">
         <li>Antipiratbyrån har hackat oss</li>
         <li>Vår hemsida har tekniskt strul</li>
         <li>Du har klickat på en gammal länk</li>
@@ -14,7 +13,7 @@
 
     </section>
 
-    <section v-if="aMovie && movieSessions">
+  <b-jumbotron class="jumbobg text-shadow" v-if="aMovie && movieSessions">
 
 
       <!-- Title -->
@@ -39,7 +38,7 @@
           <div class="knappar">
             <b-btn v-on:click="goToBooking" variant="danger">Boka biljetter</b-btn>
 
-            <b-dropdown id="ddown-buttons" text="Ändra visningsdatum: " variant="danger" class="visningsdatum">
+            <b-dropdown id="ddown-buttons" text="Ändra visningsdatum: " variant="secondary" class="visningsdatum">
               <b-dropdown-item-button v-on:click="changeSession" v-for="session in this.movieSessions" :value="session._id" :key="session._id">{{getWeekdayString(session.date.year,session.date.month,session.date.day).slice(0,-3)}} {{session.date.day + '/' + session.date.month + ' ' + session.date.year + ' ' + session.date.time }}</b-dropdown-item-button>
             </b-dropdown></div>
             <h3><br>

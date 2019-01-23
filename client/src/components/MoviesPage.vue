@@ -11,10 +11,10 @@
     </b-collapse>
   </b-navbar>
     </section>-->
-    <section v-if="errorFromMongo" class="text-center mt-3 nagotFel">
+    <section v-if="errorFromMongo" class="text-center mt-3 nagotFel dark-transparent">
       <h1>Något blev fel!</h1>
       <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
-      <ul>
+      <ul class="list-style-none">
         <li>Antipiratbyrån har hackat oss</li>
         <li>Vår hemsida har tekniskt strul</li>
         <li>Du har klickat på en gammal länk</li>
@@ -50,7 +50,7 @@
                   :to="'/film?movieID='+m._id"
                   exact-active-class="menu-item-active"
                 >
-                  <h2>{{m.title}}</h2>
+                  <h2 class="text-shadow">{{m.title}}</h2>
                 </router-link>
 
                 <div class="flexbox ptaggar info-direction">

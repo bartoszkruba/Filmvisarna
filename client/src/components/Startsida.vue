@@ -3,14 +3,21 @@
   <div class="main">
     <b-jumbotron
       class="white-text jumbobg"
-    
+      style="background-color: #860717"
     >
       <template slot="header" class="white-text welcome-text">
-        <h1 class="white-text welcome-text">Välkommen till Filmvisarna!</h1>
+        <h1 class="white-text welcome-text text-shadow">Välkommen till Filmvisarna!</h1>
       </template>
     </b-jumbotron>
+    <b-jumbotron
+      class="white-text jumbobg gradient-linear"
+    >  
+      <h1 class="white-text text-shadow">Vi har nu öppnat, Välkomna!</h1>
+      <h2 class="white-text text-shadow">På plats säljer vi <strong>popcorn</strong>, <strong>läsk</strong>, <span>chips</span>, <span>godis</span> och mer!</h2>
+    </b-jumbotron>
     <div v-if="movies && sessions">
-      <div class="box">
+      <div class="box pt-3">
+      <h1 class="text-shadow">Närmaste visningar:</h1>
         <div>
           <b-container fluid class="startposter">
             <b-row>
@@ -23,7 +30,7 @@
                   >
                   <img class="poster" :src="url + movies[0].imagesLinks.poster"> 
                   </router-link>
-                  <h3>{{movies[0].title}}</h3>
+                  <h3 class="text-shadow">{{movies[0].title}}</h3>
                   <router-link
                     class="router-link"
                     :to="'/film?movieID='+this.movies[0]._id"
@@ -31,7 +38,7 @@
                   >
                     <b-button>Läs mer</b-button>
                   </router-link>
-                  <b-button v-on:click="goToBooking(0)">Snabb boka</b-button>
+                  <b-button class="btn-danger" v-on:click="goToBooking(0)">Boka</b-button>
                 </figure>
               </b-col>
               <b-col>
@@ -43,7 +50,7 @@
                   >
                     <img class="poster" :src="url + movies[1].imagesLinks.poster"> 
                   </router-link>
-                  <h3>{{movies[1].title}}</h3>
+                  <h3 class="text-shadow">{{movies[1].title}}</h3>
                   <router-link
                     class="router-link"
                     :to="'/film?movieID='+this.movies[1]._id"
@@ -51,7 +58,7 @@
                   >
                     <b-button>Läs mer</b-button>
                   </router-link>
-                  <b-button v-on:click="goToBooking(1)">Snabb boka</b-button>
+                  <b-button class="btn-danger" v-on:click="goToBooking(1)">Boka</b-button>
                 </figure>
               </b-col>
               <b-col>
@@ -63,7 +70,7 @@
                   >
                     <img class="poster" :src="url + movies[2].imagesLinks.poster"> 
                   </router-link>
-                  <h3>{{movies[2].title}}</h3>
+                  <h3 class="text-shadow">{{movies[2].title}}</h3>
                   <router-link
                     class="router-link"
                     :to="'/film?movieID='+this.movies[2]._id"
@@ -71,7 +78,7 @@
                   >
                     <b-button>Läs mer</b-button>
                   </router-link>
-                  <b-button v-on:click="goToBooking(2)">Snabb boka</b-button>
+                  <b-button class="btn-danger" v-on:click="goToBooking(2)">Boka</b-button>
                 </figure>
               </b-col>
             </b-row>
@@ -106,7 +113,7 @@
             >
               <b-button>Läs mer</b-button>
             </router-link>
-            <b-button v-on:click="goToBooking(0)">Snabb boka</b-button>
+            <b-button class="btn-danger" v-on:click="goToBooking(0)">Boka</b-button>
           </b-carousel-slide>
           <b-carousel-slide>
             <img
@@ -128,7 +135,7 @@
             >
               <b-button>Läs mer</b-button>
             </router-link>
-            <b-button v-on:click="goToBooking(1)">Snabb boka</b-button>
+            <b-button class="btn-danger" v-on:click="goToBooking(1)">Boka</b-button>
           </b-carousel-slide>
           <b-carousel-slide>
             <img
@@ -150,7 +157,7 @@
             >
               <b-button>Läs mer</b-button>
             </router-link>
-            <b-button v-on:click="goToBooking(2)">Snabb boka</b-button>
+            <b-button class="btn-danger" v-on:click="goToBooking(2)">Boka</b-button>
           </b-carousel-slide>
         </b-carousel>
       </div>
@@ -161,21 +168,6 @@
       </h1>
       <h1 class="text-center">Loading</h1>
     </div>
-    <b-jumbotron
-      class="white-text jumbobg"
-      style=""
-    >
-      <template slot="header" class="white-text">Senaste nytt</template>
-      <h1 class="white-text">Vi har nu öppnat, Välkomna</h1>
-      <h2 class="white-text">På plats säljer vi:</h2>
-      <ul class="white-text">
-        <li>Popcorn,</li>
-        <li>Läsk,</li>
-        <li>Chips,</li>
-        <li>Godis,</li>
-        <li>m.m.</li>
-      </ul>
-    </b-jumbotron>
   </div>
 </template>
 <script>
@@ -261,6 +253,12 @@ export default {
 };
 </script>
 <style scoped>
+
+.gradient-linear{
+background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.16)),
+    linear-gradient(#860717, rgba(0, 0, 0, 0.25));
+}
+
 .loading-logo {
   color:white;
   height: 70vh;

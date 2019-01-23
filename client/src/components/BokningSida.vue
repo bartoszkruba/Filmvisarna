@@ -1,9 +1,9 @@
 <template>
 <main>
-  <section v-if="errorFromMongo">
+  <section class="text-center loader p-1" v-if="errorFromMongo" style="background-color: rgba(0, 0, 0, 0.5);">
     <h1>Något blev fel!</h1>
     <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
-    <ul>
+    <ul class="list-style-none">
       <li>Antipiratbyrån har hackat oss</li>
       <li>Vår hemsida har tekniskt strul</li>
       <li>Du har klickat på en gammal länk</li>
@@ -169,7 +169,7 @@
         </b-modal>
       </div>
     </section>
-    <section v-else>
+    <section class="loader loading-logo" v-else>
       <h1 class="text-center spinner">
         <font-awesome-icon icon="spinner"/>
       </h1>
@@ -481,12 +481,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.loading-logo {
-  height: 70vh;
-  opacity: 1;
-  animation: flickerAnimation 3s infinite;
-  overflow: hidden;
-}
 
 @keyframes flickerAnimation {
   /* flame pulses */
@@ -530,8 +524,18 @@ export default {
 }
 
 main{
-  background-color: white;
+  background-color: rgba(0, 0, 0, 0)
 }
+
+section{
+  background-color: white
+}
+
+.loader{
+  background-color:rgba(0, 0, 0, 0);
+  color:white;
+}
+
 .textBekraftelse{
   width: 20vw;
 }
@@ -667,6 +671,13 @@ div .vilkaBiljetter {
   margin-top: 1vh;
 }
 
+.loading-logo {
+  color: white;
+  height: 70vh;
+  opacity: 1;
+  animation: flickerAnimation 3s infinite;
+  overflow: hidden;
+}
 
 @media screen and (min-width: 417px) and (max-width: 768px){
   div .location {
