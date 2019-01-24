@@ -1,7 +1,7 @@
 <template>
   <div
-    @mouseenter="hoverOverSeats"
-    @mouseout="hoverOverSeats"
+    @mouseover="hoverOverSeats"
+    @mouseleave="hoverOverSeats"
     @click="hoverOverSeats"
     class="movie-seat"
     v-bind:id="myId"
@@ -67,7 +67,7 @@ export default {
   background-color: gray;
   border-radius: 0 0 20% 20%;
   display: inline-block;
-  margin: 4px;
+  margin: 2px;
 }
 
 .active{
