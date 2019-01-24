@@ -60,8 +60,8 @@ export default {
     this.freePlaces = sessionSeats.data.movie_sessions[0].places;
     this.seatsPerRow = response.data.movie_theatres[0].seatsPerRow;
     this.totalSeats = response.data.movie_theatres[0].seats;
-    this.coiehf = 0;
   },
+  
   methods: {
     count(n) {
       let output = 0;
