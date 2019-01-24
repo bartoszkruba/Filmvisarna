@@ -1,16 +1,5 @@
 <template>
   <section class="hello">
-    <!--<section>
-  <b-navbar type="dark" variant="danger" toggleable>
-    <b-navbar-toggle target="nav_dropdown_collapse"></b-navbar-toggle>
-    <b-collapse is-nav id="nav_dropdown_collapse">
-      <b-navbar-nav>
-        <b-nav-item href="#">Home</b-nav-item>
-        <b-nav-item href="#">Link</b-nav-item>
-      </b-navbar-nav>
-    </b-collapse>
-  </b-navbar>
-    </section>-->
     <section v-if="errorFromMongo" class="text-center mt-3 nagotFel dark-transparent">
       <h1>Något blev fel!</h1>
       <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
@@ -28,61 +17,59 @@
 
     <section v-if="movies">
       <h1 class="text-center mt-3" v-if="movies && movies.length === 0">Inga Sökträffar :(</h1>
-      
-      <section class="main">
-      <div v-for="m in movies">
-        <div class="flexbox main-placing">
-          <div class="flex-mobil">
-            <figure class="images">
-              <router-link
-                class="router-link"
-                :to="'/film?movieID='+m._id"
-                exact-active-class="menu-item-active"
-              >
-                <img :src="url + m.imagesLinks.poster" class="posterpic">
-              </router-link>
-            </figure>
 
-            <div class="movietext">
-              <div class="flex-col">
+      <section class="main">
+        <div v-for="m in movies">
+          <div class="flexbox main-placing">
+            <div class="flex-mobil">
+              <figure class="images">
                 <router-link
                   class="router-link"
                   :to="'/film?movieID='+m._id"
                   exact-active-class="menu-item-active"
                 >
-                  <h2 class="text-shadow">{{m.title}}</h2>
+                  <img :src="url + m.imagesLinks.poster" class="posterpic">
                 </router-link>
+              </figure>
 
-                <div class="flexbox ptaggar info-direction">
-                  <p>Längd: {{parseInt(m.length/60)}} timmar och {{m.length%60}} minuter</p>
-                  <p class="destop-only">|</p>
-                  <p>Genre: {{m.genre}}</p>
-                  <p class="destop-only">|</p>
-                  <p>Ålder: {{m.ageLimit}} år</p>
+              <div class="movietext">
+                <div class="flex-col">
+                  <router-link
+                    class="router-link"
+                    :to="'/film?movieID='+m._id"
+                    exact-active-class="menu-item-active"
+                  >
+                    <h2 class="text-shadow">{{m.title}}</h2>
+                  </router-link>
 
-                  
-                </div>
-                <router-link
+                  <div class="flexbox ptaggar info-direction">
+                    <p>Längd: {{parseInt(m.length/60)}} timmar och {{m.length%60}} minuter</p>
+                    <p class="destop-only">|</p>
+                    <p>Genre: {{m.genre}}</p>
+                    <p class="destop-only">|</p>
+                    <p>Ålder: {{m.ageLimit}} år</p>
+                  </div>
+                  <router-link
                     class="router-link"
                     :to="'/film?movieID='+m._id"
                     exact-active-class="menu-item-active"
                   >
                     <b-button class="info-btn">Läs mer</b-button>
                   </router-link>
+                </div>
               </div>
             </div>
           </div>
+          <hr>
         </div>
-        <hr>
-      </div>
       </section>
     </section>
     <div class="mt-5 loading-logo" v-else>
-        <h1 class="text-center spinner">
-          <font-awesome-icon icon="spinner"/>
-        </h1>
-        <h1 class="text-center">Loading</h1>
-      </div>
+      <h1 class="text-center spinner">
+        <font-awesome-icon icon="spinner"/>
+      </h1>
+      <h1 class="text-center">Loading</h1>
+    </div>
   </section>
 </template>
 
@@ -104,18 +91,17 @@ export default {
     this.getMovies();
   },
   computed: {
-    url:function() {
-        return api.url;
+    url: function() {
+      return api.url;
     }
   },
   methods: {
     async getMovies() {
       this.movies = null;
-
       try {
         if (this.urlQuery.searchQuery) {
           const response = await api.searchMovies(
-            this.urlQuery.searchQuery.split('_').join(' ')
+            this.urlQuery.searchQuery.split("_").join(" ")
           );
           this.movies = response.data.movies;
           if (this.movies.length === 1) {
@@ -158,7 +144,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .loading-logo {
-  color:white;
+  color: white;
   opacity: 1;
   animation: flickerAnimation 3s infinite;
   overflow: hidden;
@@ -190,17 +176,17 @@ export default {
   }
 }
 
-.nagotFel  {
+.nagotFel {
   color: white;
 }
-.nagotFel h1{
+.nagotFel h1 {
   font-weight: bold;
 }
-.nagotFel p{
+.nagotFel p {
   padding: 0;
 }
 
-.main{
+.main {
   margin-left: 20vw;
   margin-right: 20vw;
   background-color: rgba(2, 2, 2, 0.4);
@@ -255,12 +241,12 @@ hr {
   align-items: center;
   justify-content: center;
 }
-.info-btn{
+.info-btn {
   margin-left: 1rem;
   margin-top: 1rem;
 }
 @media screen and (min-width: 501px) and (max-width: 800px) {
-  .main{
+  .main {
     margin-left: 10vw;
     margin-right: 10vw;
   }
@@ -282,15 +268,15 @@ hr {
 }
 
 @media screen and (max-width: 500px) {
-  .nagotFel{
+  .nagotFel {
     margin-bottom: 30vh;
   }
-  .nagotFel p{
+  .nagotFel p {
     font-size: 1rem;
     line-height: 1rem;
   }
-  .main{
-   margin: 0;
+  .main {
+    margin: 0;
   }
   h2 {
     font-size: 1.5rem;
@@ -319,7 +305,7 @@ hr {
   .destop-only {
     display: none;
   }
-  .info-btn{
+  .info-btn {
     display: none;
   }
 }

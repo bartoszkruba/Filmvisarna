@@ -24,14 +24,14 @@
       <p>Nyårsdagen: 11:00-17:00</p>
     </div>
 
-    <div class="kontakta">
+    <address class="kontakta">
       <h3>Biograf:</h3>
       <h6>ECutbildningar</h6>
       <div class="biograf">
         <p>Storagatan, 213 56 Malmö</p>
         <p>Telefon: 05-17 17 00 00</p>
       </div>
-    </div>
+    </address>
 
       <div class="kontakta">
       <h3>Bild</h3>
