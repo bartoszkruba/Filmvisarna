@@ -464,21 +464,16 @@
       </form>
       <hr>
       <h2 class="text-center">Delete Movie</h2>
-      <b-modal
-        hide-footer
-        ref="deleteMovieWarning"
-        id="DeleteMovieWarning"
-        title="Warning"
-      >
+      <b-modal hide-footer ref="deleteMovieWarning" id="DeleteMovieWarning" title="Warning">
         <p
           class="my-4"
         >This will delete all sessions containing the movie. Do you really wanna do this?</p>
         <div class="d-flex justify-content-between">
           <div>
-          <b-btn class="mt-3" variant="warning" block @click="hideModal">Cancel</b-btn>
+            <b-btn class="mt-3" variant="warning" block @click="hideModal">Cancel</b-btn>
           </div>
           <div>
-          <b-btn class="mt-3" variant="success" block @click="deleteMovie">Hell Yea!</b-btn>
+            <b-btn class="mt-3" variant="success" block @click="deleteMovie">Hell Yea!</b-btn>
           </div>
         </div>
       </b-modal>
@@ -595,15 +590,27 @@ export default {
     this.getMovieTheatres();
   },
   methods: {
-    hideModal(){
+    hideModal() {
       this.$refs.deleteMovieWarning.hide();
-      this.deleteMovieMessage = null
-      this.deleteMovieError = "Cancelled"
     },
-    deleteMovie(){
+    async deleteMovie() {
       this.$refs.deleteMovieWarning.hide();
-      this.deleteMovieMessage = '"' + this.movieToDelete + '" deleted';
-      this.deleteMovieError = null;
+      const user = this.$store.getters.getCredentials;
+      const movieID = this.movies.find(cur => {
+        return cur.title === this.movieToDelete;
+      })._id;
+      try {
+        const response = await api.deleteMovie(movieID, user);
+        this.deleteMovieMessage = '"' + this.movieToDelete + '" deleted';
+        this.deleteMovieError = null;
+      } catch (error) {
+        if (error.response) {
+          this.deleteMovieError = error.response.data.message;
+        } else {
+          this.deleteMovieError = "Something went wrong"
+        }
+        this.deleMovieMessage = null;
+      }
     },
     deleteMovieBtnClicked() {
       if (this.movieToDelete) {
