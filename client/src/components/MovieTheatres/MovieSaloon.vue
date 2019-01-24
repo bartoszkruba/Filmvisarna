@@ -14,7 +14,7 @@
         <section class="rows" v-bind:id="rows">
           <template v-for="(seat, index2) in seatsPerRow[index]">
             <MovieSeat
-               @hoverOverSeat="hoverOverSeat"
+              @hoverOverSeat="hoverOverSeat"
               @setChoosenSeats="setChoosenSeats"
               :myId="freePlaces[(count(index)+index2)].seatNumber"
               :seatBooked="freePlaces[(count(index)+index2)].booked"
@@ -39,7 +39,7 @@ import api from "@/services/Api.js";
 import MovieSeat from "@/components/MovieTheatres/MovieSeat";
 export default {
   name: "MovieSaloon",
-  props: ["theatreID", "sessionID", "mySeats","btnPressed"],
+  props: ["theatreID", "sessionID", "mySeats", "btnPressed"],
   data() {
     return {
       seatsPerRow: null,
@@ -47,7 +47,7 @@ export default {
       freePlaces: null,
       choosenSeats: [],
       leavingSeat: false,
-      seatsToHover: [],
+      seatsToHover: []
     };
   },
   components: {
@@ -87,24 +87,36 @@ export default {
       this.$emit("checkAllSeatsChoosen", this.moreSeats, this.choosenSeats);
     },
 
-
-    hoverOverSeat(e,hover){
-      if(hover && this.mySeats > 0){
+    hoverOverSeat(e, hover) {
+      if (hover && this.mySeats > 0) {
+        let outOfBounds = false;
+        let tryToHover = [];
         this.seatsToHover = [];
-        if(this.mySeats > 1){
-            if(e.target.id !== e.fromElement.lastElementChild.id) {
-              let index = this.freePlaces.findIndex(i => i.seatNumber === e.target.id);
-            for(let i = index; i < this.mySeats + index; i++){
-                this.seatsToHover.push(this.freePlaces[i].seatNumber);
+        if (this.mySeats > 1) {
+          let index = this.freePlaces.findIndex(i => i.seatNumber === e.target.id);
+          for (let i = index; i < this.mySeats + index; i++) {
+            try{
+              tryToHover.push(this.freePlaces[i].seatNumber);
             }
-            }
-        }else{
-          this.seatsToHover.push(e.target.id);
+            catch(e){
+              outOfBounds = true;
+              console.log("out of bounds " + outOfBounds)
+            }          
+          }
+        } 
+        else {
+          tryToHover.push(e.target.id);
         }
-      }else{
+        let lastIndex = tryToHover[tryToHover.length-1].length === 2 ? tryToHover[tryToHover.length-1].slice(0,-1) : tryToHover[tryToHover.length-1].slice(0,-2);
+        let firstIndex = tryToHover[0].length === 2 ? tryToHover[0].slice(0,-1) : tryToHover[0].slice(0,-2);
+        if(!outOfBounds && firstIndex === lastIndex){
+          this.seatsToHover = tryToHover;
+        }
+      } 
+      else {
         this.leavingSeat = !this.leavingSeat;
       }
-    },
+    }
   },
   computed: {
     moreSeats: function() {
@@ -113,7 +125,7 @@ export default {
   },
 
   watch: {
-    btnPressed: function(){
+    btnPressed: function() {
       this.choosenSeats = [];
       this.$emit("checkAllSeatsChoosen", this.moreSeats, this.choosenSeats);
     }
@@ -142,7 +154,7 @@ export default {
   text-align: center;
 }
 
-.active { 
-  background-color: orange !important; 
-} 
+.active {
+  background-color: orange !important;
+}
 </style>
