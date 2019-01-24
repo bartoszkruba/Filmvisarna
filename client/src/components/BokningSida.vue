@@ -425,16 +425,20 @@ export default {
       }
     },
 
-    checkAllSeatsChoosen(moreSeats, choosenSeats){
-      this.allSeatsSelected = !moreSeats;
-      this.choosenSeats = choosenSeats;
+    checkAllSeatsChoosen(choosenSeats){
+      if(choosenSeats.length === this.totalSeats){
+        this.choosenSeats = choosenSeats;
+        this.allSeatsSelected = true;
+      }else{
+        this.allSeatsSelected = false;
+      }
     },
 
     visaFelMedellande() {
       if (this.totalt == 0) {
         this.visaMedellande = true;
       } else {
-        if (this.allSeatsSelected && this.choosenSeats.length > 0) {
+        if (this.allSeatsSelected) {
           this.bokaFilm();
         }else{
           console.log("Du måste boka platser för så många biljetter du valt")

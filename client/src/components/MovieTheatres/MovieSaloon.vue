@@ -100,7 +100,7 @@ export default {
             this.seatsToHover = tryToHover;
         }
 
-        
+      
       } 
       else if(e.type === "mouseout"){
         this.leavingSeat = !this.leavingSeat;
@@ -115,6 +115,7 @@ export default {
           this.markSeatsClicked = false;
           this.clickedSeats = [];
         }    
+        this.$emit("checkAllSeatsChoosen", this.clickedSeats);
       }
     }
   },
