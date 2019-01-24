@@ -185,8 +185,8 @@ export default {
 
       target[0] = target[0].split("/"); // Split day/month
       // Padding for month and day
-      target[0][0] = target[0][0].padStart(2, "0");
-      target[0][1] = target[0][1].padStart(2, "0");
+      target[0][0] = target[0][0];
+      target[0][1] = target[0][1];
       // Get string with day of week
       weekday = this.getWeekdayString(target[1], target[0][1], target[0][0]);
 
@@ -199,11 +199,13 @@ export default {
       this.sessionID = e.target.value;
     },
     goToBooking(){
+      // Used for sending user to booking after signup/login
       const sessionAndMovieID = {
         movieID: this.urlQuery.movieID,
         sessionID: this.sessionID,
         redirect: true
       }
+      // If the user wants to book a ticket, check if logged in.
       if(!this.$store.getters.isUserSignedIn){
          this.$store.commit('toggleLoggaInWindow');
          this.$store.commit('setRoute', sessionAndMovieID)
@@ -211,7 +213,7 @@ export default {
         this.$router.push('/BokningSida?movieID='+this.urlQuery.movieID+'&sessionID='+this.sessionID);
       }
     },
-    starView(s, n) {
+    starView(s, n) { // Prints out stars for the review input is start and end
       let starPut = "";
       for (let i = s; i < n; i++)
         starPut += "*";
@@ -439,7 +441,7 @@ hr{
   margin: 2rem auto;
   width: 70vw;
   color: white;
-}
+  }
 }
 
 @media screen and (max-width: 320px) {
@@ -469,6 +471,6 @@ hr{
    .jumbobg{
     width: 90vw;
   }
- 
+
 }
 </style>
