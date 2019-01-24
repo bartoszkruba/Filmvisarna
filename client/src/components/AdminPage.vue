@@ -182,7 +182,11 @@
               <ul class="list-group mb-3" v-for="country in productionCountries">
                 <li class="list-group-item d-flex justify-content-between pr-1">
                   <span>{{country}}</span>
-                  <button class="btn btn-sm btn-danger" @click="removeCountry(country)" type="button">X</button>
+                  <button
+                    class="btn btn-sm btn-danger"
+                    @click="removeCountry(country)"
+                    type="button"
+                  >X</button>
                 </li>
               </ul>
               <div class="input-group mb-3">
@@ -458,6 +462,65 @@
           </div>
         </div>
       </form>
+      <hr>
+      <h2 class="text-center">Delete Movie</h2>
+      <b-modal
+        hide-footer
+        ref="deleteMovieWarning"
+        id="DeleteMovieWarning"
+        title="Warning"
+      >
+        <p
+          class="my-4"
+        >This will delete all sessions containing the movie. Do you really wanna do this?</p>
+        <div class="d-flex justify-content-between">
+          <div>
+          <b-btn class="mt-3" variant="warning" block @click="hideModal">Cancel</b-btn>
+          </div>
+          <div>
+          <b-btn class="mt-3" variant="success" block @click="deleteMovie">Hell Yea!</b-btn>
+          </div>
+        </div>
+      </b-modal>
+      <form class="container mb-5">
+        <div class="row mb-3">
+          <div class="col-sm-1"></div>
+          <div class="col-sm-10">
+            <div
+              class="alert alert-success m-auto text-center"
+              role="alert"
+              v-if="deleteMovieMessage"
+            >{{deleteMovieMessage}}</div>
+            <div
+              class="alert alert-danger m-auto text-center"
+              role="alert"
+              v-if="deleteMovieError"
+            >{{deleteMovieError}}</div>
+          </div>
+          <div class="col-sm-1"></div>
+        </div>
+        <div class="row">
+          <div class="col-sm-1"></div>
+          <div class="col-sm-10">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="MovieTheatreSelector">Movie to delete:</label>
+              </div>
+              <select class="custom-select" id="movieToDelete" v-model="movieToDelete">
+                <option selected v-for="movie in movies">{{movie.title}}</option>
+              </select>
+              <div class="input-group-prepend">
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  @click="deleteMovieBtnClicked"
+                >Delete Movie</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-1"></div>
+        </div>
+      </form>
     </div>
     <div v-if="!this.$store.state.loggedInUser.admin">
       <b-jumbotron class="jumbotron">
@@ -520,7 +583,11 @@ export default {
       },
 
       posterImage: null,
-      backgroundImage: null
+      backgroundImage: null,
+
+      movieToDelete: null,
+      deleteMovieMessage: null,
+      deleteMovieError: null
     };
   },
   created() {
@@ -528,6 +595,23 @@ export default {
     this.getMovieTheatres();
   },
   methods: {
+    hideModal(){
+      this.$refs.deleteMovieWarning.hide();
+      this.deleteMovieMessage = null
+      this.deleteMovieError = "Cancelled"
+    },
+    deleteMovie(){
+      this.$refs.deleteMovieWarning.hide();
+      this.deleteMovieMessage = '"' + this.movieToDelete + '" deleted';
+      this.deleteMovieError = null;
+    },
+    deleteMovieBtnClicked() {
+      if (this.movieToDelete) {
+        this.$refs.deleteMovieWarning.show();
+      } else {
+        console.log("Movie is null");
+      }
+    },
     posterImageChanged(event) {
       this.posterImage = event.target.files[0];
     },
@@ -693,6 +777,8 @@ export default {
           this.message = null;
           window.scrollTo(0, 0);
         }
+        this.getMovies();
+        this.getMovieTheatres();
       } else {
         this.error = "All fields needs to be filled.";
         this.message = null;
@@ -758,6 +844,8 @@ export default {
         this.sessionMessage = null;
         this.sessionError = "All fields need to be filled";
       }
+      this.getMovies();
+      this.getMovieTheatres();
     }
   }
 };
