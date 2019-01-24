@@ -20,8 +20,8 @@
               :seatBooked="freePlaces[(count(index)+index2)].booked"
               :moreSeats="moreSeats"
               :btnPressed="btnPressed"
-              :leavingSeat="leavingSeat"
               :seatsToHover="seatsToHover"
+              :markSeatsClicked="markSeatsClicked"
             ></MovieSeat>
           </template>
         </section>
@@ -47,7 +47,9 @@ export default {
       freePlaces: null,
       choosenSeats: [],
       leavingSeat: false,
-      seatsToHover: []
+      seatsToHover: [],
+      markSeatsClicked: false,
+      clickedSeats: []
     };
   },
   components: {
@@ -87,11 +89,11 @@ export default {
       this.$emit("checkAllSeatsChoosen", this.moreSeats, this.choosenSeats);
     },
 
-    hoverOverSeat(e, hover) {
-      if (hover && this.mySeats > 0) {
+    hoverOverSeat(e) { 
+      console.log(e.type);
+      if (e.type === "mouseenter" && this.mySeats > 0 && !this.markSeatsClicked) {
         let outOfBounds = false;
         let tryToHover = [];
-        this.seatsToHover = [];
         if (this.mySeats > 1) {
           let index = this.freePlaces.findIndex(i => i.seatNumber === e.target.id);
           for (let i = index; i < this.mySeats + index; i++) {
@@ -104,7 +106,7 @@ export default {
             }          
           }
         } 
-        else {
+        else{
           tryToHover.push(e.target.id);
         }
         let lastIndex = tryToHover[tryToHover.length-1].length === 2 ? tryToHover[tryToHover.length-1].slice(0,-1) : tryToHover[tryToHover.length-1].slice(0,-2);
@@ -113,8 +115,23 @@ export default {
           this.seatsToHover = tryToHover;
         }
       } 
-      else {
+      else if(e.type === "mouseout"){
         this.leavingSeat = !this.leavingSeat;
+      }
+
+      else if(e.type === "click"){
+        console.log(this.mySeats);
+        console.log(this.clickedSeats.length);
+        if(this.clickedSeats.length !== this.mySeats){
+          this.markSeatsClicked = true;
+          this.clickedSeats = this.seatsToHover;
+          console.log(this.clickedSeats);
+        }
+        else if(this.clickedSeats.includes(e.target.id)){
+          this.markSeatsClicked = false;
+          this.clickedSeats = [];
+          console.log(this.clickedSeats);
+        }    
       }
     }
   },
@@ -126,8 +143,10 @@ export default {
 
   watch: {
     btnPressed: function() {
-      this.choosenSeats = [];
-      this.$emit("checkAllSeatsChoosen", this.moreSeats, this.choosenSeats);
+      this.markSeatsClicked = false;
+      this.clickedSeats = [];
+      this.seatsToHover = [];
+      console.log("hellooo")
     }
   }
 };

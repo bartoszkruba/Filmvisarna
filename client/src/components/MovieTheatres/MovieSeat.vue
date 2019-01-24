@@ -2,12 +2,12 @@
 <template>
   <div
     @mouseenter="hoverOverSeats"
-    @mouseout="leaveHover"
-    @click="seatClicked"
+    @mouseout="hoverOverSeats"
+    @click="hoverOverSeats"
     class="movie-seat"
     v-bind:id="myId"
     v-bind:ref="myId"
-    v-bind:class="{ isBooked: seatBooked, myBooking: choosenSeat, movieSeat: moreSeats, active: hover}"
+    v-bind:class="{ isBooked: seatBooked, myBooking: choosenSeat, movieSeat: moreSeats, active: hover, clickedSeat: seatIsClicked}"
   ></div>
 </template>
 
@@ -16,46 +16,45 @@ import api from "@/services/Api.js";
 
 export default {
   name: "MovieSeat",
-  props: ["myId", "seatBooked", "moreSeats", "btnPressed", "leavingSeat", "seatsToHover"],
+  props: ["myId", "seatBooked", "moreSeats", "btnPressed", "leavingSeat", "seatsToHover", "markSeatsClicked"],
   data() {
     return {
       choosenSeat: false,
       hover: false,
       leavingHover: false,
-      previousHover: []
+      previousHover: [],
+      seatIsClicked: false,
     };
   },
   methods: {
-    seatClicked(e) {
-      if (!e.target.className.includes("isBooked")) {
-        if (this.moreSeats || this.choosenSeat) {
-          this.choosenSeat = !this.choosenSeat;
-          this.$emit("setChoosenSeats", e.target.id);
-        }
-      }
-    },
     hoverOverSeats(e){
-      this.$emit('hoverOverSeat',e,true);
-    },
-    leaveHover(e){
-      this.$emit('hoverOverSeat',e,false);
+      this.$emit('hoverOverSeat',e);
     },
   },
   watch: {
     btnPressed: function() {
-      this.choosenSeat = false;
+      this.seatIsClicked = false;
     },
     seatsToHover: function() {
           this.hover = false;
-      if(this.seatsToHover.includes(this.myId)){
+      if(this.seatsToHover.includes(this.myId)  && !this.seatIsClicked){
           this.hover = true;
       }
     },
-
     leavingSeat: function() {
       if(this.seatsToHover.includes(this.myId)){
           this.hover = false;
           console.log("leaving seat")
+      }
+    },
+
+    markSeatsClicked: function() {
+      if(this.seatsToHover.includes(this.myId) && !this.seatIsClicked){
+          this.seatIsClicked = true;
+          this.hover = false;
+          console.log("clicked seat")
+      }else if(this.seatsToHover.includes(this.myId) && this.seatIsClicked){
+        this.seatIsClicked = false;
       }
     }
   }
@@ -75,6 +74,10 @@ export default {
 
 .active{
   background-color: yellow;
+}
+
+.clickedSeat {
+  background-color: blue;
 }
 
 @media screen and (max-width: 1024px) {
