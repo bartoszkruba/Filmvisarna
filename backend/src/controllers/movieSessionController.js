@@ -39,9 +39,11 @@ module.exports.postMovieSessions = async (req, res, next) => {
     }
 }
 module.exports.postAddMovieSession = async (req, res, next) => {
-    const movieTheatre = await MovieTheatre.find({ _id: req.body.movieSession.movieTheatreID });
+    const movieTheatre = await MovieTheatre.findOne({ _id: req.body.movieSession.movieTheatreID });
     
         let places = [];
+
+        console.log(movieTheatre);
 
         for (let i = 0; i < movieTheatre.seatsPerRow.length; i++) {
             for (let j = 0; j < movieTheatre.seatsPerRow[i]; j++) {
@@ -53,8 +55,9 @@ module.exports.postAddMovieSession = async (req, res, next) => {
     new MovieSession({
         movieID: req.body.movieSession.movieID,
         date: req.body.movieSession.date,
-        freePlaces: movieTheatre[0].seats,
-        movieTheatreID: req.body.movieSession.movieTheatreID
+        freePlaces: movieTheatre.seats,
+        movieTheatreID: req.body.movieSession.movieTheatreID,
+        places: places
     }).save();
     res.send();
 }
