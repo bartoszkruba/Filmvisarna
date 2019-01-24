@@ -76,14 +76,23 @@ export default {
       if (e.type === "mouseover" && this.mySeats > 0 && !this.markSeatsClicked) {
         let tryToHover = [];
         if (this.mySeats > 1 && !this.freePlaces[index].booked) {
+          for (let i = index; i < this.mySeats + index; i++) {
             try{
-              tryToHover = this.goToRight(index,tryToHover);
+              if(this.freePlaces[i].booked){throw "Platsen är redan bokad"}
+              tryToHover.push(this.freePlaces[i].seatNumber);
+                let lastIndex = tryToHover[tryToHover.length-1].length === 2 ? tryToHover[tryToHover.length-1].slice(0,-1) : tryToHover[tryToHover.length-1].slice(0,-2);
+                let firstIndex = tryToHover[0].length === 2 ? tryToHover[0].slice(0,-1) : tryToHover[0].slice(0,-2)
+                if(firstIndex !== lastIndex){throw "Out Of Bounds"}
             }
+
             catch(e){
               tryToHover = this.goToLeft(index,tryToHover);
             }          
+          }
           if(tryToHover !== undefined){
           this.seatsToHover = tryToHover;
+          }else{
+            this.seatsToHover = [];
           }
         } 
         else if(!this.freePlaces[index].booked){
@@ -109,25 +118,6 @@ export default {
         this.$emit("checkAllSeatsChoosen", this.clickedSeats);
       }
       }
-    },
-
-    goToRight(index,tryToHover){
-      tryToHover = [];
-      let outOfBounds = false;
-      for (let i = index; i < this.mySeats + index; i++) {
-            try{
-              if(this.freePlaces[i].booked){throw "Platsen är redan bokad"}
-              tryToHover.push(this.freePlaces[i].seatNumber);
-                let lastIndex = tryToHover[tryToHover.length-1].length === 2 ? tryToHover[tryToHover.length-1].slice(0,-1) : tryToHover[tryToHover.length-1].slice(0,-2);
-                let firstIndex = tryToHover[0].length === 2 ? tryToHover[0].slice(0,-1) : tryToHover[0].slice(0,-2)
-                if(firstIndex !== lastIndex){throw "Out Of Bounds"}
-            }
-
-            catch(e){
-              outOfBounds = true;
-            }          
-          }
-          if(!outOfBounds){return tryToHover}
     },
 
     goToLeft(index, tryToHover){
