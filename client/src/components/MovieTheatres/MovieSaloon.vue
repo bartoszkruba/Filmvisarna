@@ -15,7 +15,6 @@
           <template v-for="(seat, index2) in seatsPerRow[index]">
             <MovieSeat
               @hoverOverSeat="hoverOverSeat"
-              @setChoosenSeats="setChoosenSeats"
               :myId="freePlaces[(count(index)+index2)].seatNumber"
               :seatBooked="freePlaces[(count(index)+index2)].booked"
               :moreSeats="moreSeats"
@@ -72,65 +71,49 @@ export default {
       return output;
     },
 
-    //Sets the choosen
-    setChoosenSeats(seatsChoosen) {
-      //If choosen seats is already in array and it comes as an input again,
-      //remove it from array because user undid his choise
-      if (this.choosenSeats.includes(seatsChoosen)) {
-        this.choosenSeats.splice(this.choosenSeats.indexOf(seatsChoosen), 1);
-      } else {
-        if (this.moreSeats) {
-          //otherwise add it to the array
-          this.choosenSeats.push(seatsChoosen);
-        } else {
-          console.log("du får inte välja fler säten");
-        }
-      }
-      this.$emit("checkAllSeatsChoosen", this.moreSeats, this.choosenSeats);
-    },
-
     hoverOverSeat(e) { 
-      console.log(e.type);
+      let index = this.freePlaces.findIndex(i => i.seatNumber === e.target.id);
       if (e.type === "mouseenter" && this.mySeats > 0 && !this.markSeatsClicked) {
         let outOfBounds = false;
         let tryToHover = [];
         if (this.mySeats > 1) {
-          let index = this.freePlaces.findIndex(i => i.seatNumber === e.target.id);
           for (let i = index; i < this.mySeats + index; i++) {
             try{
+              if(this.freePlaces[i].booked){throw "Platsen är redan bokad"}
               tryToHover.push(this.freePlaces[i].seatNumber);
             }
+
             catch(e){
               outOfBounds = true;
-              console.log("out of bounds " + outOfBounds)
+              console.log("out of bounds ")
+              if(e === "Platsen är redan bokad"){console.log(e)}
             }          
           }
+            let lastIndex = tryToHover[tryToHover.length-1].length === 2 ? tryToHover[tryToHover.length-1].slice(0,-1) : tryToHover[tryToHover.length-1].slice(0,-2);
+            let firstIndex = tryToHover[0].length === 2 ? tryToHover[0].slice(0,-1) : tryToHover[0].slice(0,-2);
+          if(!outOfBounds && firstIndex === lastIndex){
+            this.seatsToHover = tryToHover;
+          }
         } 
-        else{
-          tryToHover.push(e.target.id);
+        else if(!this.freePlaces[index].booked){
+            tryToHover.push(e.target.id);
+            this.seatsToHover = tryToHover;
         }
-        let lastIndex = tryToHover[tryToHover.length-1].length === 2 ? tryToHover[tryToHover.length-1].slice(0,-1) : tryToHover[tryToHover.length-1].slice(0,-2);
-        let firstIndex = tryToHover[0].length === 2 ? tryToHover[0].slice(0,-1) : tryToHover[0].slice(0,-2);
-        if(!outOfBounds && firstIndex === lastIndex){
-          this.seatsToHover = tryToHover;
-        }
+
+        
       } 
       else if(e.type === "mouseout"){
         this.leavingSeat = !this.leavingSeat;
       }
 
       else if(e.type === "click"){
-        console.log(this.mySeats);
-        console.log(this.clickedSeats.length);
         if(this.clickedSeats.length !== this.mySeats){
           this.markSeatsClicked = true;
           this.clickedSeats = this.seatsToHover;
-          console.log(this.clickedSeats);
         }
         else if(this.clickedSeats.includes(e.target.id)){
           this.markSeatsClicked = false;
           this.clickedSeats = [];
-          console.log(this.clickedSeats);
         }    
       }
     }
@@ -146,7 +129,6 @@ export default {
       this.markSeatsClicked = false;
       this.clickedSeats = [];
       this.seatsToHover = [];
-      console.log("hellooo")
     }
   }
 };

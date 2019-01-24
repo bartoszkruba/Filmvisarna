@@ -1,4 +1,3 @@
-
 <template>
   <div
     @mouseenter="hoverOverSeats"
@@ -31,6 +30,7 @@ export default {
       this.$emit('hoverOverSeat',e);
     },
   },
+  
   watch: {
     btnPressed: function() {
       this.seatIsClicked = false;
@@ -44,7 +44,6 @@ export default {
     leavingSeat: function() {
       if(this.seatsToHover.includes(this.myId)){
           this.hover = false;
-          console.log("leaving seat")
       }
     },
 
@@ -52,7 +51,6 @@ export default {
       if(this.seatsToHover.includes(this.myId) && !this.seatIsClicked){
           this.seatIsClicked = true;
           this.hover = false;
-          console.log("clicked seat")
       }else if(this.seatsToHover.includes(this.myId) && this.seatIsClicked){
         this.seatIsClicked = false;
       }
@@ -78,6 +76,10 @@ export default {
 
 .clickedSeat {
   background-color: blue;
+}
+
+.isBooked {
+  background-color: red !important;
 }
 
 @media screen and (max-width: 1024px) {
