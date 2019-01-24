@@ -39,12 +39,25 @@ module.exports.postMovieSessions = async (req, res, next) => {
     }
 }
 module.exports.postAddMovieSession = async (req, res, next) => {
-    const movieTheatre = await MovieTheatre.find({ _id: req.body.movieSession.movieTheatreID });
+    const movieTheatre = await MovieTheatre.findOne({ _id: req.body.movieSession.movieTheatreID });
+    
+        let places = [];
+
+        console.log(movieTheatre);
+
+        for (let i = 0; i < movieTheatre.seatsPerRow.length; i++) {
+            for (let j = 0; j < movieTheatre.seatsPerRow[i]; j++) {
+                const seat = getLetter(i) + (j + 1) + "";
+                places.push({ seatNumber: seat, booked: false });
+            }
+        }
+
     new MovieSession({
         movieID: req.body.movieSession.movieID,
         date: req.body.movieSession.date,
-        freePlaces: movieTheatre[0].seats,
-        movieTheatreID: req.body.movieSession.movieTheatreID
+        freePlaces: movieTheatre.seats,
+        movieTheatreID: req.body.movieSession.movieTheatreID,
+        places: places
     }).save();
     res.send();
 }
@@ -88,3 +101,30 @@ module.exports.deleteOldSessions = async () => {
         } 
     })
 }
+
+function getLetter(row) {
+    switch (row + 1) {
+        case 1:
+            return "A"
+        case 2:
+            return "B"
+        case 3:
+            return "C"
+        case 4:
+            return "D"
+        case 5:
+            return "E"
+        case 6:
+            return "F"
+        case 7:
+            return "G"
+        case 8:
+            return "H"
+        case 9:
+            return "I"
+        case 10:
+            return "I"
+        default:
+            return "X"
+    }
+};
