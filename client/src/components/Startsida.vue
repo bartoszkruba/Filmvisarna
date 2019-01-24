@@ -1,23 +1,28 @@
 <template>
-
+  <!--Visar Välomsmedelandet-->
   <div class="main">
-    <b-jumbotron
-      class="white-text jumbobg"
-      style="background-color: #860717"
-    >
+    <b-jumbotron class="white-text jumbobg" style="background-color: #860717">
       <template slot="header" class="white-text welcome-text">
         <h1 class="white-text welcome-text text-shadow">Välkommen till Filmvisarna!</h1>
       </template>
     </b-jumbotron>
-    <b-jumbotron
-      class="white-text jumbobg gradient-linear"
-    >  
+    <!--Visar text att vi är nyöpnade och vad som kan köpas på plats-->
+    <b-jumbotron class="white-text jumbobg gradient-linear">
       <h1 class="white-text text-shadow">Vi har nu öppnat, Välkomna!</h1>
-      <h2 class="white-text text-shadow">På plats säljer vi <strong>popcorn</strong>, <strong>läsk</strong>, <span>chips</span>, <span>godis</span> och mer!</h2>
+      <h2 class="white-text text-shadow">
+        På plats säljer vi
+        <strong>popcorn</strong>,
+        <strong>läsk</strong>,
+        <span>chips</span>,
+        <span>godis</span> och mer!
+      </h2>
     </b-jumbotron>
+    <!--Visar närmaste visningar visningar-->
+    <!--Varge b-col ineholer en filmplanch i länkande så man kan läsa mer, titel och två olika knapppar en läs mer och en som tar dig till näskomande visning av den filmen bokning-->
+    <!--Visas i decktop och tablets-->
     <div v-if="movies && sessions">
       <div class="box pt-3">
-      <h1 class="text-shadow">Närmaste visningar:</h1>
+        <h1 class="text-shadow">Närmaste visningar:</h1>
         <div>
           <b-container fluid class="startposter">
             <b-row>
@@ -28,7 +33,7 @@
                     :to="'/film?movieID='+this.movies[0]._id"
                     exact-active-class="menu-item-active"
                   >
-                  <img class="poster" :src="url + movies[0].imagesLinks.poster"> 
+                    <img class="poster" :src="url + movies[0].imagesLinks.poster">
                   </router-link>
                   <h3 class="text-shadow">{{movies[0].title}}</h3>
                   <router-link
@@ -48,7 +53,7 @@
                     :to="'/film?movieID='+this.movies[1]._id"
                     exact-active-class="menu-item-active"
                   >
-                    <img class="poster" :src="url + movies[1].imagesLinks.poster"> 
+                    <img class="poster" :src="url + movies[1].imagesLinks.poster">
                   </router-link>
                   <h3 class="text-shadow">{{movies[1].title}}</h3>
                   <router-link
@@ -68,7 +73,7 @@
                     :to="'/film?movieID='+this.movies[2]._id"
                     exact-active-class="menu-item-active"
                   >
-                    <img class="poster" :src="url + movies[2].imagesLinks.poster"> 
+                    <img class="poster" :src="url + movies[2].imagesLinks.poster">
                   </router-link>
                   <h3 class="text-shadow">{{movies[2].title}}</h3>
                   <router-link
@@ -84,6 +89,8 @@
             </b-row>
           </b-container>
         </div>
+        <!--Visar de nästkomande filmerna i en roterande karusel-->
+        <!--Varge b-carousel-slide ineholer en filmplanch i länkande så man kan läsa mer, titel, filmtid, oldersgräns och två olika knapppar en läs mer och en som tar dig till näskomande visning av den filmen bokning-->
         <b-carousel
           id="carousel1"
           controls
@@ -171,9 +178,9 @@
   </div>
 </template>
 <script>
+/*Impoterar server Api`n*/
 import api from "@/services/Api.js";
 export default {
-  //Hämta data från server
   data() {
     return {
       movies: null,
@@ -181,26 +188,29 @@ export default {
       movieIndex: null
     };
   },
+  /*När sidan ladas så hämtas filmerna från servern och man startar längst upp på sidan*/
   mounted: function() {
     this.getMovies();
     this.scrollTop();
   },
   computed: {
-    url: function(){
-      return api.url
+    url: function() {
+      return api.url;
     }
   },
   methods: {
-    scrollTop(){
-      window.scrollTo(0,0);
+    scrollTop() {
+      window.scrollTo(0, 0);
     },
-
+    /*Så att karuselen snurar*/
     onSlideStart(slide) {
       this.sliding = true;
     },
     onSlideEnd(slide) {
       this.sliding = false;
     },
+    /*Anropet som hämtar filmerna från servern och sparar ner informationen i veriablen movies*/
+    /*Soterar så det är den nästkomande filmen som vissas lägs först osv*/
     async getMovies() {
       const response = await api.getMovies();
       this.movies = response.data.movies;
@@ -216,10 +226,12 @@ export default {
       }
       this.movies = moviesToShow;
     },
+    /* Hämtar vilken film som visas här näst*/
     async getSessions() {
       const response = await api.getMovieSessions();
       this.sessions = response.data.movie_sessions;
     },
+    /*När man trycker på bilden i slidern så sickas man till dens filminformaations*/
     linkToMovePage(e) {
       return this.$router.push(
         "/film?movieID=" + e.srcElement.attributes.value.value
@@ -253,14 +265,13 @@ export default {
 };
 </script>
 <style scoped>
-
-.gradient-linear{
-background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.16)),
+.gradient-linear {
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.16)),
     linear-gradient(#860717, rgba(0, 0, 0, 0.25));
 }
 
 .loading-logo {
-  color:white;
+  color: white;
   height: 70vh;
   opacity: 1;
   animation: flickerAnimation 3s infinite;
@@ -293,11 +304,10 @@ background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.16)),
   }
 }
 
-.main{
-  
+.main {
 }
-.jumbobg{
-   background-color: rgba(2, 2, 2, 0);
+.jumbobg {
+  background-color: rgba(2, 2, 2, 0);
 }
 
 h1 {
@@ -334,9 +344,9 @@ ul {
 .startposter {
   padding-top: 2vh;
 }
-.box{
-   background-color: rgba(2, 2, 2, 0.4);
-   color: white;
+.box {
+  background-color: rgba(2, 2, 2, 0.4);
+  color: white;
 }
 
 .white-text {
