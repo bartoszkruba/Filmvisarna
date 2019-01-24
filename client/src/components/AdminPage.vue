@@ -299,7 +299,7 @@
           <div class="col-sm-1"></div>
           <div class="col-sm-10">
             <button
-              type="submit"
+              type="button"
               class="btn btn-danger btn-lg btn-block"
               @click="addMovie"
             >Add Movie</button>
@@ -448,7 +448,7 @@
             <div class="col-sm-1"></div>
             <div class="col-sm-10">
               <button
-                type="submit"
+                type="button"
                 class="btn btn-danger btn-lg btn-block"
                 @click="addMovieSession"
               >Add Movie Session</button>
