@@ -601,7 +601,7 @@ export default {
       })._id;
       try {
         const response = await api.deleteMovie(movieID, user);
-        this.deleteMovieMessage = '"' + this.movieToDelete + '" deleted';
+        this.deleteMovieMessage = response.data.message;
         this.deleteMovieError = null;
       } catch (error) {
         console.log(error);
