@@ -161,7 +161,7 @@
               <ul class="list-group mb-3" v-for="actor in actors">
                 <li class="list-group-item d-flex justify-content-between pr-1">
                   <span>{{actor}}</span>
-                  <button class="btn btn-sm btn-danger" @click="removeActor(actor)">X</button>
+                  <button class="btn btn-sm btn-danger" @click="removeActor(actor)" type="button">X</button>
                 </li>
               </ul>
               <div class="input-group mb-3">
@@ -173,7 +173,7 @@
                   v-model="actor"
                 >
                 <div class="input-group-prepend">
-                  <button class="btn btn-outline-danger" @click="addActor">Add</button>
+                  <button class="btn btn-outline-danger" type="button" @click="addActor">Add</button>
                 </div>
               </div>
             </div>
@@ -182,7 +182,7 @@
               <ul class="list-group mb-3" v-for="country in productionCountries">
                 <li class="list-group-item d-flex justify-content-between pr-1">
                   <span>{{country}}</span>
-                  <button class="btn btn-sm btn-danger" @click="removeCountry(country)">X</button>
+                  <button class="btn btn-sm btn-danger" @click="removeCountry(country)" type="button">X</button>
                 </li>
               </ul>
               <div class="input-group mb-3">
@@ -194,7 +194,7 @@
                   v-model="country"
                 >
                 <div class="input-group-prepend">
-                  <button class="btn btn-outline-danger" @click="addCountry">Add</button>
+                  <button class="btn btn-outline-danger" type="button" @click="addCountry">Add</button>
                 </div>
               </div>
             </div>
@@ -209,7 +209,7 @@
               <ul class="list-group mb-3" v-for="id in trailers">
                 <li class="list-group-item d-flex justify-content-between pr-1">
                   <span class>{{id}}</span>
-                  <button class="btn btn-sm btn-danger" @click="removeTrailer(id)">X</button>
+                  <button class="btn btn-sm btn-danger" type="button" @click="removeTrailer(id)">X</button>
                 </li>
               </ul>
               <div class="input-group mb-3">
@@ -246,6 +246,7 @@
                   <button
                     class="btn btn-sm btn-danger review-button float-right"
                     @click="removeReview(review)"
+                    type="button"
                   >X</button>
                   <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">{{review.source}}</h5>
@@ -290,7 +291,7 @@
             <div class="col-sm-10">
               <label for="Quote">Quote:</label>
               <textarea class="form-control" rows="5" id="Quote" v-model="quote"></textarea>
-              <button class="btn btn-danger mt-2" @click="addReview">Add Review</button>
+              <button class="btn btn-danger mt-2" @click="addReview" type="button">Add Review</button>
             </div>
             <div class="col-sm-1"></div>
           </div>
