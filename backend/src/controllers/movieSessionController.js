@@ -18,14 +18,14 @@ module.exports.postMovieSessions = async (req, res, next) => {
             return firstSessionDate > secondSessionDate ? 1 : -1;
         });
 
-        movieSessions = movieSessions.filter(cur => {
-            const dateString = cur.date.year.toString()
-                + cur.date.month.toString().padStart(2, '0')
-                + cur.date.day.toString().padStart(2, '0')
-                + cur.date.time.replace(':', '');
+        // movieSessions = movieSessions.filter(cur => {
+        //     const dateString = cur.date.year.toString()
+        //         + cur.date.month.toString().padStart(2, '0')
+        //         + cur.date.day.toString().padStart(2, '0')
+        //         + cur.date.time.replace(':', '');
 
-            return dateString > getDateString();
-        })
+        //     return dateString > getDateString();
+        // })
 
         res.send({
             movie_sessions: movieSessions
@@ -72,4 +72,19 @@ function getDateString() {
 
     let string = `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, 0)}${date.getDate().toString().padStart(2, 0)}${date.getHours().toString().padStart(2, 0)}${date.getMinutes().toString().padStart(2, 0)}`
     return string
+}
+
+module.exports.deleteOldSessions = async () => {
+    let movieSessions = await MovieSession.find();
+    movieSessions = movieSessions.filter(async cur =>  {
+        const dateString = cur.date.year.toString()
+            + cur.date.month.toString().padStart(2, '0')
+            + cur.date.day.toString().padStart(2, '0')
+            + cur.date.time.replace(':', '');
+
+        if(dateString < getDateString()){
+            console.log(cur._id)
+            await MovieSession.findByIdAndDelete({_id: cur._id});
+        } 
+    })
 }
