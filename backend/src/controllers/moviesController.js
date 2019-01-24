@@ -2,6 +2,9 @@
 const Movie = require('../models/movie');
 const Bcrypt = require('bcrypt');
 const User = require('../models/user');
+const MovieSession = require('../models/movieSession');
+const fs = require('fs');
+const path = require('path');
 
 module.exports.getMovies = async (req, res, next) => {
     try {
@@ -16,6 +19,28 @@ module.exports.getMovies = async (req, res, next) => {
         })
     }
 };
+
+module.exports.deleteMovie = async (req, res, next) => {
+        const movie = await Movie.findOne({_id: req.body.movieID});
+        if(!movie){
+            return res.status(400).send({
+                error: "Could not find the movie"
+            })
+        }
+        const sessions = await MovieSession.find({movieID: req.body.movieID});
+        let filesToDelete = [];
+        filesToDelete.push(movie.imagesLinks.poster.split(`/`)[1]);
+        filesToDelete.push(movie.imagesLinks.background.split(`/`)[1]);
+        await fs.unlink(path.join(__dirname,'../','../', 'public', 'test'),(err) => {
+            if(err) console.log(err);
+        });
+        sessions.forEach(async cur => {
+
+        });
+        return res.send({
+            message: "Movie deleted"
+        })
+}
 
 // controller for adding new movies to the DB
 module.exports.postAddMovie = async (req, res, next) => {

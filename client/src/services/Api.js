@@ -13,7 +13,7 @@ export default {
 	},
 
 	deleteMovie(movieID, user){
-		return api.post('deleteMovie', {movieID, user});
+		return api.post('deletemovie', {movieID, user});
 	},
 	// Gets movies with matching query from DB
 	// Example: getMovies({title: 'Batman'}) - gets all movies with title "Batman"

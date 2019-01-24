@@ -604,13 +604,16 @@ export default {
         this.deleteMovieMessage = '"' + this.movieToDelete + '" deleted';
         this.deleteMovieError = null;
       } catch (error) {
+        console.log(error);
         if (error.response) {
-          this.deleteMovieError = error.response.data.message;
+          this.deleteMovieError = error.response.data.error;
         } else {
           this.deleteMovieError = "Something went wrong"
         }
         this.deleMovieMessage = null;
       }
+      this.getMovies();
+      this.getMovieTheatres();
     },
     deleteMovieBtnClicked() {
       if (this.movieToDelete) {
