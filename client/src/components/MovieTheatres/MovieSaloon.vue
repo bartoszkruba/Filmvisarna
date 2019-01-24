@@ -17,7 +17,6 @@
               @hoverOverSeat="hoverOverSeat"
               :myId="freePlaces[(count(index)+index2)].seatNumber"
               :seatBooked="freePlaces[(count(index)+index2)].booked"
-              :moreSeats="moreSeats"
               :btnPressed="btnPressed"
               :seatsToHover="seatsToHover"
               :markSeatsClicked="markSeatsClicked"
@@ -44,7 +43,6 @@ export default {
       seatsPerRow: null,
       totalSeats: null,
       freePlaces: null,
-      choosenSeats: [],
       leavingSeat: false,
       seatsToHover: [],
       markSeatsClicked: false,
@@ -54,6 +52,8 @@ export default {
   components: {
     MovieSeat
   },
+
+  //When site is loaded do this
   mounted: async function() {
     const response = await api.getTheatres({ _id: this.theatreID });
     const sessionSeats = await api.getMovieSessions({ _id: this.sessionID });
@@ -61,8 +61,10 @@ export default {
     this.seatsPerRow = response.data.movie_theatres[0].seatsPerRow;
     this.totalSeats = response.data.movie_theatres[0].seats;
   },
-  
+
+  //Methods
   methods: {
+
     count(n) {
       let output = 0;
       for (let i = 0; i < n; i++) {
@@ -71,81 +73,102 @@ export default {
       return output;
     },
 
+    //When hovering/clicking/leaving hover over a seat, do this
     hoverOverSeat(e) {
+      //Find the index of the hovered seat in the freePlaces array
       let index = this.freePlaces.findIndex(i => i.seatNumber === e.target.id);
-      if (
-        e.type === "mouseover" &&
-        this.mySeats > 0 &&
-        !this.markSeatsClicked
-      ) {
+      //if hovering over a seat and choosen tickets is more than 0 and no seat is already marked
+      if (e.type === "mouseover" && this.mySeats > 0 && !this.markSeatsClicked) {
+        //Reset try to hover
         let tryToHover = [];
+        
+        //If we want to book more than one seat and the seat we are right now hovering over isnt taken
         if (this.mySeats > 1 && !this.freePlaces[index].booked) {
+          //Try mark seats to right when hovering
           try {
-            for (let i = index; i < this.mySeats + index; i++) {
-              if (this.freePlaces[i].booked) {
-                throw "Platsen är redan bokad";
-              }
-              tryToHover.push(this.freePlaces[i].seatNumber);
-              let lastIndex =
-                tryToHover[tryToHover.length - 1].length === 2
-                  ? tryToHover[tryToHover.length - 1].slice(0, -1)
-                  : tryToHover[tryToHover.length - 1].slice(0, -2);
-              let firstIndex =
-                tryToHover[0].length === 2
-                  ? tryToHover[0].slice(0, -1)
-                  : tryToHover[0].slice(0, -2);
-              if (firstIndex !== lastIndex) {
-                throw "Out Of Bounds";
+                for (let i = index; i < this.mySeats + index; i++) {
+
+                      //Check if some of the seats are taken, if it is exit the loop an run catch
+                      if (this.freePlaces[i].booked) {throw "Platsen är redan bokad";}
+
+                      //Fill the tryToHover array with seats we want to mark on hover
+                      tryToHover.push(this.freePlaces[i].seatNumber);
+                      
+                      //Get the row letter for the first and last seat in the array that we want to mark when hovering
+                      let lastIndex = tryToHover[tryToHover.length - 1].length === 2 ? tryToHover[tryToHover.length - 1].slice(0, -1) : tryToHover[tryToHover.length - 1].slice(0, -2);
+                      let firstIndex = tryToHover[0].length === 2 ? tryToHover[0].slice(0, -1) : tryToHover[0].slice(0, -2);
+
+                      //Check if the firstSeat row letter and the last seat row letter is not the same
+                      //If they don´t match dont hover because the theres more seats on the row to mark
+                      if (firstIndex !== lastIndex) {
+                        throw "Out Of Bounds";
               }
             }
-          } catch (e) {
+          } 
+          catch (e) {
+            //If previous loop doesn´t go as planned try mark the seats to left
             tryToHover = this.goToLeft(index, tryToHover);
           }
+          //If try to hover is not undefined(everything went as it should in printing to left)
+          //Mark the seats to be yellow now by setting this.seatsToHover to the seats we tested before to see if we could hover them
           if (tryToHover !== undefined) {
             this.seatsToHover = tryToHover;
-          } else {
+          } 
+          //if it didn´t find any seats to left either to hover, seat seatsToHover to empty to not show any missleading hover
+          else {
             this.seatsToHover = [];
           }
-        } else if (!this.freePlaces[index].booked) {
+        } 
+        //If user only wants to book one seat , just push the current hovering seat to be shown as hovered
+        else if (!this.freePlaces[index].booked) {
           tryToHover.push(e.target.id);
           this.seatsToHover = tryToHover;
         }
-      } else if (e.type === "mouseleave") {
+      } 
+      //Whe mouseLeaves a seat just trigger the watch on leaving seat variable in MovieSeat.vue to unmark the seats that was hovered
+      else if (e.type === "mouseleave") {
         this.leavingSeat = !this.leavingSeat;
-      } else if (e.type === "click") {
+      } 
+      
+      //If we click the seat that we are hovering over
+      else if (e.type === "click") {
+        //First check if there is any seats that are being displayed as hovered
         if (this.seatsToHover.length !== 0) {
+          //If there is, keep adding seats to the clickedSeats array untill 
+          //the length of that matches the number of tickets the user choosed
           if (this.clickedSeats.length !== this.mySeats) {
             this.markSeatsClicked = true;
             this.clickedSeats = this.seatsToHover;
-          } else if (this.clickedSeats.includes(e.target.id)) {
+          } 
+          //If the user choosed as many seats as tickets, and then clicks again on a seat,
+          //check if the seat is choosen and if it is, 
+          //unmark that/those seats(Depending if the user choosed one or multiple, if multiple all the seats will unmark)
+          else if (this.clickedSeats.includes(e.target.id)) {
             this.markSeatsClicked = false;
             this.clickedSeats = [];
           }
+          //Everytime we click a seat update BokningSida.vue with this information so it can check 
+          //When user presses boka button to se if he choose seats or not.
           this.$emit("checkAllSeatsChoosen", this.clickedSeats);
         }
       }
     },
 
+    //If something doesn´t go right, go left
+    // (Does the same as marking seats to right but tries to do it to left instead)
     goToLeft(index, tryToHover) {
       tryToHover = [];
       let outOfBounds = false;
       try {
         for (let j = index; j > index - this.mySeats; j--) {
-          if (this.freePlaces[j].booked) {
-            throw "Platsen är redan bokad";
-          }
+          if (this.freePlaces[j].booked) {throw "Platsen är redan bokad";}
+
           tryToHover.push(this.freePlaces[j].seatNumber);
-          let lastIndex =
-            tryToHover[tryToHover.length - 1].length === 2
-              ? tryToHover[tryToHover.length - 1].slice(0, -1)
-              : tryToHover[tryToHover.length - 1].slice(0, -2);
-          let firstIndex =
-            tryToHover[0].length === 2
-              ? tryToHover[0].slice(0, -1)
-              : tryToHover[0].slice(0, -2);
-          if (firstIndex !== lastIndex) {
-            throw "Out Of Bounds";
-          }
+
+          let lastIndex = tryToHover[tryToHover.length - 1].length === 2 ? tryToHover[tryToHover.length - 1].slice(0, -1) : tryToHover[tryToHover.length - 1].slice(0, -2);
+          let firstIndex = tryToHover[0].length === 2 ? tryToHover[0].slice(0, -1) : tryToHover[0].slice(0, -2);
+
+          if (firstIndex !== lastIndex) {throw "Out Of Bounds";}
         }
       } catch (e) {
         outOfBounds = true;
@@ -155,13 +178,9 @@ export default {
       }
     }
   },
-  computed: {
-    moreSeats: function() {
-      return this.mySeats > this.choosenSeats.length;
-    }
-  },
 
   watch: {
+    //Watches the +/- buttons in BokningSida.vue, if user pressses them reset the seats user choose
     btnPressed: function() {
       this.markSeatsClicked = false;
       this.clickedSeats = [];

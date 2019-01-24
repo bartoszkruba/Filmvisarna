@@ -5,8 +5,7 @@
     @click="hoverOverSeats"
     class="movie-seat"
     v-bind:id="myId"
-    v-bind:ref="myId"
-    v-bind:class="{ isBooked: seatBooked, myBooking: choosenSeat, movieSeat: moreSeats, active: hover, clickedSeat: seatIsClicked}"
+    v-bind:class="{isBooked: seatBooked, active: hover, clickedSeat: seatIsClicked}"
   ></div>
 </template>
 
@@ -15,43 +14,55 @@ import api from "@/services/Api.js";
 
 export default {
   name: "MovieSeat",
-  props: ["myId", "seatBooked", "moreSeats", "btnPressed", "leavingSeat", "seatsToHover", "markSeatsClicked"],
+  props: ["myId", "seatBooked", "btnPressed", "leavingSeat", "seatsToHover", "markSeatsClicked"],
   data() {
     return {
-      choosenSeat: false,
       hover: false,
-      leavingHover: false,
-      previousHover: [],
       seatIsClicked: false,
     };
   },
   methods: {
+    //When hovering/leaving/clicking a seat, call parent method hoverOverSeats
     hoverOverSeats(e){
       this.$emit('hoverOverSeat',e);
     },
   },
   
   watch: {
+
+    //When +/- is clicked in BokningSida.vue
+    //Reset the clicked seats
     btnPressed: function() {
       this.seatIsClicked = false;
     },
+    //Runs when parent calls a seat to show as hovered
     seatsToHover: function() {
           this.hover = false;
+      //Check if THIS seat is included in the seatsToHover array and that is not clicked
+      //Set to display hover
       if(this.seatsToHover.includes(this.myId)  && !this.seatIsClicked){
           this.hover = true;
       }
     },
+    //When leaving the seat
     leavingSeat: function() {
+      //Check so THIS seat was one of the ones who displayed hover before, and remove the hover
       if(this.seatsToHover.includes(this.myId)){
           this.hover = false;
       }
     },
 
+    //When seat is clicked
     markSeatsClicked: function() {
+      //Check if THIS seat is included in the seatsToHover array and that is not clicked
+      //Then mark it as clicked and remove the hover effect
       if(this.seatsToHover.includes(this.myId) && !this.seatIsClicked){
           this.seatIsClicked = true;
           this.hover = false;
-      }else if(this.seatsToHover.includes(this.myId) && this.seatIsClicked){
+      }
+      //Check if THIS seat is included in the seatsToHover array and that is clicked
+      //Then remove the click effect and set it to show hover
+      else if(this.seatsToHover.includes(this.myId) && this.seatIsClicked){
         this.seatIsClicked = false;
         this.hover = true;
       }
