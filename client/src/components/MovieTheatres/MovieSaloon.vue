@@ -71,78 +71,88 @@ export default {
       return output;
     },
 
-    hoverOverSeat(e) { 
+    hoverOverSeat(e) {
       let index = this.freePlaces.findIndex(i => i.seatNumber === e.target.id);
-      if (e.type === "mouseover" && this.mySeats > 0 && !this.markSeatsClicked) {
+      if (
+        e.type === "mouseover" &&
+        this.mySeats > 0 &&
+        !this.markSeatsClicked
+      ) {
         let tryToHover = [];
         if (this.mySeats > 1 && !this.freePlaces[index].booked) {
-          try{
-          for (let i = index; i < this.mySeats + index; i++) {
-            
-              if(this.freePlaces[i].booked){throw "Platsen är redan bokad"}
+          try {
+            for (let i = index; i < this.mySeats + index; i++) {
+              if (this.freePlaces[i].booked) {
+                throw "Platsen är redan bokad";
+              }
               tryToHover.push(this.freePlaces[i].seatNumber);
-                let lastIndex = tryToHover[tryToHover.length-1].length === 2 ? tryToHover[tryToHover.length-1].slice(0,-1) : tryToHover[tryToHover.length-1].slice(0,-2);
-                let firstIndex = tryToHover[0].length === 2 ? tryToHover[0].slice(0,-1) : tryToHover[0].slice(0,-2)
-                if(firstIndex !== lastIndex){throw "Out Of Bounds"}
-                console.log("go to right " + tryToHover)
-            
-                    
+              let lastIndex =
+                tryToHover[tryToHover.length - 1].length === 2
+                  ? tryToHover[tryToHover.length - 1].slice(0, -1)
+                  : tryToHover[tryToHover.length - 1].slice(0, -2);
+              let firstIndex =
+                tryToHover[0].length === 2
+                  ? tryToHover[0].slice(0, -1)
+                  : tryToHover[0].slice(0, -2);
+              if (firstIndex !== lastIndex) {
+                throw "Out Of Bounds";
+              }
+            }
+          } catch (e) {
+            tryToHover = this.goToLeft(index, tryToHover);
           }
-          }
-          catch(e){
-              tryToHover = this.goToLeft(index,tryToHover);
-              console.log("go to left " + tryToHover)
-            }  
-          if(tryToHover !== undefined){
-          this.seatsToHover = tryToHover;
-          }else{
+          if (tryToHover !== undefined) {
+            this.seatsToHover = tryToHover;
+          } else {
             this.seatsToHover = [];
           }
-        } 
-        else if(!this.freePlaces[index].booked){
-            tryToHover.push(e.target.id);
-            this.seatsToHover = tryToHover;
+        } else if (!this.freePlaces[index].booked) {
+          tryToHover.push(e.target.id);
+          this.seatsToHover = tryToHover;
         }
-
-      } 
-      else if(e.type === "mouseleave"){
+      } else if (e.type === "mouseleave") {
         this.leavingSeat = !this.leavingSeat;
-      }
-
-      else if(e.type === "click"){
-        if(this.seatsToHover.length !== 0){
-        if(this.clickedSeats.length !== this.mySeats){
-          this.markSeatsClicked = true;
-          this.clickedSeats = this.seatsToHover;
+      } else if (e.type === "click") {
+        if (this.seatsToHover.length !== 0) {
+          if (this.clickedSeats.length !== this.mySeats) {
+            this.markSeatsClicked = true;
+            this.clickedSeats = this.seatsToHover;
+          } else if (this.clickedSeats.includes(e.target.id)) {
+            this.markSeatsClicked = false;
+            this.clickedSeats = [];
+          }
+          this.$emit("checkAllSeatsChoosen", this.clickedSeats);
         }
-        else if(this.clickedSeats.includes(e.target.id)){
-          this.markSeatsClicked = false;
-          this.clickedSeats = [];
-        }    
-        this.$emit("checkAllSeatsChoosen", this.clickedSeats);
-      }
       }
     },
 
-    goToLeft(index, tryToHover){
+    goToLeft(index, tryToHover) {
       tryToHover = [];
       let outOfBounds = false;
-      try{
-       for (let j = index; j > index - this.mySeats; j--) {
-            
-              if(this.freePlaces[j].booked){throw "Platsen är redan bokad"}
-              tryToHover.push(this.freePlaces[j].seatNumber);
-                let lastIndex = tryToHover[tryToHover.length-1].length === 2 ? tryToHover[tryToHover.length-1].slice(0,-1) : tryToHover[tryToHover.length-1].slice(0,-2);
-                let firstIndex = tryToHover[0].length === 2 ? tryToHover[0].slice(0,-1) : tryToHover[0].slice(0,-2)
-                if(firstIndex !== lastIndex){throw "Out Of Bounds"}
-            
-                    
+      try {
+        for (let j = index; j > index - this.mySeats; j--) {
+          if (this.freePlaces[j].booked) {
+            throw "Platsen är redan bokad";
           }
+          tryToHover.push(this.freePlaces[j].seatNumber);
+          let lastIndex =
+            tryToHover[tryToHover.length - 1].length === 2
+              ? tryToHover[tryToHover.length - 1].slice(0, -1)
+              : tryToHover[tryToHover.length - 1].slice(0, -2);
+          let firstIndex =
+            tryToHover[0].length === 2
+              ? tryToHover[0].slice(0, -1)
+              : tryToHover[0].slice(0, -2);
+          if (firstIndex !== lastIndex) {
+            throw "Out Of Bounds";
+          }
+        }
+      } catch (e) {
+        outOfBounds = true;
       }
-      catch(e){
-              outOfBounds = true;
-            }  
-          if(!outOfBounds) {return tryToHover}
+      if (!outOfBounds) {
+        return tryToHover;
+      }
     }
   },
   computed: {

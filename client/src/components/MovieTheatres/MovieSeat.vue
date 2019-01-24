@@ -53,6 +53,7 @@ export default {
           this.hover = false;
       }else if(this.seatsToHover.includes(this.myId) && this.seatIsClicked){
         this.seatIsClicked = false;
+        this.hover = true;
       }
     }
   }
