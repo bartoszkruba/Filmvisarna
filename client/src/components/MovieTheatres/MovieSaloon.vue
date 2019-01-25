@@ -162,6 +162,7 @@ export default {
           else if(this.clickedSeats.includes(e.target.id) && this.seperateSeats){
             this.markSeatsClicked = !this.markSeatsClicked;
             this.clickedSeats.splice(this.clickedSeats.indexOf(e.target.id),1);
+            this.seatsToHover = e.target.id;
           }
           
           //Everytime we click a seat update BokningSida.vue with this information so it can check 
