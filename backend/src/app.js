@@ -11,7 +11,6 @@ const morgan = require('morgan');
 // Enables the CORS connection with the server - by the default all internet browsers blocks CORS 
 const cors = require('cors');
 
-const movieSessionController = require('./controllers/movieSessionController');
 // Storing routes for different URLs
 const Router = require('./routes');
 
@@ -43,8 +42,6 @@ const startServer = async () => {
         // testSendingEmail();
 
         // resetEverything();
-
-        deleteOldSessions();
 
         console.log(startupConfig.startupMessage);
     });
@@ -138,12 +135,4 @@ function testSendingEmail() {
         text: "Test"
     }
     emailTransporter.sendMail(mailOptions);
-}
-
-function deleteOldSessions (){
-    setTimeout(() => {
-        movieSessionController.deleteOldSessions();
-        console.log('Deleting Old Sessions')
-        deleteOldSessions();
-    },3600000);   
 }
