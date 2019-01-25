@@ -18,14 +18,14 @@ module.exports.postMovieSessions = async (req, res, next) => {
             return firstSessionDate > secondSessionDate ? 1 : -1;
         });
 
-        // movieSessions = movieSessions.filter(cur => {
-        //     const dateString = cur.date.year.toString()
-        //         + cur.date.month.toString().padStart(2, '0')
-        //         + cur.date.day.toString().padStart(2, '0')
-        //         + cur.date.time.replace(':', '');
+        movieSessions = movieSessions.filter(cur => {
+            const dateString = cur.date.year.toString()
+                + cur.date.month.toString().padStart(2, '0')
+                + cur.date.day.toString().padStart(2, '0')
+                + cur.date.time.replace(':', '');
 
-        //     return dateString > getDateString();
-        // })
+            return dateString > getDateString();
+        })
 
         res.send({
             movie_sessions: movieSessions
