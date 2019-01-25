@@ -37,6 +37,8 @@ Router.get('/', (req, res, next) => {
 // route for POST request to localhost:8081/movies
 Router.post('/movies', moviesController.getMovies);
 
+Router.post('/deletemovie', moviesController.authenticateAdmin, moviesController.deleteMovie);
+
 Router.post('/movieTheatres', movieTheatreController.postMovieTheatres);
 
 Router.post('/movieSessions', movieSessionController.postMovieSessions);

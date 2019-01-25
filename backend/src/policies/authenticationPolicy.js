@@ -10,7 +10,7 @@ module.exports.postRegister = async (req, res, next) => {
         ),
         email: Joi.string().email().required(),
         password: Joi.string().regex(
-            new RegExp('[a-zA-Z0-9]{9,32}$')
+            new RegExp('[a-zA-Z0-9]{8,32}$')
         )
     }
 
