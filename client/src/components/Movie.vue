@@ -1,10 +1,10 @@
 <template>
 <div class="Movie">
 
-  <section v-if="errorFromMongo" class="dark-transparent text-center" style="color: white">
+  <section v-if="errorFromMongo">
       <h1>Något blev fel!</h1>
       <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
-      <ul class="list-style-none">
+      <ul>
         <li>Antipiratbyrån har hackat oss</li>
         <li>Vår hemsida har tekniskt strul</li>
         <li>Du har klickat på en gammal länk</li>
@@ -13,9 +13,9 @@
 
     </section>
 
-  <b-jumbotron class="jumbobg text-shadow" v-if="aMovie && movieSessions">
+  <b-jumbotron class="jumbobg" v-if="aMovie && movieSessions">
 
-
+    <section >
       <!-- Title -->
       <section class="movieheader">
 
@@ -38,7 +38,7 @@
           <div class="knappar">
             <b-btn v-on:click="goToBooking" variant="danger">Boka biljetter</b-btn>
 
-            <b-dropdown id="ddown-buttons" text="Ändra visningsdatum: " variant="secondary" class="visningsdatum">
+            <b-dropdown id="ddown-buttons" text="Ändra visningsdatum: " variant="danger" class="visningsdatum">
               <b-dropdown-item-button v-on:click="changeSession" v-for="session in this.movieSessions" :value="session._id" :key="session._id">{{getWeekdayString(session.date.year,session.date.month,session.date.day).slice(0,-3)}} {{session.date.day + '/' + session.date.month + ' ' + session.date.year + ' ' + session.date.time }}</b-dropdown-item-button>
             </b-dropdown></div>
             <h3><br>
@@ -117,6 +117,12 @@
       </section>
     </section>
   </b-jumbotron>
+  <div class="mt-5 loading-logo" v-else>
+        <h1 class="text-center spinner">
+          <font-awesome-icon icon="spinner"/>
+        </h1>
+        <h1 class="text-center">Loading</h1>
+      </div>
 </div>
 </template>
 
@@ -185,8 +191,8 @@ export default {
 
       target[0] = target[0].split("/"); // Split day/month
       // Padding for month and day
-      target[0][0] = target[0][0];
-      target[0][1] = target[0][1];
+      target[0][0] = target[0][0].padStart(2, "0");
+      target[0][1] = target[0][1].padStart(2, "0");
       // Get string with day of week
       weekday = this.getWeekdayString(target[1], target[0][1], target[0][0]);
 
@@ -199,13 +205,11 @@ export default {
       this.sessionID = e.target.value;
     },
     goToBooking(){
-      // Used for sending user to booking after signup/login
       const sessionAndMovieID = {
         movieID: this.urlQuery.movieID,
         sessionID: this.sessionID,
         redirect: true
       }
-      // If the user wants to book a ticket, check if logged in.
       if(!this.$store.getters.isUserSignedIn){
          this.$store.commit('toggleLoggaInWindow');
          this.$store.commit('setRoute', sessionAndMovieID)
@@ -213,7 +217,7 @@ export default {
         this.$router.push('/BokningSida?movieID='+this.urlQuery.movieID+'&sessionID='+this.sessionID);
       }
     },
-    starView(s, n) { // Prints out stars for the review input is start and end
+    starView(s, n) {
       let starPut = "";
       for (let i = s; i < n; i++)
         starPut += "*";
@@ -305,6 +309,39 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
+}
+
+.loading-logo {
+  color:white;
+  opacity: 1;
+  animation: flickerAnimation 3s infinite;
+  overflow: hidden;
+}
+
+@keyframes flickerAnimation {
+  /* flame pulses */
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.spinner {
+  -webkit-animation: spin 3s infinite linear;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 .jumbobg{
@@ -399,7 +436,7 @@ hr{
   border-top: 1px solid rgb(71, 64, 64);
 }
 
-@media screen and (min-width: 768px)  {
+@media screen and (min-width: 768px) {
   .m-2{
     margin: 0;
   }
@@ -441,7 +478,7 @@ hr{
   margin: 2rem auto;
   width: 70vw;
   color: white;
-  }
+}
 }
 
 @media screen and (max-width: 320px) {
@@ -464,13 +501,6 @@ hr{
   }
   .jumbobg{
   margin: 0;
-  }
 }
-
-@media screen and (min-width: 417px) and (max-width: 768px){
-   .jumbobg{
-    width: 90vw;
-  }
-
 }
 </style>

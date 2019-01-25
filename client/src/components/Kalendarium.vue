@@ -1,9 +1,9 @@
 <template>
   <section class="hello">
-    <section v-if="errorFromMongo" class="text-center mt-3 nagotFel dark-transparent">
+    <section v-if="errorFromMongo" class="text-center mt-3 nagotFel">
       <h1>Något blev fel!</h1>
       <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
-      <ul class="list-style-none">
+      <ul>
         <li>Antipiratbyrån har hackat oss</li>
         <li>Vår hemsida har tekniskt strul</li>
         <li>Du har klickat på en gammal länk</li>
@@ -17,10 +17,10 @@
 
     <section v-if="movies && sessions && theatres">
       <font-awesome-icon class="goUp" v-on:click="goToTop" :icon="['fas', 'arrow-alt-circle-up']"/>
-
+      
       <section class="main">
-        <section class="flex-col wrapping">
-          <section v-for="session in this.sessions.slice(0,articlesShown)">
+      <section class="flex-col wrapping">
+        <section v-for="session in this.sessions.slice(0,articlesShown)">
           <div class="flexbox flex-mobil">
             <figure class="images">
               <router-link
@@ -31,38 +31,34 @@
                 <img
                   class="posterpic"
                   :src="url + movies.find((cur)=>{
-                    return cur._id === session.movieID
-                    }).imagesLinks.poster"
+               return cur._id === session.movieID
+               }).imagesLinks.poster"
                 >
               </router-link>
             </figure>
 
             <div class="flex-col text">
-              <h4
-                class="text-shadow"
-              >{{getWeekdayString(session.date.year,session.date.month,session.date.day)}} {{session.date.day.toString().padStart(2, "0")}}/{{session.date.month.toString().padStart(2, "0")}}-{{session.date.year}}</h4>
+              <h4>{{getWeekdayString(session.date.year,session.date.month,session.date.day)}} {{session.date.day.toString().padStart(2, "0")}}/{{session.date.month.toString().padStart(2, "0")}}-{{session.date.year}}</h4>
 
-              <h5 class="text-shadow">
+              <h5>
                 {{movies.find((cur)=>{
                 return cur._id === session.movieID
                 }).title}}
               </h5>
               <div class="flexbox col-mob">
-                <p>
-                  <span>tid:</span>
-                  {{session.date.time}}
-                </p>
+              <p>
+                <span>tid:</span>
+                {{session.date.time}}</p>
                 <p class="desk-only">|</p>
-                <p>
-                  <span>Lediga Platser:</span>
-                  {{session.freePlaces}}
-                </p>
-                <p class="desk-only">|</p>
-                <p>
-                  {{theatres.find((cur)=>{
-                  return cur._id === session.movieTheatreID
-                  }).name}}
-                </p>
+               <p> <span>Lediga Platser:</span>
+                {{session.freePlaces}}
+              </p>
+              <p class="desk-only">|</p>
+              <p>
+                {{theatres.find((cur)=>{
+                return cur._id === session.movieTheatreID
+                }).name}}
+              </p>
               </div>
 
               <div class="flexbox buttons">
@@ -73,16 +69,17 @@
                 >
                   <b-button>Läs mer</b-button>
                 </router-link>
-                <b-button class="secound-button btn-danger" @click="goToBooking(session)">Boka</b-button>
+                  <b-button class="secound-button" @click="goToBooking(session)">Boka</b-button>
               </div>
             </div>
           </div>
           <hr>
-         </section>
         </section>
       </section>
+      
+      </section>
       <div class="showMoreButton">
-        <b-button class="showMore mt-2" v-on:click="loadMore">Visa fler</b-button>
+        <b-button class="showMore" v-on:click="loadMore">Visa fler</b-button>
       </div>
     </section>
     <section v-else class="loading-logo mt-5">
@@ -109,6 +106,7 @@ export default {
       clickedMovieSession: null,
       articlesShown: 5
     };
+    
   },
   mounted() {
     this.errorFromMongo = false;
@@ -117,17 +115,17 @@ export default {
     this.getTheatres();
   },
   computed: {
-    url: function() {
-      return api.url;
+    url: function(){
+      return api.url
     }
   },
   methods: {
     //movies data
-    loadMore() {
-      this.articlesShown += 5;
+    loadMore(){
+      this.articlesShown +=5;
     },
-    goToTop() {
-      window.scrollTo(0, 0);
+     goToTop(){
+      window.scrollTo(0,0)
     },
     async getMovies() {
       this.movies = null;
@@ -138,22 +136,17 @@ export default {
       } catch (error) {}
       if (this.movies === null) this.errorFromMongo = true;
     },
-    goToBooking(session) {
+    goToBooking(session){
       const sessionAndMovieID = {
         movieID: session.movieID,
         sessionID: session._id,
         redirect: true
-      };
-      if (!this.$store.getters.isUserSignedIn) {
-        this.$store.commit("toggleLoggaInWindow");
-        this.$store.commit("setRoute", sessionAndMovieID);
-      } else {
-        this.$router.push(
-          "/BokningSida?movieID=" +
-            session.movieID +
-            "&sessionID=" +
-            session._id
-        );
+      }
+      if(!this.$store.getters.isUserSignedIn){
+         this.$store.commit('toggleLoggaInWindow');
+         this.$store.commit('setRoute', sessionAndMovieID)
+      }else{
+        this.$router.push('/BokningSida?movieID='+session.movieID+'&sessionID='+session._id);
       }
     },
     //moviesessions data
@@ -177,7 +170,7 @@ export default {
       } catch (error) {}
       if (this.theatres === null) this.errorFromMongo = true;
     },
-    getWeekdayString(y, m, d) {
+    getWeekdayString(y, m, d){
       let stringDate = `${y}-${m}-${d}`;
       let date = new Date(stringDate);
       let weekday = date.getDay();
@@ -205,16 +198,18 @@ export default {
           output = "Lördag";
           break;
         default:
-          output = "Ingen dag alls";
+          output = "Ingen dag alls"
       }
       return output;
     }
-  }
+
+  },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 .loading-logo {
   color: white;
   height: 70vh;
@@ -236,47 +231,43 @@ export default {
   }
 }
 
-.spinner {
+.spinner{
   -webkit-animation: spin 3s infinite linear;
 }
 
 @-webkit-keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-  }
+    0%  {-webkit-transform: rotate(0deg);}
+    100% {-webkit-transform: rotate(360deg);}
 }
 
-.nagotFel {
+.nagotFel  {
   color: white;
 }
 
-.goUp {
+.goUp{
   display: flex;
   position: fixed;
   color: #b8babb;
   font-size: 4rem;
   right: 0;
   left: 93vw;
-}
-.goUp:hover {
+  }
+.goUp:hover{
   cursor: pointer;
-  color: white;
+  color:white
 }
 
-.showMore {
+.showMore{
   width: 60vw;
   text-align: center;
 }
-.showMoreButton {
+.showMoreButton{
   display: flex;
   justify-content: center;
   margin: 0 0vw 3vh 0vw;
 }
 
-.main {
+.main{
   margin-top: 1rem;
   margin-left: 20vw;
   margin-right: 20vw;
@@ -292,8 +283,8 @@ export default {
   align-content: center;
   justify-content: center;
 }
-.wrapping {
-  margin-left: 1rem;
+.wrapping{
+    margin-left: 1rem;
 }
 .jumbo {
   text-align: center;
@@ -328,44 +319,45 @@ span {
 .secound-button {
   margin-left: 1rem;
 }
-.desk-only {
+.desk-only{
   margin-left: 0.5rem;
   margin-right: 0.5rem;
 }
 
 @media screen and (min-width: 501px) and (max-width: 800px) {
-  .main {
+  .main{
     margin-left: 10vw;
     margin-right: 10vw;
   }
-  .showMore {
+  .showMore{
     width: 80vw;
   }
-  hr {
-    width: 60vw;
+  hr{
+    width:60vw;
   }
-  .goUp {
+  .goUp{
     display: none;
   }
+
 }
 
 @media screen and (max-width: 500px) {
-  .goUp {
+  .goUp{
     display: none;
   }
-  .showMore {
+  .showMore{
     width: 100vw;
   }
-  hr {
-    width: 70vw;
+  hr{
+    width:70vw;
   }
-  .main {
+  .main{
     margin: 0;
   }
-  .desk-only {
+  .desk-only{
     display: none;
   }
-  .col-mob {
+  .col-mob{
     flex-direction: column;
   }
   h1 {
@@ -389,10 +381,10 @@ span {
     width: 40vmin;
     box-shadow: 2px 2px 5px black;
   }
-  h4 {
-    margin-top: 0.5rem;
+  h4{
+      margin-top: 0.5rem;
   }
-  .text {
+  .text{
     margin: 0;
   }
 }
