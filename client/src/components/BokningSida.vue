@@ -1,9 +1,9 @@
 <template>
 <main>
-  <section v-if="errorFromMongo">
+  <section class="text-center loader p-1" v-if="errorFromMongo" style="background-color: rgba(0, 0, 0, 0.5);">
     <h1>Något blev fel!</h1>
     <p>Vi hittade ingen film med det ID som angavs. Det kan bero på något av följande</p>
-    <ul>
+    <ul class="list-style-none">
       <li>Antipiratbyrån har hackat oss</li>
       <li>Vår hemsida har tekniskt strul</li>
       <li>Du har klickat på en gammal länk</li>
@@ -120,36 +120,43 @@
         </div>
         <!-- Modal Component -->
         <b-modal id="modal1" v-model="showTicketModal" title="Bekräftelse" @ok="goHem" ok-only no-close-on-esc no-close-on-backdrop hide-header-close>
-          <p>Film:
-            <strong>{{movie.title}}</strong>
-          </p>
-          <p>Datum:
-            <strong>{{this.session.date.day+'/'+this.session.date.month+' '+this.session.date.year }}</strong>
-          </p>
-          <p>Tid:
-            <strong>{{this.session.date.time}}</strong>
-          </p>
-          <p>Salong:
-            <strong>{{this.theatre.name}}</strong>
-          </p>
+        <div class="bekraftelse">
+          <div class="bekraftelseText"> 
+              <p>Film:
+                <strong>{{movie.title}}</strong>
+              </p>
+              <p>Datum:
+                <strong>{{this.session.date.day+'/'+this.session.date.month+' '+this.session.date.year }}</strong>
+              </p>
+              <p>Tid:
+                <strong>{{this.session.date.time}}</strong>
+              </p>
+              <p>Salong:
+                <strong>{{this.theatre.name}}</strong>
+              </p>
 
-          <div class="Biljetter">
-            <p>Biljetter:</p>
-            <div class="vilkaBiljetter">
-              <p v-if="antal>0">
-                <strong>{{antal}} Ordinarie</strong>
-              </p>
-              <p v-if="antalPensionar>0">
-                <strong>{{antalPensionar}} Pensionär</strong>
-              </p>
-              <p v-if="antalBarn>0">
-                <strong>{{antalBarn}} Barn</strong>
+              <div class="Biljetter">
+                <p>Biljetter:</p>
+                <div class="vilkaBiljetter">
+                  <p v-if="antal>0">
+                    <strong>{{antal}} Ordinarie</strong>
+                  </p>
+                  <p v-if="antalPensionar>0">
+                    <strong>{{antalPensionar}} Pensionär</strong>
+                  </p>
+                  <p v-if="antalBarn>0">
+                    <strong>{{antalBarn}} Barn</strong>
+                  </p>
+                </div>
+              </div>
+              <p>Att betala:
+                <strong>{{totalt}}kr</strong>
               </p>
             </div>
-          </div>
-          <p>Att betala:
-            <strong>{{totalt}}kr</strong>
-          </p>
+            <div class="bekraftelsePic">
+              <img :src="url + movie.imagesLinks.poster">
+            </div>
+        </div>
           <p class="my-4">Ditt bokningsnummer:
             <strong>{{bokningsnummer}}</strong>
           </p>
@@ -163,7 +170,7 @@
         </b-modal>
       </div>
     </section>
-    <section v-else>
+    <section class="loader loading-logo" v-else>
       <h1 class="text-center spinner">
         <font-awesome-icon icon="spinner"/>
       </h1>
@@ -479,12 +486,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.loading-logo {
-  height: 70vh;
-  opacity: 1;
-  animation: flickerAnimation 3s infinite;
-  overflow: hidden;
-}
 
 @keyframes flickerAnimation {
   /* flame pulses */
@@ -515,19 +516,38 @@ export default {
   }
 }
 
-main{
-  background-color: white;
+.bekraftelse{
+  display: flex;
 }
+.bekraftelseText{
+  margin-top: 5vh;
+  width: 19vw;
+}
+.bekraftelsePic{
+  margin-top: 7vh;
+  width: 11vw; 
+}
+
+main{
+  background-color: rgba(0, 0, 0, 0)
+}
+
+section{
+  background-color: white
+}
+
+.loader{
+  background-color:rgba(0, 0, 0, 0);
+  color:white;
+}
+
 .textBekraftelse{
   width: 20vw;
 }
 .mainBekraftelse{
   display: flex;
 }
-.img2{
-  width: 90%;
-  box-shadow: 2px 2px 20px black;
-}
+
 
 .modal-body p {
   margin: 0.8rem;
@@ -656,9 +676,44 @@ div .vilkaBiljetter {
   margin-top: 1vh;
 }
 
+.loading-logo {
+  color: white;
+  height: 70vh;
+  opacity: 1;
+  animation: flickerAnimation 3s infinite;
+  overflow: hidden;
+}
+
+@media screen and (min-width: 417px) and (max-width: 768px){
+  div .location {
+    width: 90vw;
+  }
+  .bekraftelseText{
+  margin-top: 5vh;
+  width: 35vw;
+}
+.bekraftelsePic{
+  margin-top: 7vh;
+  width: 21vw; 
+}
 
 
+}
 @media screen and (max-width: 416px) {
+  .bekraftelse{
+    display: flex;
+    flex-direction: column;
+  }
+  .bekraftelseText{
+    order:2;
+    margin-top: 3vh;
+    width: 86vw;
+  }
+  .bekraftelsePic{
+    display: flex;
+    margin-top: 1vh;
+    width: 65%; 
+    margin-left: 19% }
 
   title {
     margin-top: -10vh;
@@ -667,8 +722,8 @@ div .vilkaBiljetter {
     width: 90vw;
   }
   .mainBekraftelse{
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
   }
 
   .title {
