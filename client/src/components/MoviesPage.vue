@@ -34,13 +34,16 @@
 
               <div class="movietext">
                 <div class="flex-col">
-                  <router-link
+                    <h2 class="text-shadow">
+                      <router-link
                     class="router-link"
                     :to="'/film?movieID='+m._id"
                     exact-active-class="menu-item-active"
+                    style="color:white"
                   >
-                    <h2 class="text-shadow">{{m.title}}</h2>
-                  </router-link>
+                      {{m.title}}
+                    </router-link>
+                      </h2>
 
                   <div class="flexbox ptaggar info-direction">
                     <p>Längd: {{parseInt(m.length/60)}} timmar och {{m.length%60}} minuter</p>
