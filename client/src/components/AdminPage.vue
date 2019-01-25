@@ -225,7 +225,7 @@
                   v-model="youtubeID"
                 >
                 <div class="input-group-prepend">
-                  <button class="btn btn-outline-danger" @click="addTrailer">Add</button>
+                  <button class="btn btn-outline-danger" type="button" @click="addTrailer">Add</button>
                 </div>
               </div>
             </div>
