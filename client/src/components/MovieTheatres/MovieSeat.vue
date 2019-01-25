@@ -1,10 +1,11 @@
-
 <template>
   <div
-    @click="seatClicked"
+    @mouseover="hoverOverSeats"
+    @mouseleave="hoverOverSeats"
+    @click="hoverOverSeats"
     class="movie-seat"
     v-bind:id="myId"
-    v-bind:class="{ isBooked: seatBooked, myBooking: choosenSeat, movieSeat: moreSeats}"
+    v-bind:class="{isBooked: seatBooked, active: hover, clickedSeat: seatIsClicked}"
   ></div>
 </template>
 
@@ -13,25 +14,60 @@ import api from "@/services/Api.js";
 
 export default {
   name: "MovieSeat",
-  props: ["myId", "seatBooked", "moreSeats", "btnPressed"],
+  props: ["myId", "seatBooked", "btnPressed", "leavingSeat", "seatsToHover", "markSeatsClicked","seperateSeats","clickedSeats"],
   data() {
     return {
-      choosenSeat: false
+      hover: false,
+      seatIsClicked: false,
     };
   },
   methods: {
-    seatClicked(e) {
-      if (!e.target.className.includes("isBooked")) {
-        if (this.moreSeats || this.choosenSeat) {
-          this.choosenSeat = !this.choosenSeat;
-          this.$emit("setChoosenSeats", e.target.id);
-        }
-      }
-    }
+    //When hovering/leaving/clicking a seat, call parent method hoverOverSeats
+    hoverOverSeats(e){
+      this.$emit('hoverOverSeat',e);
+    },
   },
+  
   watch: {
+
+    //When +/- is clicked in BokningSida.vue
+    //Reset the clicked seats
     btnPressed: function() {
-      this.choosenSeat = false;
+      this.seatIsClicked = false;
+    },
+    seperateSeats: function(){
+      this.seatIsClicked = false;
+    },
+    //Runs when parent calls a seat to show as hovered
+    seatsToHover: function() {
+          this.hover = false;
+      //Check if THIS seat is included in the seatsToHover array and that is not clicked
+      //Set to display hover
+      if(this.seatsToHover.includes(this.myId)  && !this.seatIsClicked){
+          this.hover = true;
+      }
+    },
+    //When leaving the seat
+    leavingSeat: function() {
+      //Check so THIS seat was one of the ones who displayed hover before, and remove the hover
+      if(this.seatsToHover.includes(this.myId)){
+          this.hover = false;
+      }
+    },
+
+    //When seat is clicked
+    markSeatsClicked: function() {
+      //Check if THIS seat is included in the seatsToHover array and that is not clicked
+      //Then mark it as clicked and remove the hover effect
+      if(this.clickedSeats.includes(this.myId) && !this.seatIsClicked){
+          this.seatIsClicked = true;
+          this.hover = false;
+      }
+      //Check if THIS seat is included in the seatsToHover array and that is clicked
+      //Then remove the click effect and set it to show hover
+      else if(this.seatsToHover.includes(this.myId) && this.seatIsClicked){
+        this.seatIsClicked = false;
+      }
     }
   }
 };
@@ -45,19 +81,21 @@ export default {
   background-color: gray;
   border-radius: 0 0 20% 20%;
   display: inline-block;
-  margin: 1px;
-}
-.myBooking {
-  background-color: rgb(0, 0, 255) !important;
+  margin: 2px;
 }
 
-.movieSeat:hover {
+.active{
   background-color: yellow;
+}
+
+.clickedSeat {
+  background-color: blue;
 }
 
 .isBooked {
   background-color: red !important;
 }
+
 @media screen and (max-width: 1024px) {
   .movie-seat {
     width: 3vw;
