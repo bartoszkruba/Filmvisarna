@@ -107,6 +107,7 @@
             :mySeats="totalSeats"
             :btnPressed="btnPressed"
             @checkAllSeatsChoosen="checkAllSeatsChoosen"
+            @displayError="displayError"
           ></MovieSaloon>
         </section>
         <div class="kostnad" v-if="totalt>=65">
@@ -115,7 +116,7 @@
         </div>
         <div class="slutför btn">
           <b-btn v-on:click="visaFelMedellande">Slutför bokning</b-btn>
-          <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
+          <p class="felMedellande" v-if="visaMedellande">{{errorMessage}}</p>
         </div>
         <!-- Modal Component -->
         <b-modal id="modal1" v-model="showTicketModal" title="Bekräftelse" @ok="goHem" ok-only no-close-on-esc no-close-on-backdrop hide-header-close>
@@ -213,6 +214,7 @@ export default {
       btnPressed: false,
       showTicketModal: false,
       showErrorModalBookedSeat:false,
+      errorMessage: ''
     };
   },
   components: {
@@ -388,8 +390,6 @@ export default {
         this.totalt -= 85;
         this.antal -= 1;
         this.someBtnPressed();
-      } else {
-        alert("Du kan inte välja mindre än en biljett ");
       }
     },
     plusPensionar() {
@@ -404,8 +404,6 @@ export default {
         this.totalt -= 75;
         this.antalPensionar -= 1;
         this.someBtnPressed();
-      } else {
-        alert("Du kan inte välja mindre än en biljett ");
       }
     },
     plusBarn() {
@@ -420,8 +418,6 @@ export default {
         this.antalBarn -= 1;
         this.totalt -= 65;
         this.someBtnPressed();
-      } else {
-        alert("Du kan inte välja mindre än en biljett ");
       }
     },
 
@@ -436,12 +432,12 @@ export default {
 
     visaFelMedellande() {
       if (this.totalt == 0) {
-        this.visaMedellande = true;
+        this.displayError("Du måste välja minst en biljett");
       } else {
         if (this.allSeatsSelected) {
           this.bokaFilm();
         }else{
-          console.log("Du måste boka platser för så många biljetter du valt")
+          this.displayError("Du måste välja platser för så många biljetter du valt")
         }
       }
     },
@@ -470,9 +466,14 @@ export default {
 
     reloadPage(){
       this.getSessions();
-      console.log("nu laddar vi om skiten")
-    }
+    },
+
+    displayError(message){
+      this.errorMessage = message
+       this.visaMedellande = true;
   }
+  },
+  
 };
 </script>
 

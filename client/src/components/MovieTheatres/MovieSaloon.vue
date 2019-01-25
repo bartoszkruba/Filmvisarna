@@ -11,8 +11,7 @@
     <section class="screen">Bioduk</section>
     <b-form-checkbox id="checkbox1"
                      v-model="seperateSeats"
-                     v-if="mySeats <= seatsPerRow[0]"
-                     v-else="seperateSeats = true"
+                     v-if="showSeperateSeatsBtn"
                      >
       Välj seperata platser
     </b-form-checkbox>
@@ -56,7 +55,8 @@ export default {
       seatsToHover: [],
       markSeatsClicked: false,
       clickedSeats: [],
-      seperateSeats: false
+      seperateSeats: false,
+      showSeperateSeatsBtn: true,
     };
   },
   components: {
@@ -166,7 +166,6 @@ export default {
           
           //Everytime we click a seat update BokningSida.vue with this information so it can check 
           //When user presses boka button to se if he choose seats or not.
-          console.log(this.clickedSeats)
           this.$emit("checkAllSeatsChoosen", this.clickedSeats);
         }
       }
@@ -204,6 +203,14 @@ export default {
       this.clickedSeats = [];
       this.seatsToHover = [];
       this.$emit("checkAllSeatsChoosen", this.clickedSeats);
+
+      if(this.mySeats <= this.seatsPerRow[0]){
+        this.showSeperateSeatsBtn = true;
+        this.seperateSeats = false;
+      }else{
+        this.showSeperateSeatsBtn = false;
+        this.seperateSeats = true;
+      }
     },
 
     seperateSeats: function(){
