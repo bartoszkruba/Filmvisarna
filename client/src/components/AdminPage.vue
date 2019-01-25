@@ -134,7 +134,7 @@
           <div class="row mb-3">
             <div class="col-sm-1"></div>
             <div class="col-sm-5">
-              <label for="PosterImage">Poster Image</label>
+              <label for="PosterImage">Poster Image (206x305 pixels)</label>
               <input
                 type="file"
                 class="form-control-file"
@@ -143,7 +143,7 @@
               >
             </div>
             <div class="col-sm-5">
-              <label for="BackgroundImage">Background Image</label>
+              <label for="BackgroundImage">Background Image (1917x517 pixels)</label>
               <input
                 type="file"
                 class="form-control-file"

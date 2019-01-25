@@ -29,6 +29,7 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css?family=Poppins');
 
 .list-style-none{
   list-style: none;
@@ -45,6 +46,7 @@ export default {
 }
 
 body {
+  font-family: 'Poppins', sans-serif;
   min-height: 100vh;
   flex-direction: column;
   display: flex;
