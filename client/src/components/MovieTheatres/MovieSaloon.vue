@@ -10,8 +10,11 @@
     </section>
     <section class="screen">Bioduk</section>
     <b-form-checkbox id="checkbox1"
-                     v-model="seperateSeats">
-      Väl seperata platser
+                     v-model="seperateSeats"
+                     v-if="mySeats <= seatsPerRow[0]"
+                     v-else="seperateSeats = true"
+                     >
+      Välj seperata platser
     </b-form-checkbox>
     <section class="seats mt-5">
       <template v-for="(rows,index) in seatsPerRow">
@@ -200,12 +203,14 @@ export default {
       this.markSeatsClicked = false;
       this.clickedSeats = [];
       this.seatsToHover = [];
+      this.$emit("checkAllSeatsChoosen", this.clickedSeats);
     },
 
     seperateSeats: function(){
       this.markSeatsClicked = false;
       this.clickedSeats = [];
       this.seatsToHover = [];
+      this.$emit("checkAllSeatsChoosen", this.clickedSeats);
     }
   }
 };
