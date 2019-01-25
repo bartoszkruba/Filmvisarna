@@ -18,14 +18,14 @@ module.exports.postMovieSessions = async (req, res, next) => {
             return firstSessionDate > secondSessionDate ? 1 : -1;
         });
 
-        // movieSessions = movieSessions.filter(cur => {
-        //     const dateString = cur.date.year.toString()
-        //         + cur.date.month.toString().padStart(2, '0')
-        //         + cur.date.day.toString().padStart(2, '0')
-        //         + cur.date.time.replace(':', '');
+        movieSessions = movieSessions.filter(cur => {
+            const dateString = cur.date.year.toString()
+                + cur.date.month.toString().padStart(2, '0')
+                + cur.date.day.toString().padStart(2, '0')
+                + cur.date.time.replace(':', '');
 
-        //     return dateString > getDateString();
-        // })
+            return dateString > getDateString();
+        })
 
         res.send({
             movie_sessions: movieSessions
@@ -39,25 +39,12 @@ module.exports.postMovieSessions = async (req, res, next) => {
     }
 }
 module.exports.postAddMovieSession = async (req, res, next) => {
-    const movieTheatre = await MovieTheatre.findOne({ _id: req.body.movieSession.movieTheatreID });
-    
-        let places = [];
-
-        console.log(movieTheatre);
-
-        for (let i = 0; i < movieTheatre.seatsPerRow.length; i++) {
-            for (let j = 0; j < movieTheatre.seatsPerRow[i]; j++) {
-                const seat = getLetter(i) + (j + 1) + "";
-                places.push({ seatNumber: seat, booked: false });
-            }
-        }
-
+    const movieTheatre = await MovieTheatre.find({ _id: req.body.movieSession.movieTheatreID });
     new MovieSession({
         movieID: req.body.movieSession.movieID,
         date: req.body.movieSession.date,
-        freePlaces: movieTheatre.seats,
-        movieTheatreID: req.body.movieSession.movieTheatreID,
-        places: places
+        freePlaces: movieTheatre[0].seats,
+        movieTheatreID: req.body.movieSession.movieTheatreID
     }).save();
     res.send();
 }
@@ -86,45 +73,3 @@ function getDateString() {
     let string = `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, 0)}${date.getDate().toString().padStart(2, 0)}${date.getHours().toString().padStart(2, 0)}${date.getMinutes().toString().padStart(2, 0)}`
     return string
 }
-
-module.exports.deleteOldSessions = async () => {
-    let movieSessions = await MovieSession.find();
-    movieSessions = movieSessions.filter(async cur =>  {
-        const dateString = cur.date.year.toString()
-            + cur.date.month.toString().padStart(2, '0')
-            + cur.date.day.toString().padStart(2, '0')
-            + cur.date.time.replace(':', '');
-
-        if(dateString < getDateString()){
-            console.log(cur._id)
-            await MovieSession.findByIdAndDelete({_id: cur._id});
-        } 
-    })
-}
-
-function getLetter(row) {
-    switch (row + 1) {
-        case 1:
-            return "A"
-        case 2:
-            return "B"
-        case 3:
-            return "C"
-        case 4:
-            return "D"
-        case 5:
-            return "E"
-        case 6:
-            return "F"
-        case 7:
-            return "G"
-        case 8:
-            return "H"
-        case 9:
-            return "I"
-        case 10:
-            return "I"
-        default:
-            return "X"
-    }
-};
