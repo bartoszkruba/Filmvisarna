@@ -1,7 +1,7 @@
 <template>
 <b-modal hide-footer size="lg" @hidden="loggInWindowClosed" v-model="$store.state.showLoggaInWindow" title="Registrera / Logga In ">
   <section class="form" v-if="!showLicenseAndAgreements">
-    <b-form class="form-section register">
+    <b-form class="form-section register" @submit="submitRegistration">
       <h3>Registrera</h3>
       <label for>Namn</label>
       <b-input
@@ -51,13 +51,12 @@
       </b-form-checkbox>
       <b-button 
       variant="primary" 
-      type="button" 
-      @click="submitRegistration"
+      type="submit" 
       class="mt-3 btn-danger">Registrera
       </b-button>
     </b-form>
     
-    <b-form class="form-section sign-in">
+    <b-form class="form-section sign-in" @submit="submitSignIn">
       <h3>Logga In</h3>
       <label for>E-Mail</label>
       <b-input 
@@ -77,7 +76,7 @@
       variant="danger" 
       class="mt-3">{{this.messageSignIn}}
       </b-alert>
-      <b-button variant="primary" type="button" @click="submitSignIn" class="mt-3 btn-danger">Logga In</b-button>
+      <b-button variant="primary" type="submit" class="mt-3 btn-danger">Logga In</b-button>
     </b-form>
   </section>
   <AnvandarVillkor v-if="showLicenseAndAgreements" @closeLicenseAgreement="LicenseAndAgreement"/>
