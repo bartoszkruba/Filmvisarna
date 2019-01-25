@@ -1,7 +1,7 @@
 <template>
 <b-modal hide-footer size="lg" @hidden="loggInWindowClosed" v-model="$store.state.showLoggaInWindow" title="Registrera / Logga In ">
   <section class="form" v-if="!showLicenseAndAgreements">
-    <b-form class="form-section register" @submit="submitRegistration">
+    <b-form class="form-section register">
       <h3>Registrera</h3>
       <label for>Namn</label>
       <b-input
@@ -51,12 +51,13 @@
       </b-form-checkbox>
       <b-button 
       variant="primary" 
-      type="submit" 
+      type="button" 
+      @click="submitRegistration"
       class="mt-3 btn-danger">Registrera
       </b-button>
     </b-form>
     
-    <b-form class="form-section sign-in" @submit="submitSignIn">
+    <b-form class="form-section sign-in">
       <h3>Logga In</h3>
       <label for>E-Mail</label>
       <b-input 
@@ -76,7 +77,7 @@
       variant="danger" 
       class="mt-3">{{this.messageSignIn}}
       </b-alert>
-      <b-button variant="primary" type="submit" class="mt-3 btn-danger">Logga In</b-button>
+      <b-button variant="primary" type="button" @click="submitSignIn" class="mt-3 btn-danger">Logga In</b-button>
     </b-form>
   </section>
   <AnvandarVillkor v-if="showLicenseAndAgreements" @closeLicenseAgreement="LicenseAndAgreement"/>
@@ -152,6 +153,7 @@ export default {
       if(response.data.validated){
         this.showErrorMessageSignIn = false;
         if(this.$store.getters.routeTo.redirect){
+          console.log("gå till bokning")
           this.$router.push('/BokningSida?movieID='+this.$store.getters.routeTo.movieID+'&sessionID='+this.$store.getters.routeTo.sessionID);
           this.$store.commit('setRoute', {movieID: '', sessionID: '' , redirect: false});
         }
