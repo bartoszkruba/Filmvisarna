@@ -19,7 +19,7 @@
         <div class="antal-bilijetter"></div>
       </title>
     </div>
-     
+
 
       <div class="text">
         <div class="location">
@@ -115,12 +115,12 @@
         </div>
         <div class="slutför btn">
           <b-btn v-on:click="visaFelMedellande">Slutför bokning</b-btn>
-          <p class="felMedellande" v-if="visaMedellande">Du måste välja minst en biljett</p>
+          <p class="felMedellande" v-if="visaMedellande">{{errorMessage}}</p>
         </div>
         <!-- Modal Component -->
         <b-modal id="modal1" v-model="showTicketModal" title="Bekräftelse" @ok="goHem" ok-only no-close-on-esc no-close-on-backdrop hide-header-close>
         <div class="bekraftelse">
-          <div class="bekraftelseText"> 
+          <div class="bekraftelseText">
               <p>Film:
                 <strong>{{movie.title}}</strong>
               </p>
@@ -189,7 +189,6 @@ let prisPensionar = 75;
 let antalBarn = 0;
 let prisBarn = 65;
 let totalt = 0;
-
 import api from "@/services/Api.js";
 import MovieSaloon from "@/components/MovieTheatres/MovieSaloon";
 export default {
@@ -220,6 +219,7 @@ export default {
       btnPressed: false,
       showTicketModal: false,
       showErrorModalBookedSeat:false,
+      errorMessage: ''
     };
   },
   components: {
@@ -242,7 +242,6 @@ export default {
       this.getSessions();
     }
   },
-
   computed: {
     createTicket: function() {
       let ticket = {
@@ -254,7 +253,6 @@ export default {
       };
       return ticket;
     },
-
     totalSeats: function() {
       return this.antalBarn + this.antalPensionar + this.antal;
     },
@@ -317,7 +315,6 @@ export default {
       url = url.substr(url.lastIndexOf("#"));
       let searchIndex = url.indexOf("?") + 1;
       let output = {};
-
       if (searchIndex > 0) {
         url = url.substr(searchIndex).split("&");
         for (let i = 0; i < url.length; i++) {
@@ -348,13 +345,11 @@ export default {
           this.sessions = response.data.movie_sessions;
         } catch (error) {}
       }
-
       if (this.sessions === null) this.errorFromMongo = true;
       else this.getSessionByID();
     },
     async getSessionByID() {
       this.session = null;
-
       if (this.urlQuery.sessionID) {
         this.session = this.sessions.find(curr => {
           return curr._id === this.urlQuery.sessionID;
@@ -395,8 +390,6 @@ export default {
         this.totalt -= 85;
         this.antal -= 1;
         this.someBtnPressed();
-      } else {
-        alert("Du kan inte välja mindre än en biljett ");
       }
     },
     plusPensionar() {
@@ -411,8 +404,6 @@ export default {
         this.totalt -= 75;
         this.antalPensionar -= 1;
         this.someBtnPressed();
-      } else {
-        alert("Du kan inte välja mindre än en biljett ");
       }
     },
     plusBarn() {
@@ -427,28 +418,27 @@ export default {
         this.antalBarn -= 1;
         this.totalt -= 65;
         this.someBtnPressed();
-      } else {
-        alert("Du kan inte välja mindre än en biljett ");
       }
     },
-
-    checkAllSeatsChoosen(moreSeats, choosenSeats){
-      this.allSeatsSelected = !moreSeats;
-      this.choosenSeats = choosenSeats;
+    checkAllSeatsChoosen(choosenSeats){
+      if(choosenSeats.length === this.totalSeats){
+        this.choosenSeats = choosenSeats;
+        this.allSeatsSelected = true;
+      }else{
+        this.allSeatsSelected = false;
+      }
     },
-
     visaFelMedellande() {
       if (this.totalt == 0) {
-        this.visaMedellande = true;
+        this.displayError("Du måste välja minst en biljett");
       } else {
-        if (this.allSeatsSelected && this.choosenSeats.length > 0) {
+        if (this.allSeatsSelected) {
           this.bokaFilm();
         }else{
-          console.log("Du måste boka platser för så många biljetter du valt")
+          this.displayError("Du måste välja platser för så många biljetter du valt")
         }
       }
     },
-
     async bokaFilm() {
       try{
         const response = await api.setTickets(
@@ -466,16 +456,18 @@ export default {
         console.log(error.response.data.message);
       }
     },
-
     someBtnPressed(){
       this.btnPressed = !this.btnPressed;
     },
-
     reloadPage(){
       this.getSessions();
-      console.log("nu laddar vi om skiten")
-    }
+    },
+    displayError(message){
+      this.errorMessage = message
+       this.visaMedellande = true;
   }
+  },
+
 };
 </script>
 
@@ -520,7 +512,7 @@ export default {
 }
 .bekraftelsePic{
   margin-top: 7vh;
-  width: 11vw; 
+  width: 11vw;
 }
 
 main{
@@ -689,7 +681,7 @@ div .vilkaBiljetter {
 }
 .bekraftelsePic{
   margin-top: 7vh;
-  width: 21vw; 
+  width: 21vw;
 }
 
 
@@ -707,7 +699,7 @@ div .vilkaBiljetter {
   .bekraftelsePic{
     display: flex;
     margin-top: 1vh;
-    width: 65%; 
+    width: 65%;
     margin-left: 19% }
 
   title {
