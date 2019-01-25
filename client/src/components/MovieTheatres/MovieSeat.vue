@@ -67,7 +67,6 @@ export default {
       //Then remove the click effect and set it to show hover
       else if(this.seatsToHover.includes(this.myId) && this.seatIsClicked){
         this.seatIsClicked = false;
-        this.hover = true;
       }
     }
   }
