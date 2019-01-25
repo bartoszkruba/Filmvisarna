@@ -110,7 +110,6 @@ export default {
         }
         this.currentLongCount.length = 0;
       }
-      console.log(this.longestFreeRow);
     },
 
     //When hovering/clicking/leaving hover over a seat, do this
