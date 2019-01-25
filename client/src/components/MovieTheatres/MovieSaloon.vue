@@ -9,6 +9,10 @@
       <p v-if="mySeats > 0">Välj platser genom att klicka på stolarna i salongen</p>
     </section>
     <section class="screen">Bioduk</section>
+    <b-form-checkbox id="checkbox1"
+                     v-model="seperateSeats">
+      Väl seperata platser
+    </b-form-checkbox>
     <section class="seats mt-5">
       <template v-for="(rows,index) in seatsPerRow">
         <section class="rows" v-bind:id="rows">
@@ -20,6 +24,8 @@
               :btnPressed="btnPressed"
               :seatsToHover="seatsToHover"
               :markSeatsClicked="markSeatsClicked"
+              :seperateSeats="seperateSeats"
+              :clickedSeats="clickedSeats"
             ></MovieSeat>
           </template>
         </section>
@@ -46,7 +52,8 @@ export default {
       leavingSeat: false,
       seatsToHover: [],
       markSeatsClicked: false,
-      clickedSeats: []
+      clickedSeats: [],
+      seperateSeats: false
     };
   },
   components: {
@@ -78,12 +85,12 @@ export default {
       //Find the index of the hovered seat in the freePlaces array
       let index = this.freePlaces.findIndex(i => i.seatNumber === e.target.id);
       //if hovering over a seat and choosen tickets is more than 0 and no seat is already marked
-      if (e.type === "mouseover" && this.mySeats > 0 && !this.markSeatsClicked) {
+      if (e.type === "mouseover" && this.mySeats > 0 && this.clickedSeats.length < this.mySeats) {
         //Reset try to hover
         let tryToHover = [];
         
         //If we want to book more than one seat and the seat we are right now hovering over isnt taken
-        if (this.mySeats > 1 && !this.freePlaces[index].booked) {
+        if (this.mySeats > 1 && !this.freePlaces[index].booked && !this.seperateSeats) {
           //Try mark seats to right when hovering
           try {
                 for (let i = index; i < this.mySeats + index; i++) {
@@ -132,23 +139,31 @@ export default {
       
       //If we click the seat that we are hovering over
       else if (e.type === "click") {
+        
         //First check if there is any seats that are being displayed as hovered
         if (this.seatsToHover.length !== 0) {
           //If there is, keep adding seats to the clickedSeats array untill 
           //the length of that matches the number of tickets the user choosed
-          if (this.clickedSeats.length !== this.mySeats) {
-            this.markSeatsClicked = true;
-            this.clickedSeats = this.seatsToHover;
+          if (this.clickedSeats.length < this.mySeats && !this.clickedSeats.includes(e.target.id)) {
+            this.markSeatsClicked = !this.markSeatsClicked;
+            this.clickedSeats.push(...this.seatsToHover);
           } 
           //If the user choosed as many seats as tickets, and then clicks again on a seat,
           //check if the seat is choosen and if it is, 
           //unmark that/those seats(Depending if the user choosed one or multiple, if multiple all the seats will unmark)
-          else if (this.clickedSeats.includes(e.target.id)) {
-            this.markSeatsClicked = false;
+          else if (this.clickedSeats.includes(e.target.id) && !this.seperateSeats) {
+            this.markSeatsClicked = !this.markSeatsClicked;
             this.clickedSeats = [];
           }
+
+          else if(this.clickedSeats.includes(e.target.id) && this.seperateSeats){
+            this.markSeatsClicked = !this.markSeatsClicked;
+            this.clickedSeats.splice(this.clickedSeats.indexOf(e.target.id),1);
+          }
+          
           //Everytime we click a seat update BokningSida.vue with this information so it can check 
           //When user presses boka button to se if he choose seats or not.
+          console.log(this.clickedSeats)
           this.$emit("checkAllSeatsChoosen", this.clickedSeats);
         }
       }
@@ -182,6 +197,12 @@ export default {
   watch: {
     //Watches the +/- buttons in BokningSida.vue, if user pressses them reset the seats user choose
     btnPressed: function() {
+      this.markSeatsClicked = false;
+      this.clickedSeats = [];
+      this.seatsToHover = [];
+    },
+
+    seperateSeats: function(){
       this.markSeatsClicked = false;
       this.clickedSeats = [];
       this.seatsToHover = [];

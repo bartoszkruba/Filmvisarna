@@ -14,7 +14,7 @@ import api from "@/services/Api.js";
 
 export default {
   name: "MovieSeat",
-  props: ["myId", "seatBooked", "btnPressed", "leavingSeat", "seatsToHover", "markSeatsClicked"],
+  props: ["myId", "seatBooked", "btnPressed", "leavingSeat", "seatsToHover", "markSeatsClicked","seperateSeats","clickedSeats"],
   data() {
     return {
       hover: false,
@@ -33,6 +33,9 @@ export default {
     //When +/- is clicked in BokningSida.vue
     //Reset the clicked seats
     btnPressed: function() {
+      this.seatIsClicked = false;
+    },
+    seperateSeats: function(){
       this.seatIsClicked = false;
     },
     //Runs when parent calls a seat to show as hovered
@@ -56,7 +59,7 @@ export default {
     markSeatsClicked: function() {
       //Check if THIS seat is included in the seatsToHover array and that is not clicked
       //Then mark it as clicked and remove the hover effect
-      if(this.seatsToHover.includes(this.myId) && !this.seatIsClicked){
+      if(this.clickedSeats.includes(this.myId) && !this.seatIsClicked){
           this.seatIsClicked = true;
           this.hover = false;
       }
