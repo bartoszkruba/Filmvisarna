@@ -23,7 +23,7 @@ module.exports.setBookedTicket = async (req, res, next) => {
                 + session.date.day.toString().padStart(2, '0'),
                 price: parseInt(req.body.ticket.children) * 65
                     + parseInt(req.body.ticket.pensioner) * 75
-                    + parseInt(req.body.ticket.adults) * 85,
+                    + parseInt(req.body.ticket.adults) * 85 + " SEK",
                 adults: parseInt(req.body.ticket.adults),
                 children: parseInt(req.body.ticket.children),
                 pensioner: parseInt(req.body.ticket.pensioner),
