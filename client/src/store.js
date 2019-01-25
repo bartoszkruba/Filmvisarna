@@ -84,7 +84,6 @@ export const store = new Vuex.Store({
           },
 
           setRoute(state,sessionAndMovieID){
-            console.log(sessionAndMovieID);
             state.routeToThis = {
                 movieID: sessionAndMovieID.movieID,
                 sessionID: sessionAndMovieID.sessionID,

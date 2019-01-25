@@ -152,7 +152,6 @@ export default {
       if(response.data.validated){
         this.showErrorMessageSignIn = false;
         if(this.$store.getters.routeTo.redirect){
-          console.log("gå till bokning")
           this.$router.push('/BokningSida?movieID='+this.$store.getters.routeTo.movieID+'&sessionID='+this.$store.getters.routeTo.sessionID);
           this.$store.commit('setRoute', {movieID: '', sessionID: '' , redirect: false});
         }
