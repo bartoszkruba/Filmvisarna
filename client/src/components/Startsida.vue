@@ -1,28 +1,16 @@
 <template>
-  <!--Visar Välomsmedelandet-->
+
   <div class="main">
-    <b-jumbotron class="white-text jumbobg" style="background-color: #860717">
+    <b-jumbotron
+      class="white-text jumbobg"
+    
+    >
       <template slot="header" class="white-text welcome-text">
-        <h1 class="white-text welcome-text text-shadow">Välkommen till Filmvisarna!</h1>
+        <h1 class="white-text welcome-text">Välkommen till Filmvisarna!</h1>
       </template>
     </b-jumbotron>
-    <!--Visar text att vi är nyöpnade och vad som kan köpas på plats-->
-    <b-jumbotron class="white-text jumbobg gradient-linear">
-      <h1 class="white-text text-shadow">Vi har nu öppnat, Välkomna!</h1>
-      <h2 class="white-text text-shadow">
-        På plats säljer vi
-        <strong>popcorn</strong>,
-        <strong>läsk</strong>,
-        <span>chips</span>,
-        <span>godis</span> och mer!
-      </h2>
-    </b-jumbotron>
-    <!--Visar närmaste visningar visningar-->
-    <!--Varge b-col ineholer en filmplanch i länkande så man kan läsa mer, titel och två olika knapppar en läs mer och en som tar dig till näskomande visning av den filmen bokning-->
-    <!--Visas i decktop och tablets-->
     <div v-if="movies && sessions">
-      <div class="box pt-3">
-        <h1 class="text-shadow">Närmaste visningar:</h1>
+      <div class="box">
         <div>
           <b-container fluid class="startposter">
             <b-row>
@@ -33,9 +21,9 @@
                     :to="'/film?movieID='+this.movies[0]._id"
                     exact-active-class="menu-item-active"
                   >
-                    <img class="poster" :src="url + movies[0].imagesLinks.poster">
+                  <img class="poster" :src="url + movies[0].imagesLinks.poster"> 
                   </router-link>
-                  <h3 class="text-shadow">{{movies[0].title}}</h3>
+                  <h3>{{movies[0].title}}</h3>
                   <router-link
                     class="router-link"
                     :to="'/film?movieID='+this.movies[0]._id"
@@ -43,7 +31,7 @@
                   >
                     <b-button>Läs mer</b-button>
                   </router-link>
-                  <b-button class="btn-danger" v-on:click="goToBooking(0)">Boka</b-button>
+                  <b-button v-on:click="goToBooking(0)">Snabb boka</b-button>
                 </figure>
               </b-col>
               <b-col>
@@ -53,9 +41,9 @@
                     :to="'/film?movieID='+this.movies[1]._id"
                     exact-active-class="menu-item-active"
                   >
-                    <img class="poster" :src="url + movies[1].imagesLinks.poster">
+                    <img class="poster" :src="url + movies[1].imagesLinks.poster"> 
                   </router-link>
-                  <h3 class="text-shadow">{{movies[1].title}}</h3>
+                  <h3>{{movies[1].title}}</h3>
                   <router-link
                     class="router-link"
                     :to="'/film?movieID='+this.movies[1]._id"
@@ -63,7 +51,7 @@
                   >
                     <b-button>Läs mer</b-button>
                   </router-link>
-                  <b-button class="btn-danger" v-on:click="goToBooking(1)">Boka</b-button>
+                  <b-button v-on:click="goToBooking(1)">Snabb boka</b-button>
                 </figure>
               </b-col>
               <b-col>
@@ -73,9 +61,9 @@
                     :to="'/film?movieID='+this.movies[2]._id"
                     exact-active-class="menu-item-active"
                   >
-                    <img class="poster" :src="url + movies[2].imagesLinks.poster">
+                    <img class="poster" :src="url + movies[2].imagesLinks.poster"> 
                   </router-link>
-                  <h3 class="text-shadow">{{movies[2].title}}</h3>
+                  <h3>{{movies[2].title}}</h3>
                   <router-link
                     class="router-link"
                     :to="'/film?movieID='+this.movies[2]._id"
@@ -83,14 +71,12 @@
                   >
                     <b-button>Läs mer</b-button>
                   </router-link>
-                  <b-button class="btn-danger" v-on:click="goToBooking(2)">Boka</b-button>
+                  <b-button v-on:click="goToBooking(2)">Snabb boka</b-button>
                 </figure>
               </b-col>
             </b-row>
           </b-container>
         </div>
-        <!--Visar de nästkomande filmerna i en roterande karusel-->
-        <!--Varge b-carousel-slide ineholer en filmplanch i länkande så man kan läsa mer, titel, filmtid, oldersgräns och två olika knapppar en läs mer och en som tar dig till näskomande visning av den filmen bokning-->
         <b-carousel
           id="carousel1"
           controls
@@ -120,7 +106,7 @@
             >
               <b-button>Läs mer</b-button>
             </router-link>
-            <b-button class="btn-danger" v-on:click="goToBooking(0)">Boka</b-button>
+            <b-button v-on:click="goToBooking(0)">Snabb boka</b-button>
           </b-carousel-slide>
           <b-carousel-slide>
             <img
@@ -142,7 +128,7 @@
             >
               <b-button>Läs mer</b-button>
             </router-link>
-            <b-button class="btn-danger" v-on:click="goToBooking(1)">Boka</b-button>
+            <b-button v-on:click="goToBooking(1)">Snabb boka</b-button>
           </b-carousel-slide>
           <b-carousel-slide>
             <img
@@ -164,7 +150,7 @@
             >
               <b-button>Läs mer</b-button>
             </router-link>
-            <b-button class="btn-danger" v-on:click="goToBooking(2)">Boka</b-button>
+            <b-button v-on:click="goToBooking(2)">Snabb boka</b-button>
           </b-carousel-slide>
         </b-carousel>
       </div>
@@ -175,12 +161,27 @@
       </h1>
       <h1 class="text-center">Loading</h1>
     </div>
+    <b-jumbotron
+      class="white-text jumbobg"
+      style=""
+    >
+      <template slot="header" class="white-text">Senaste nytt</template>
+      <h1 class="white-text">Vi har nu öppnat, Välkomna</h1>
+      <h2 class="white-text">På plats säljer vi:</h2>
+      <ul class="white-text">
+        <li>Popcorn,</li>
+        <li>Läsk,</li>
+        <li>Chips,</li>
+        <li>Godis,</li>
+        <li>m.m.</li>
+      </ul>
+    </b-jumbotron>
   </div>
 </template>
 <script>
-/*Impoterar server Api`n*/
 import api from "@/services/Api.js";
 export default {
+  //Hämta data från server
   data() {
     return {
       movies: null,
@@ -188,29 +189,26 @@ export default {
       movieIndex: null
     };
   },
-  /*När sidan ladas så hämtas filmerna från servern och man startar längst upp på sidan*/
   mounted: function() {
     this.getMovies();
     this.scrollTop();
   },
   computed: {
-    url: function() {
-      return api.url;
+    url: function(){
+      return api.url
     }
   },
   methods: {
-    scrollTop() {
-      window.scrollTo(0, 0);
+    scrollTop(){
+      window.scrollTo(0,0);
     },
-    /*Så att karuselen snurar*/
+
     onSlideStart(slide) {
       this.sliding = true;
     },
     onSlideEnd(slide) {
       this.sliding = false;
     },
-    /*Anropet som hämtar filmerna från servern och sparar ner informationen i veriablen movies*/
-    /*Soterar så det är den nästkomande filmen som vissas lägs först osv*/
     async getMovies() {
       const response = await api.getMovies();
       this.movies = response.data.movies;
@@ -226,12 +224,10 @@ export default {
       }
       this.movies = moviesToShow;
     },
-    /* Hämtar vilken film som visas här näst*/
     async getSessions() {
       const response = await api.getMovieSessions();
       this.sessions = response.data.movie_sessions;
     },
-    /*När man trycker på bilden i slidern så sickas man till dens filminformaations*/
     linkToMovePage(e) {
       return this.$router.push(
         "/film?movieID=" + e.srcElement.attributes.value.value
@@ -265,13 +261,8 @@ export default {
 };
 </script>
 <style scoped>
-.gradient-linear {
-  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.16)),
-    linear-gradient(#860717, rgba(0, 0, 0, 0.25));
-}
-
 .loading-logo {
-  color: white;
+  color:white;
   height: 70vh;
   opacity: 1;
   animation: flickerAnimation 3s infinite;
@@ -304,10 +295,11 @@ export default {
   }
 }
 
-.main {
+.main{
+  
 }
-.jumbobg {
-  background-color: rgba(2, 2, 2, 0);
+.jumbobg{
+   background-color: rgba(2, 2, 2, 0);
 }
 
 h1 {
@@ -344,9 +336,9 @@ ul {
 .startposter {
   padding-top: 2vh;
 }
-.box {
-  background-color: rgba(2, 2, 2, 0.4);
-  color: white;
+.box{
+   background-color: rgba(2, 2, 2, 0.4);
+   color: white;
 }
 
 .white-text {

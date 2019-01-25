@@ -29,31 +29,13 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css?family=Poppins');
-
-.list-style-none{
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.dark-transparent{
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.text-shadow{
-  text-shadow: 4px 1px 1px  #000;
-}
-
 body {
-  font-family: 'Poppins', sans-serif;
   min-height: 100vh;
-  flex-direction: column;
   display: flex;
+  flex-direction: column;
   background-image: url(http://www.milanticketsopera.com/themes/theater/images/img.jpg);
-  background-attachment: fixed;
-  background-size: cover;
-  background-position: center;
+  background-position: sticky;
+  background-size: 100% 100%;
   overflow-x: hidden;
 }
 #app {

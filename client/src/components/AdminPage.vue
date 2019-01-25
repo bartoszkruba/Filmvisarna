@@ -134,7 +134,7 @@
           <div class="row mb-3">
             <div class="col-sm-1"></div>
             <div class="col-sm-5">
-              <label for="PosterImage">Poster Image (206x305 pixels)</label>
+              <label for="PosterImage">Poster Image</label>
               <input
                 type="file"
                 class="form-control-file"
@@ -143,7 +143,7 @@
               >
             </div>
             <div class="col-sm-5">
-              <label for="BackgroundImage">Background Image (1917x517 pixels)</label>
+              <label for="BackgroundImage">Background Image</label>
               <input
                 type="file"
                 class="form-control-file"
@@ -161,7 +161,7 @@
               <ul class="list-group mb-3" v-for="actor in actors">
                 <li class="list-group-item d-flex justify-content-between pr-1">
                   <span>{{actor}}</span>
-                  <button class="btn btn-sm btn-danger" @click="removeActor(actor)" type="button">X</button>
+                  <button class="btn btn-sm btn-danger" @click="removeActor(actor)">X</button>
                 </li>
               </ul>
               <div class="input-group mb-3">
@@ -173,7 +173,7 @@
                   v-model="actor"
                 >
                 <div class="input-group-prepend">
-                  <button class="btn btn-outline-danger" type="button" @click="addActor">Add</button>
+                  <button class="btn btn-outline-danger" @click="addActor">Add</button>
                 </div>
               </div>
             </div>
@@ -182,11 +182,7 @@
               <ul class="list-group mb-3" v-for="country in productionCountries">
                 <li class="list-group-item d-flex justify-content-between pr-1">
                   <span>{{country}}</span>
-                  <button
-                    class="btn btn-sm btn-danger"
-                    @click="removeCountry(country)"
-                    type="button"
-                  >X</button>
+                  <button class="btn btn-sm btn-danger" @click="removeCountry(country)">X</button>
                 </li>
               </ul>
               <div class="input-group mb-3">
@@ -198,7 +194,7 @@
                   v-model="country"
                 >
                 <div class="input-group-prepend">
-                  <button class="btn btn-outline-danger" type="button" @click="addCountry">Add</button>
+                  <button class="btn btn-outline-danger" @click="addCountry">Add</button>
                 </div>
               </div>
             </div>
@@ -213,7 +209,7 @@
               <ul class="list-group mb-3" v-for="id in trailers">
                 <li class="list-group-item d-flex justify-content-between pr-1">
                   <span class>{{id}}</span>
-                  <button class="btn btn-sm btn-danger" type="button" @click="removeTrailer(id)">X</button>
+                  <button class="btn btn-sm btn-danger" @click="removeTrailer(id)">X</button>
                 </li>
               </ul>
               <div class="input-group mb-3">
@@ -225,7 +221,7 @@
                   v-model="youtubeID"
                 >
                 <div class="input-group-prepend">
-                  <button class="btn btn-outline-danger" type="button" @click="addTrailer">Add</button>
+                  <button class="btn btn-outline-danger" @click="addTrailer">Add</button>
                 </div>
               </div>
             </div>
@@ -250,7 +246,6 @@
                   <button
                     class="btn btn-sm btn-danger review-button float-right"
                     @click="removeReview(review)"
-                    type="button"
                   >X</button>
                   <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">{{review.source}}</h5>
@@ -295,7 +290,7 @@
             <div class="col-sm-10">
               <label for="Quote">Quote:</label>
               <textarea class="form-control" rows="5" id="Quote" v-model="quote"></textarea>
-              <button class="btn btn-danger mt-2" @click="addReview" type="button">Add Review</button>
+              <button class="btn btn-danger mt-2" @click="addReview">Add Review</button>
             </div>
             <div class="col-sm-1"></div>
           </div>
@@ -304,7 +299,7 @@
           <div class="col-sm-1"></div>
           <div class="col-sm-10">
             <button
-              type="button"
+              type="submit"
               class="btn btn-danger btn-lg btn-block"
               @click="addMovie"
             >Add Movie</button>
@@ -453,67 +448,13 @@
             <div class="col-sm-1"></div>
             <div class="col-sm-10">
               <button
-                type="button"
+                type="submit"
                 class="btn btn-danger btn-lg btn-block"
                 @click="addMovieSession"
               >Add Movie Session</button>
             </div>
             <div class="col-sm-1"></div>
           </div>
-        </div>
-      </form>
-      <hr>
-      <h2 class="text-center">Delete Movie</h2>
-      <b-modal hide-footer ref="deleteMovieWarning" id="DeleteMovieWarning" title="Warning">
-        <p
-          class="my-4"
-        >This will delete all sessions containing the movie. Do you really wanna do this?</p>
-        <div class="d-flex justify-content-between">
-          <div>
-            <b-btn class="mt-3" variant="warning" block @click="hideModal">Cancel</b-btn>
-          </div>
-          <div>
-            <b-btn class="mt-3" variant="success" block @click="deleteMovie">Hell Yea!</b-btn>
-          </div>
-        </div>
-      </b-modal>
-      <form class="container mb-5">
-        <div class="row mb-3">
-          <div class="col-sm-1"></div>
-          <div class="col-sm-10">
-            <div
-              class="alert alert-success m-auto text-center"
-              role="alert"
-              v-if="deleteMovieMessage"
-            >{{deleteMovieMessage}}</div>
-            <div
-              class="alert alert-danger m-auto text-center"
-              role="alert"
-              v-if="deleteMovieError"
-            >{{deleteMovieError}}</div>
-          </div>
-          <div class="col-sm-1"></div>
-        </div>
-        <div class="row">
-          <div class="col-sm-1"></div>
-          <div class="col-sm-10">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <label class="input-group-text" for="MovieTheatreSelector">Movie to delete:</label>
-              </div>
-              <select class="custom-select" id="movieToDelete" v-model="movieToDelete">
-                <option selected v-for="movie in movies">{{movie.title}}</option>
-              </select>
-              <div class="input-group-prepend">
-                <button
-                  type="button"
-                  class="btn btn-danger"
-                  @click="deleteMovieBtnClicked"
-                >Delete Movie</button>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-1"></div>
         </div>
       </form>
     </div>
@@ -531,7 +472,7 @@
 import api from "@/services/Api.js";
 
 export default {
-  name: "AdminSida",
+  name: "HelloWorld",
   data() {
     return {
       error: null,
@@ -578,11 +519,7 @@ export default {
       },
 
       posterImage: null,
-      backgroundImage: null,
-
-      movieToDelete: null,
-      deleteMovieMessage: null,
-      deleteMovieError: null
+      backgroundImage: null
     };
   },
   created() {
@@ -590,38 +527,6 @@ export default {
     this.getMovieTheatres();
   },
   methods: {
-    hideModal() {
-      this.$refs.deleteMovieWarning.hide();
-    },
-    async deleteMovie() {
-      this.$refs.deleteMovieWarning.hide();
-      const user = this.$store.getters.getCredentials;
-      const movieID = this.movies.find(cur => {
-        return cur.title === this.movieToDelete;
-      })._id;
-      try {
-        const response = await api.deleteMovie(movieID, user);
-        this.deleteMovieMessage = response.data.message;
-        this.deleteMovieError = null;
-      } catch (error) {
-        console.log(error);
-        if (error.response) {
-          this.deleteMovieError = error.response.data.error;
-        } else {
-          this.deleteMovieError = "Something went wrong"
-        }
-        this.deleMovieMessage = null;
-      }
-      this.getMovies();
-      this.getMovieTheatres();
-    },
-    deleteMovieBtnClicked() {
-      if (this.movieToDelete) {
-        this.$refs.deleteMovieWarning.show();
-      } else {
-        console.log("Movie is null");
-      }
-    },
     posterImageChanged(event) {
       this.posterImage = event.target.files[0];
     },
@@ -787,8 +692,6 @@ export default {
           this.message = null;
           window.scrollTo(0, 0);
         }
-        this.getMovies();
-        this.getMovieTheatres();
       } else {
         this.error = "All fields needs to be filled.";
         this.message = null;
@@ -854,8 +757,6 @@ export default {
         this.sessionMessage = null;
         this.sessionError = "All fields need to be filled";
       }
-      this.getMovies();
-      this.getMovieTheatres();
     }
   }
 };
